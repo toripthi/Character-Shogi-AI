@@ -6,6 +6,7 @@ import { createEngineClient } from "../engine/engine-client.js";
 import { createRules } from "../engine/rules.js";
 import { applyUsi, boardStateToSfen } from "../engine/usi.js";
 import { createInitialBoardState } from "../models/board.js";
+import { buildSettings } from "../game/settings.js";
 
 const list = document.getElementById("list");
 const results = [];
@@ -96,6 +97,25 @@ await check("restart：思考中でも打ち切れて、作り直した Worker �
   const r = await engine.think([]);
   must(r.usi, "restart の後に思考できない");
   return msg;
+});
+
+await check("E：固定 seed で、match.js の実対局と同じ手を選ぶ（本物の Worker・設定画面と同じ設定の組み立て）", async () => {
+  const fixture = await (await fetch(new URL("../../dev/parity-fixture.json", import.meta.url))).json();
+  let ai = 0, games = 0;
+  for (const c of fixture.cases) {
+    for (const g of c.games) {
+      const { config } = buildSettings({ ...c.raw, seed: String(g.seedA), side: g.aBlack ? "gote" : "sente" });
+      await engine.newGame({ config, seed: g.seedA });
+      for (let ply = 0; ply < g.usi.length; ply++) {
+        if (g.aBlack ? ply % 2 !== 0 : ply % 2 !== 1) continue; // 人間役（match.js の B）の手は与えるだけ
+        const r = await engine.think(g.usi.slice(0, ply));
+        must(r.usi === g.usi[ply] && r.source === g.sources[ply], `${c.name}／AI は${g.aBlack ? "先手" : "後手"}／${ply + 1}手目：match.js は ${g.usi[ply]}(${g.sources[ply]})、Worker は ${r.usi}(${r.source})`);
+        ai++;
+      }
+      games++;
+    }
+  }
+  return `${games}局・AIの${ai}手がすべて一致`;
 });
 
 engine.terminate();

@@ -2,7 +2,7 @@
  * Character Shogi AI — web 版の起点。人間 vs AI の対局モード（docs/WEB-UI-PLAN.md の C）。
  * 盤・持ち駒の描画は流用元（ui/board-view.js・ui/player-info.js）、対局の進行は game/game.js、
  * ルールの判定はエンジンの ShogiBoard（engine/rules.js）、思考は Worker（engine/engine-client.js）。
- * ここはそれらを画面につなぐだけ。設定は URL のクエリ（game/settings.js）。
+ * ここはそれらを画面につなぐだけ。設定は 既定 < 保存済み（localStorage）< URL のクエリ（game/settings.js）。設定画面とログの書き出しは ui/menu-sheet.js。
  */
 import { loadLayouts } from "./assets/layout-loader.js";
 import { loadAssetManifest } from "./assets/asset-manifest.js";
@@ -13,16 +13,18 @@ import { computeLayoutSizes } from "./layout.js";
 import { createRules } from "./engine/rules.js";
 import { createEngineClient } from "./engine/engine-client.js";
 import { createGame } from "./game/game.js";
-import { parseSettings } from "./game/settings.js";
+import { buildSettings, rawFromSearch, resolveRaw, loadSavedRaw, saveRaw } from "./game/settings.js";
 import { describeResult } from "./game/termination.js";
+import { logToKif } from "./game/kif.js";
+import { addLog, listLogs, removeLog, logFileBase, logSummary } from "./game/log-store.js";
+import { createMenuSheet } from "./ui/menu-sheet.js";
+import { PERSONAS } from "../../src/characters/personas/index.js";
 import { formatClock } from "./game/clock.js";
 import { createPromotionPopup } from "./ui/promotion-popup.js";
 import { renderTargetMarks, squareAtPoint } from "./ui/target-marks.js";
 
 const OPPONENT_HAND_ORDER = ["HI", "KA", "KI", "GI", "KE", "KY", "FU"]; // 右詰め
 const SELF_HAND_ORDER = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"]; // 左詰め
-const LOG_KEY = "csai.gamelogs";
-const LOG_KEEP = 30;
 
 const look = { boardId: "wood", pieceId: "maki_ryoko_1_letter" };
 const $ = (id) => document.getElementById(id);
@@ -32,7 +34,11 @@ let manifest = null;
 let lastPieceH = null;
 let game = null;
 let popup = null;
-let settings = null;
+let settings = null; // 検証済みの設定（buildSettings の結果）
+let rawSettings = null; // 入力欄の値（文字列）
+let engine = null;
+let rules = null;
+let menu = null;
 let current = { phase: "idle", boardState: createInitialBoardState(null), lastMove: null, selection: null, targets: [], humanSide: "SENTE" };
 
 function renderAll() {
@@ -113,16 +119,42 @@ function onGameChange(v) {
   renderClocks();
 }
 
-/** 終局時に対局ログを保存（リロードで消えないように）。書き出しの画面は D 段階 */
+/** 終局（中断を含む）時に対局ログを保存。リロードで消えないように */
 function saveLog(log) {
   try {
-    const all = JSON.parse(localStorage.getItem(LOG_KEY) ?? "[]");
-    all.push(log);
-    localStorage.setItem(LOG_KEY, JSON.stringify(all.slice(-LOG_KEEP)));
+    addLog(localStorage, log);
+    menu?.refreshLogs();
   } catch (e) {
     console.warn("対局ログを localStorage に保存できませんでした", e);
   }
 }
+
+/** ファイルとして保存（iOS Safari も download 属性で「ファイル」に保存できる） */
+function download(filename, text, mime = "application/octet-stream") {
+  const url = URL.createObjectURL(new Blob([text], { type: `${mime};charset=utf-8` }));
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = filename;
+  document.body.append(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 10000);
+}
+
+const logActions = {
+  kif: (log) => download(`${logFileBase(log)}.kif`, logToKif(log)),
+  json: (log) => download(`${logFileBase(log)}.json`, JSON.stringify(log, null, 2)),
+  all: () => download(`csai-logs-${new Date().toISOString().slice(0, 10)}.json`, JSON.stringify(listLogs(localStorage), null, 2)),
+  remove: (log) => { removeLog(localStorage, log.id); },
+  copy: async (log) => {
+    try {
+      await navigator.clipboard.writeText(logToKif(log));
+      alert("KIF をコピーしました");
+    } catch (e) {
+      alert(`コピーできませんでした: ${e.message}`);
+    }
+  },
+};
 
 function setupInput() {
   $("board").addEventListener("click", (e) => {
@@ -144,10 +176,31 @@ function setupInput() {
     if (confirm("投了しますか？")) game.resign();
   });
   $("btn-new").addEventListener("click", () => {
-    if (["human", "choosing", "ai"].includes(current.phase) && !confirm("いまの対局を中止して、新しく始めますか？")) return;
+    if (["human", "choosing", "ai"].includes(current.phase) && !confirm("いまの対局を中止して、新しく始めますか？（中断として記録します）")) return;
     popup.close();
-    startGame();
+    newGame();
   });
+  $("btn-menu").addEventListener("click", () => menu.open("settings"));
+}
+
+/** いまの設定で新しい対局を始める。指している対局があれば中断として記録する */
+function newGame() {
+  game?.abandon();
+  const thisGame = createGame({
+    rules,
+    engine,
+    humanSide: settings.humanSide,
+    config: settings.config,
+    seed: settings.seed,
+    playStyle: settings.playStyle,
+    meta: { settingsRaw: rawSettings },
+    ...(settings.maxMoves ? { maxMoves: settings.maxMoves } : {}),
+    askPromotion: (pieceType) => popup.ask(pieceType),
+    onChange: (v) => { if (game === thisGame) onGameChange(v); }, // 破棄した対局の遅れた通知は無視する
+    saveLog,
+  });
+  game = thisGame;
+  startGame();
 }
 
 async function startGame() {
@@ -161,30 +214,46 @@ async function startGame() {
 }
 
 async function init() {
-  settings = parseSettings(location.search);
   [layouts, manifest] = await Promise.all([loadLayouts(), loadAssetManifest()]);
   popup = createPromotionPopup({ layouts, manifest, pieceId: look.pieceId });
-  game = createGame({
-    rules: createRules(),
-    engine: createEngineClient(),
-    humanSide: settings.humanSide,
-    config: settings.config,
-    seed: settings.seed,
-    playStyle: settings.playStyle,
-    ...(settings.maxMoves ? { maxMoves: settings.maxMoves } : {}),
-    askPromotion: (pieceType) => popup.ask(pieceType),
-    onChange: onGameChange,
-    saveLog,
+  rules = createRules();
+  engine = createEngineClient();
+  menu = createMenuSheet({
+    personas: PERSONAS,
+    getRaw: () => rawSettings,
+    onApply: (raw) => {
+      const built = buildSettings(raw); // 不正ならここで Error（シートに表示される）
+      if (["human", "choosing", "ai"].includes(current.phase) && !confirm("いまの対局を中止して、この設定で新しく始めますか？（中断として記録します）")) throw new Error("キャンセルしました");
+      rawSettings = { ...raw };
+      settings = built;
+      saveRaw(localStorage, rawSettings);
+      popup.close();
+      newGame();
+    },
+    getLogs: () => listLogs(localStorage),
+    actions: logActions,
+    summary: (log) => logSummary(log, describeResult),
   });
   // 検証用（?debug=1 のときだけ）。画面の自動操作の試験が、対局の手順（ログ）を読むための窓口。通常は付けない
-  if (new URLSearchParams(location.search).get("debug") === "1") window.__csai = { getLog: () => game.getLog(), view: () => game.view() };
+  if (new URLSearchParams(location.search).get("debug") === "1") window.__csai = { getLog: () => game?.getLog(), view: () => game?.view() ?? current };
   initBoardView($("board"), layouts, manifest, renderAll);
   setupInput();
   renderAll();
   renderStatus();
   addEventListener("resize", renderAll);
   setInterval(renderClocks, 250);
-  await startGame();
+
+  // 設定：既定 < 保存済み < URL。不正なら黙って直さず、設定画面を開いて理由を見せる
+  rawSettings = resolveRaw({ saved: loadSavedRaw(localStorage), url: rawFromSearch(location.search) });
+  try {
+    settings = buildSettings(rawSettings);
+  } catch (e) {
+    $("status-line").textContent = "設定を確認してください";
+    $("status-line").classList.add("status-line--alert");
+    menu.open("settings", e.message);
+    return;
+  }
+  newGame();
 }
 
 init().catch((e) => {

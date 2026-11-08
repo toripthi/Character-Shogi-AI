@@ -22,12 +22,13 @@ const positionKey = (rules) => rules.sfen().split(" ").slice(0, 3).join(" "); //
  * @param {object} [o.config]  エンジンの設定（createPlayer のオプション）
  * @param {number} [o.seed]
  * @param {string} [o.playStyle] 指し方の記録欄（「真面目」「雑な早指し」「変則」など。ログに残すだけ）
+ * @param {object} [o.meta] ログにそのまま足す情報（入力欄の値など。再現用）
  * @param {(pieceType:string, side:string)=>Promise<boolean|'CANCEL'>} [o.askPromotion] 成り選択（true=成る）
  * @param {(view:object)=>void} [o.onChange]
  * @param {(log:object)=>void} [o.saveLog] 終局時に呼ぶ（保存は呼び出し側）
  */
 export function createGame({
-  rules, engine, humanSide = "SENTE", config = {}, seed, playStyle = null, maxMoves = DEFAULT_MAX_MOVES,
+  rules, engine, humanSide = "SENTE", config = {}, seed, playStyle = null, meta = {}, maxMoves = DEFAULT_MAX_MOVES,
   minAiDelayMs = 350, now = () => Date.now(), sleep = (ms) => new Promise((r) => setTimeout(r, ms)),
   askPromotion = async () => false, onChange = () => {}, saveLog = () => {},
 }) {
@@ -75,7 +76,7 @@ export function createGame({
 
     const effective = await engine.newGame({ config, seed });
     if (myToken !== token) return; // 開始中にまた start された
-    log = { version: 1, startedAt: new Date(now()).toISOString(), humanSide, playStyle, maxMoves, config, engine: effective, moves: [], result: null };
+    log = { version: 1, startedAt: new Date(now()).toISOString(), humanSide, playStyle, maxMoves, config, engine: effective, ...meta, moves: [], result: null };
     clock.start("SENTE");
     nextTurn();
   }
@@ -180,5 +181,23 @@ export function createGame({
     if (wasThinking) engine.restart();
   }
 
-  return { start, tapSquare, tapHandPiece, resign, view, clockMs, getLog: () => log, phase: () => phase };
+  /**
+   * 対局を途中でやめる（新しい対局を始める前など）。1手以上指していれば「中断」として対局ログを残す。
+   * 0手なら何も残さない。AI が考えていれば打ち切る。
+   */
+  function abandon() {
+    if (phase !== "human" && phase !== "ai" && phase !== "choosing") return;
+    const wasThinking = phase === "ai";
+    if (moveLog.length > 0) {
+      finish({ over: true, reason: "abandoned", winner: null });
+    } else {
+      token++;
+      clock.stop();
+      phase = "over";
+      selection = null;
+    }
+    if (wasThinking) engine.restart();
+  }
+
+  return { start, tapSquare, tapHandPiece, resign, abandon, view, clockMs, getLog: () => log, phase: () => phase };
 }
