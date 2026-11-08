@@ -1,0 +1,2887 @@
+{
+  "meta": {
+    "version": 1,
+    "lines": 16,
+    "entries": 205
+  },
+  "entries": {
+    "l2g3nl/1k3rs2/1sngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/L3G2R1/KNSG4L b -": [
+      {
+        "usi": "7i8h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l2g3nl/1k3rs2/1sngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LS2G2R1/KN1G4L w -": [
+      {
+        "usi": "6a7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l2g3nl/1ks2rs2/1pngp1bpp/p1pp1pp2/7P1/P1P1SPP2/1PBPP1N1P/1K2G2R1/LNSG4L b -": [
+      {
+        "usi": "9i9h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l2g3nl/1ks2rs2/1pngp1bpp/p1pp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LK2G2R1/1NSG4L w -": [
+      {
+        "usi": "8c8d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l2g3nl/1ks2rs2/2ngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/L3G2R1/KNSG4L w -": [
+      {
+        "usi": "7b8c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l2g3nl/1ks2rs2/2ngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LK2G2R1/1NSG4L b -": [
+      {
+        "usi": "8h9i",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngp1bp1/ppppspp1p/7P1/P1P1SPP1P/1PBPP1N2/LSG4R1/KNG5L w -": [
+      {
+        "usi": "4b4a",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngp1bp1/ppppspp1p/7P1/P1P1SPP2/1PBPP1N1P/LSG4R1/KNG5L b -": [
+      {
+        "usi": "1g1f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngp1bpp/ppppspp2/7P1/P1P1SPP2/1PBPP1N1P/LS1G3R1/KNG5L b -": [
+      {
+        "usi": "6h7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngp1bpp/ppppspp2/7P1/P1P1SPP2/1PBPP1N1P/LSG4R1/KNG5L w -": [
+      {
+        "usi": "1c1d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngpsbpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LS1G3R1/KNG5L w -": [
+      {
+        "usi": "4c5d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2r3/1sngpsbpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LS2G2R1/KNG5L b -": [
+      {
+        "usi": "5h6h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2rs2/1sngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LS2G2R1/KN1G4L b -": [
+      {
+        "usi": "6i7i",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "l6nl/1kg2rs2/1sngp1bpp/pppp1pp2/7P1/P1P1SPP2/1PBPP1N1P/LS2G2R1/KNG5L w -": [
+      {
+        "usi": "3b4c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1ks2rs2/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BKS3R1/LN1G1G1NL b -": [
+      {
+        "usi": "6i7i",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1ks2rs2/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BKS3R1/LNG2G1NL w -": [
+      {
+        "usi": "4a5b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1ks2rsb1/1pppp2pp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BKS3R1/LN1G1G1NL w -": [
+      {
+        "usi": "2b3c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1ks2rsb1/1pppp2pp/p4pp2/9/P1P3PP1/1P1PPPS1P/1BKS3R1/LN1G1G1NL b -": [
+      {
+        "usi": "2f2e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1r3skb1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR2SK1/LN1G1G1NL b -": [
+      {
+        "usi": "7h6g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1g1nl/1r3skb1/p1sppp1pp/2p3p2/1p7/2PP5/PPBSPPPPP/3R2SK1/LN1G1G1NL w -": [
+      {
+        "usi": "4a3a",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r1b1/1pppp2pp/p4pp2/9/2P3PP1/PP1PPPS1P/1BKS3R1/LN1G1G1NL b -": [
+      {
+        "usi": "9g9f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r1b1/1pppp2pp/p4pp2/9/P1P3PP1/1P1PPPS1P/1BKS3R1/LN1G1G1NL w -": [
+      {
+        "usi": "3a3b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1BK4R1/LNSG1G1NL b -": [
+      {
+        "usi": "7i6h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1BKS3R1/LN1G1G1NL w -": [
+      {
+        "usi": "9c9d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r3/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1B1K3R1/LNSG1G1NL b -": [
+      {
+        "usi": "6h7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r3/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1BK4R1/LNSG1G1NL w -": [
+      {
+        "usi": "4a5b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r3/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BK1G2R1/LNSG3NL w -": [
+      {
+        "usi": "4a5b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1ks2r3/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BK4R1/LNSG1G1NL b -": [
+      {
+        "usi": "4i5h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r1s1k1b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/2SR5/LN1GKGSNL w -": [
+      {
+        "usi": "6a5b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r1s1k1b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/3R5/LNSGKGSNL b -": [
+      {
+        "usi": "7i7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r3k1b1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR2K2/LN1G1GSNL b -": [
+      {
+        "usi": "3h2h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r3k1b1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR3K1/LN1G1GSNL w -": [
+      {
+        "usi": "4b3b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r4kb1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR2SK1/LN1G1G1NL w -": [
+      {
+        "usi": "3a4b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/1r4kb1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR3K1/LN1G1GSNL b -": [
+      {
+        "usi": "3i3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/2sk1r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1B1K3R1/LNSG1G1NL w -": [
+      {
+        "usi": "6b7a",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/2sk1r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1B5R1/LNSGKG1NL b -": [
+      {
+        "usi": "5i6h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/2sk1r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1B1K1S1R1/LNSG1G1NL b -": [
+      {
+        "usi": "6h7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g1gsnl/2sk1r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1BK2S1R1/LNSG1G1NL w -": [
+      {
+        "usi": "6b7a",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r1s1skb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2RS2SK1/LN1G1G1NL b -": [
+      {
+        "usi": "6i5h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r1s1skb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2RSG1SK1/LN3G1NL w -": [
+      {
+        "usi": "5c5d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p1sppp1p1/2p3p1p/1p7/2PP4P/PPBSPPPP1/3R2SK1/LN1G1G1NL b -": [
+      {
+        "usi": "6i5h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p1sppp1p1/2p3p1p/1p7/2PP4P/PPBSPPPP1/3RG1SK1/LN3G1NL w -": [
+      {
+        "usi": "7c8d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p1sppp1pp/2p3p2/1p7/2PP4P/PPBSPPPP1/3R2SK1/LN1G1G1NL w -": [
+      {
+        "usi": "1c1d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p1sppp1pp/2p3p2/1p7/2PP5/PPBSPPPPP/3R2SK1/LN1G1G1NL b -": [
+      {
+        "usi": "1g1f",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p2ppp1p1/1sp3p1p/1p7/2PP4P/PPBSPPPP1/2R1G1SK1/LN3G1NL w -": [
+      {
+        "usi": "6a5a",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2gnl/1r3skb1/p2ppp1p1/1sp3p1p/1p7/2PP4P/PPBSPPPP1/3RG1SK1/LN3G1NL b -": [
+      {
+        "usi": "6h7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2snl/1ks1gr3/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1BK1G2R1/LNSG3NL w -": [
+      {
+        "usi": "3a3b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g2snl/1ks1gr3/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1BK4R1/LNSG1G1NL b -": [
+      {
+        "usi": "4i5h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks1grs2/1pp1p1bpp/p2p1pp2/7P1/P1P1SP3/1PBPP1P1P/2K1G2R1/LNSG3NL b -": [
+      {
+        "usi": "3g3f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks1grs2/1pp1p1bpp/p2p1pp2/7P1/P1P1SPP2/1PBPP3P/2K1G2R1/LNSG3NL w -": [
+      {
+        "usi": "5b6c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks1grs2/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1BK1G2R1/LNSG3NL b -": [
+      {
+        "usi": "8h7g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks1grs2/1pppp1bpp/p4pp2/7P1/P1P1SP3/1PBPP1P1P/2K1G2R1/LNSG3NL w -": [
+      {
+        "usi": "6c6d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks1grs2/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BKS3R1/LNG2G1NL b -": [
+      {
+        "usi": "3g2f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks2rs2/1p1gp1bpp/p1pp1pp2/7P1/P1P1SPP2/1PBPP1N1P/1K2G2R1/LNSG4L w -": [
+      {
+        "usi": "8a7c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks2rs2/1p1gp1bpp/p1pp1pp2/7P1/P1P1SPP2/1PBPP1N1P/2K1G2R1/LNSG4L b -": [
+      {
+        "usi": "7h8h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks2rs2/1ppgp1bpp/p2p1pp2/7P1/P1P1SPP2/1PBPP1N1P/2K1G2R1/LNSG4L w -": [
+      {
+        "usi": "7c7d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1g3nl/1ks2rs2/1ppgp1bpp/p2p1pp2/7P1/P1P1SPP2/1PBPP3P/2K1G2R1/LNSG3NL b -": [
+      {
+        "usi": "2i3g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1r4gb1/p1pppp2p/2s3p2/9/2PB3R1/PP1PPPP1P/2G3S2/LNS1KG1NL b P2p": [
+      {
+        "usi": "7f7e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1r4gb1/p1pppp2p/6p2/2Ps5/3B3R1/PP1PPPP1P/2G3S2/LNS1KG1NL b P2p": [
+      {
+        "usi": "6f7g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1r4gb1/pspppp2p/6p2/9/2P4R1/PP1PPPP1P/1BG3S2/LNS1KG1NL b P2p": [
+      {
+        "usi": "8h6f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1rs3gb1/p1pppp1pp/6p2/9/2P4RP/PP1PPPP2/1BG3S2/LNS1KG1NL w Pp": [
+      {
+        "usi": "6c6d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1rs3gb1/p1pppp1pp/6p2/9/2P4RP/PP1PPPP2/1BG6/LNS1KGSNL b Pp": [
+      {
+        "usi": "3i3h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gk1snl/1rs3gb1/p1pppp2p/6p2/9/2P4R1/PP1PPPP1P/1BG6/LNS1KGSNL b P2p": [
+      {
+        "usi": "3i3h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/3R5/LNSGKGSNL w -": [
+      {
+        "usi": "5a4b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/7R1/LNSGKGSNL b -": [
+      {
+        "usi": "2h6h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R1K3/LNSG1GSNL w -": [
+      {
+        "usi": "7c7d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R5/LNSGKGSNL b -": [
+      {
+        "usi": "5i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p2ppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR1K3/LN1G1GSNL w -": [
+      {
+        "usi": "6b7c",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r1s3b1/p2ppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/3R1K3/LNSG1GSNL b -": [
+      {
+        "usi": "7i7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r5b1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR1K3/LN1G1GSNL b -": [
+      {
+        "usi": "4h3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln1gkgsnl/1r5b1/p1sppp1pp/2p3p2/1p7/2PP5/PPB1PPPPP/2SR2K2/LN1G1GSNL w -": [
+      {
+        "usi": "5a4b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1k2/p2pppbp1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2SR2SK1/LN1G1G1NL b -": [
+      {
+        "usi": "6i5h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p1pppp1p1/1p4p1p/9/2PP4P/PPB1PPPP1/2SR1K3/LN1G1GSNL b -": [
+      {
+        "usi": "3i3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p1pppp1p1/1p4p1p/9/2PP4P/PPB1PPPP1/2SR1KS2/LN1G1G1NL w -": [
+      {
+        "usi": "8d8e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p1pppp1p1/6p1p/1p7/2PP4P/PPB1PPPP1/2SR1KS2/LN1G1G1NL b -": [
+      {
+        "usi": "4h3i",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p1pppp1p1/6p1p/1p7/2PP4P/PPB1PPPP1/2SR2S2/LN1G1GKNL w -": [
+      {
+        "usi": "7c7d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2SR2S2/LN1G1GKNL b -": [
+      {
+        "usi": "3i2h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sg1kb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2SR2SK1/LN1G1G1NL w -": [
+      {
+        "usi": "2b3c",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sgk1b1/p1pppp1p1/1p4p1p/9/2PP4P/PPB1PPPP1/2SR1K3/LN1G1GSNL w -": [
+      {
+        "usi": "4b3b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sgk1b1/p1pppp1p1/1p4p1p/9/2PP4P/PPB1PPPP1/2SR5/LN1GKGSNL b -": [
+      {
+        "usi": "5i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sgk1b1/p1pppp1pp/1p4p2/9/2PP4P/PPB1PPPP1/2SR5/LN1GKGSNL w -": [
+      {
+        "usi": "1c1d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "ln3gsnl/1r1sgk1b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/2SR5/LN1GKGSNL b -": [
+      {
+        "usi": "1g1f",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1B1K3R1/LNSG1G1NL b -": [
+      {
+        "usi": "6h7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1BK4R1/LNSG1G1NL w -": [
+      {
+        "usi": "7a8b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r3/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPP2P/1BK2S1R1/LNSG1G1NL b -": [
+      {
+        "usi": "4h3g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r3/1pppp1bpp/p4pp2/7P1/P1P3P2/1P1PPPS1P/1BK4R1/LNSG1G1NL w -": [
+      {
+        "usi": "7a8b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1BK2S1R1/LNSG1G1NL b -": [
+      {
+        "usi": "9g9f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnkg1gsnl/2s2r3/ppppp1bpp/5pp2/7P1/P1P3P2/1P1PPP2P/1BK2S1R1/LNSG1G1NL w -": [
+      {
+        "usi": "9c9d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns2g1nl/2kg2rb1/pppppp1pp/5s3/3P2p2/2P6/PP1SPPPPP/1B1RGGK2/LN4SNL w -": [
+      {
+        "usi": "4a5b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns2g1nl/2kg2rb1/pppppp1pp/5s3/3P2p2/2P6/PP2PPPPP/1BSRGGK2/LN4SNL b -": [
+      {
+        "usi": "7h6g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns3snl/2kggr1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSRG1K2/LN3GSNL b -": [
+      {
+        "usi": "4i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns3snl/2kggr1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSRGGK2/LN4SNL w -": [
+      {
+        "usi": "3a3b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns4nl/2kggr1b1/ppppps1pp/5pp2/9/2PP5/PP1SPPPPP/1B1RGGK2/LN4SNL b -": [
+      {
+        "usi": "8h7g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns4nl/2kggr1b1/ppppps1pp/5pp2/9/2PP5/PPBSPPPPP/3RGGK2/LN4SNL w -": [
+      {
+        "usi": "2b3c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns4nl/2kggrsb1/ppppp2pp/5pp2/9/2PP5/PP1SPPPPP/1B1RGGK2/LN4SNL w -": [
+      {
+        "usi": "3b4c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lns4nl/2kggrsb1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSRGGK2/LN4SNL b -": [
+      {
+        "usi": "7h6g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/1r3skb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS1K3/LN1G1GSNL b -": [
+      {
+        "usi": "3i3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/1r3skb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS1KS2/LN1G1G1NL w -": [
+      {
+        "usi": "4a3a",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/2k3rb1/pppppp1pp/5s3/3P2p2/2P6/PP2PPPPP/1B1RGGK2/LNS3SNL b -": [
+      {
+        "usi": "7i7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/2k3rb1/pppppp1pp/5s3/3P2p2/2P6/PP2PPPPP/1BSRGGK2/LN4SNL w -": [
+      {
+        "usi": "6a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k1srb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1RG1K2/LNS2GSNL w -": [
+      {
+        "usi": "4b3c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k1srb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1RGK3/LNS2GSNL b -": [
+      {
+        "usi": "4h3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k2rb1/pppppp1pp/5s3/3P2p2/2P6/PP2PPPPP/1B1RGGK2/LNS3SNL w -": [
+      {
+        "usi": "6b7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k2rb1/pppppp1pp/5s3/6p2/2PP5/PP2PPPPP/1B1RGGK2/LNS3SNL b -": [
+      {
+        "usi": "6f6e",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k2rb1/ppppppspp/9/6p2/2PP5/PP2PPPPP/1B1RG1K2/LNS2GSNL b -": [
+      {
+        "usi": "4i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1g1nl/3k2rb1/ppppppspp/9/6p2/2PP5/PP2PPPPP/1B1RGGK2/LNS3SNL w -": [
+      {
+        "usi": "3c4d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1k3r3/1pppp1bpp/p4pp2/7P1/P1P1SP3/1P1PP1P1P/1B1K3R1/LNSG1G1NL w -": [
+      {
+        "usi": "7a7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1k3r3/1pppp1bpp/p4pp2/7P1/P1P2P3/1P1PPSP1P/1B1K3R1/LNSG1G1NL b -": [
+      {
+        "usi": "4g5f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1r3k1b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2R6/LNSGKGSNL b -": [
+      {
+        "usi": "7i6h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1r3k1b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS5/LN1GKGSNL w -": [
+      {
+        "usi": "4b3b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1r4kb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS1K3/LN1G1GSNL w -": [
+      {
+        "usi": "3a4b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/1r4kb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS5/LN1GKGSNL b -": [
+      {
+        "usi": "5i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R2K2/LNSG1GSNL b -": [
+      {
+        "usi": "7i7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSR2K2/LN1G1GSNL w -": [
+      {
+        "usi": "4a5b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r3/1pppp1bpp/p4pp2/7P1/P1P2P3/1P1PPSP1P/1B1K3R1/LNSG1G1NL w -": [
+      {
+        "usi": "7b8b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r3/1pppp1bpp/p4pp2/7P1/P1P2P3/1P1PPSP1P/1B5R1/LNSGKG1NL b -": [
+      {
+        "usi": "5i6h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r3/ppppp1bpp/5pp2/7P1/2P2P3/PP1PPSP1P/1B5R1/LNSGKG1NL b -": [
+      {
+        "usi": "9g9f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/2k2r3/ppppp1bpp/5pp2/7P1/P1P2P3/1P1PPSP1P/1B5R1/LNSGKG1NL w -": [
+      {
+        "usi": "9c9d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPP2P/1B3S1R1/LNSGKG1NL b -": [
+      {
+        "usi": "4h3g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPPS1P/1B5R1/LNSGKG1NL w -": [
+      {
+        "usi": "7a7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R1K3/LNSG1GSNL b -": [
+      {
+        "usi": "4h3h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R2K2/LNSG1GSNL w -": [
+      {
+        "usi": "6b7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r3/ppppp1bpp/5pp2/7P1/2P2P3/PP1PP1P1P/1B3S1R1/LNSGKG1NL b -": [
+      {
+        "usi": "4h4g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r3/ppppp1bpp/5pp2/7P1/2P2P3/PP1PPSP1P/1B5R1/LNSGKG1NL w -": [
+      {
+        "usi": "6b7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1B1K1S1R1/LNSG1G1NL w -": [
+      {
+        "usi": "7a7b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k1r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1B3S1R1/LNSGKG1NL b -": [
+      {
+        "usi": "5i6h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k2rb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1R1K3/LNSG1GSNL b -": [
+      {
+        "usi": "6i5h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg1gsnl/3k2rb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1RGK3/LNS2GSNL w -": [
+      {
+        "usi": "3a4b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p1pppp1p1/6p1p/1p7/2PP4P/PPB1PPPP1/2RS2S2/LN1G1GKNL w -": [
+      {
+        "usi": "7c7d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p1pppp1p1/6p1p/1p7/2PP5/PPB1PPPPP/2RS2S2/LN1G1GKNL b -": [
+      {
+        "usi": "1g1f",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS1KS2/LN1G1G1NL b -": [
+      {
+        "usi": "4h3i",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2RS2S2/LN1G1GKNL w -": [
+      {
+        "usi": "1c1d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2RS2S2/LN1G1GKNL b -": [
+      {
+        "usi": "3i2h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2gnl/1r3skb1/p2ppp1p1/2p3p1p/1p7/2PP4P/PPB1PPPP1/2RS2SK1/LN1G1G1NL w -": [
+      {
+        "usi": "7a6b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2snl/2k1gr1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSR2K2/LN1G1GSNL b -": [
+      {
+        "usi": "6i5h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsg2snl/2k1gr1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1BSRG1K2/LN3GSNL w -": [
+      {
+        "usi": "6a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/1p4p2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "6i7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/1p4p2/7P1/2P6/PP1PPPP1P/1BG4R1/LNS1KGSNL w -": [
+      {
+        "usi": "8d8e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/6p2/1p5P1/2P6/PP1PPPP1P/1BG4R1/LNS1KGSNL b -": [
+      {
+        "usi": "2e2d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/6p2/9/2P4R1/PP1PPPP1P/1BG6/LNS1KGSNL b Pp": [
+      {
+        "usi": "1g1f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/6p2/9/2P4RP/PP1PPPP2/1BG6/LNS1KGSNL w Pp": [
+      {
+        "usi": "7a7b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp1pp/6pP1/1p7/2P6/PP1PPPP1P/1BG4R1/LNS1KGSNL w -": [
+      {
+        "usi": "2c2d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6p2/9/2P4R1/P2PPPP1P/1BG6/LNS1KGSNL b 2P2p": [
+      {
+        "usi": "P*8g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1B7/LNSGKGSNL b Pp": [
+      {
+        "usi": "6i7h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6pR1/1p7/2P6/PP1PPPP1P/1BG6/LNS1KGSNL w Pp": [
+      {
+        "usi": "8e8f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6pR1/9/1PP6/P2PPPP1P/1BG6/LNS1KGSNL w 2Pp": [
+      {
+        "usi": "8b8f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6pR1/9/1pP6/PP1PPPP1P/1BG6/LNS1KGSNL b Pp": [
+      {
+        "usi": "8g8f",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1",
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/1r4gb1/p1pppp2p/6pp1/1p7/2P6/PP1PPPP1P/1BG4R1/LNS1KGSNL b p": [
+      {
+        "usi": "2h2d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/6gb1/p1pppp1pp/6p2/9/1rP4R1/P2PPPP1P/1BG6/LNS1KGSNL b 2Pp": [
+      {
+        "usi": "P*8g",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/6gb1/p1pppp1pp/6p2/9/1rP4R1/PP1PPPP1P/1BG6/LNS1KGSNL w Pp": [
+      {
+        "usi": "8f8b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/6gb1/p1pppp2p/6p2/9/1rP4R1/P2PPPP1P/1BG6/LNS1KGSNL w 2P2p": [
+      {
+        "usi": "P*2c",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgk1snl/6gb1/p1pppp2p/6pR1/9/1rP6/P2PPPP1P/1BG6/LNS1KGSNL b 2P2p": [
+      {
+        "usi": "2d2f",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1",
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "4a3b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2f2e",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1",
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2h7h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "8h7g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2PP5/PP2PPPPP/1BR6/LNSGKGSNL w -": [
+      {
+        "usi": "8d8e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/1p4p2/9/2PP5/PPB1PPPPP/7R1/LNSGKGSNL w -": [
+      {
+        "usi": "7a6b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p5P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2e2d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2PP5/PP2PPPPP/1BR6/LNSGKGSNL b -": [
+      {
+        "usi": "8h7g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/2R6/LNSGKGSNL w -": [
+      {
+        "usi": "5a4b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/3R5/LNSGKGSNL w -": [
+      {
+        "usi": "7a6b",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp1pp/6p2/1p7/2PP5/PPB1PPPPP/7R1/LNSGKGSNL b -": [
+      {
+        "usi": "2h6h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1pppp2p/6pp1/1p7/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL b p": [
+      {
+        "usi": "2h2d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "6g6f",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1ppppppp/1p7/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "8d8e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1ppppppp/9/1p7/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "8h7g",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-6"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/p1ppppppp/9/1p7/2PP5/PPB1PPPPP/7R1/LNSGKGSNL w -": [
+      {
+        "usi": "3c3d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppp2pp/5pp2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "2b3c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B3S1R1/LNSGKG1NL w -": [
+      {
+        "usi": "8b4b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2f2e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "3i4h",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R5/LNSGKGSNL w -": [
+      {
+        "usi": "8b4b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2h6h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/6p2/7P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "2b3c",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P4P1/PP1PPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "4c4d",
+        "weight": 20,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5",
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "8c8d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2g2f",
+        "weight": 30,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-1",
+          "user-ibisha-2",
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "6g6f",
+        "weight": 40,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-1",
+          "user-furi-3",
+          "user-furi-4",
+          "user-furi-7"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "3d3e",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "4c4d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "8c8d",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-1",
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/6p2/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2f2e",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "7g7f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1R5/LNSGKGSNL w -": [
+      {
+        "usi": "8b3b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2h6h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppppppp/9/9/2P6/PP1PPPPPP/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "3c3d",
+        "weight": 60,
+        "tags": [
+          "furibisha",
+          "ibisha"
+        ],
+        "lines": [
+          "user-furi-3",
+          "user-furi-4",
+          "user-ibisha-2",
+          "user-ibisha-shiken-white",
+          "user-ibisha-vs-furi-1",
+          "user-ibisha-vs-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "8c8d",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppppppp/9/9/7P1/PPPPPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "3c3d",
+        "weight": 20,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2",
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "2g2f",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4",
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "7g7f",
+        "weight": 80,
+        "tags": [
+          "furibisha",
+          "ibisha"
+        ],
+        "lines": [
+          "user-furi-1",
+          "user-furi-3",
+          "user-furi-4",
+          "user-furi-6",
+          "user-furi-7",
+          "user-ibisha-1",
+          "user-ibisha-2",
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r7/ppppp1bpp/5pp2/7P1/2P6/PP1PPPP1P/1B3S1R1/LNSGKG1NL w -": [
+      {
+        "usi": "8b4b",
+        "weight": 20,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2",
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r7/ppppp1bpp/5pp2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "3i4h",
+        "weight": 20,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black",
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r7/ppppppbpp/6p2/7P1/2P6/PP1PPPP1P/1B5R1/LNSGKGSNL w -": [
+      {
+        "usi": "4c4d",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/1r7/ppppppbpp/6p2/7P1/9/PPPPPPP1P/1B5R1/LNSGKGSNL b -": [
+      {
+        "usi": "7g7f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r1b1/ppppp2pp/5pp2/9/2P3PP1/PP1PPP2P/1B3S1R1/LNSGKG1NL w -": [
+      {
+        "usi": "5a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r1b1/ppppp2pp/5pp2/9/2P4P1/PP1PPPP1P/1B3S1R1/LNSGKG1NL b -": [
+      {
+        "usi": "3g3f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-5"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R1K3/LNSG1GSNL w -": [
+      {
+        "usi": "5a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r1b1/ppppp2pp/5pp2/9/2PP5/PP2PPPPP/1B1R5/LNSGKGSNL b -": [
+      {
+        "usi": "5i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r3/ppppp1bpp/5pp2/7P1/2P2P3/PP1PP1P1P/1B3S1R1/LNSGKG1NL w -": [
+      {
+        "usi": "5a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-white"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r3/ppppp1bpp/5pp2/7P1/2P3P2/PP1PPP2P/1B3S1R1/LNSGKG1NL w -": [
+      {
+        "usi": "5a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-2"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/5r3/ppppp1bpp/5pp2/7P1/2P6/PP1PPPP1P/1B3S1R1/LNSGKG1NL b -": [
+      {
+        "usi": "3g3f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-vs-furi-4"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      },
+      {
+        "usi": "4g4f",
+        "weight": 10,
+        "tags": [
+          "ibisha"
+        ],
+        "lines": [
+          "user-ibisha-shiken-black"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/6rb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1R1K3/LNSG1GSNL w -": [
+      {
+        "usi": "5a6b",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ],
+    "lnsgkgsnl/6rb1/pppppp1pp/9/6p2/2PP5/PP2PPPPP/1B1R5/LNSGKGSNL b -": [
+      {
+        "usi": "5i4h",
+        "weight": 10,
+        "tags": [
+          "furibisha"
+        ],
+        "lines": [
+          "user-furi-3"
+        ],
+        "trap": null,
+        "personaWeights": {}
+      }
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "$comment": "（Character-Shogi-AI/web 用に、盤 wood と駒 maki_ryoko_1_letter だけへ絞った版。元: shogi-kifu-narabe assets/layout/assets-manifest.json）",
+  "boards": [
+    {
+      "id": "wood",
+      "label": "木材（明）",
+      "image": "./assets/boards/wood.avif",
+      "width": null,
+      "height": null,
+      "comment": "width/heightは現在未使用（board-layout.jsonのcell_ratioで比率計算するため）。将来、比率が異なる盤を追加する際に個別のサイズを持たせる拡張用フィールドとして予約。"
+    }
+  ],
+  "pieces": [
+    {
+      "id": "maki_ryoko_1_letter",
+      "label": "巻菱湖（一字）",
+      "image": "./assets/pieces/maki_ryoko_1_letter.avif",
+      "width": 1296,
+      "height": 720
+    }
+  ],
+  "defaults": {
+    "board": "wood",
+    "pieces": "maki_ryoko_1_letter"
+  }
+}

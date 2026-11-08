@@ -1,0 +1,7 @@
+# id: user-furi-4
+# source: user-furi-4.kif
+# tags: furibisha
+# side: both
+# weight: 10
+7g7f 3c3d 6g6f 4c4d 2h6h 8b4b 5i4h 5a6b 4h3h 6b7b 7i7h 4a5b 6i5h 6a6b 4i4h 3a3b
+7h6g 3b4c 8h7g 2b3c

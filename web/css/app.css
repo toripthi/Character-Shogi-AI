@@ -1,0 +1,56 @@
+/* Character Shogi AI — web 版の外枠・独自部品（盤・持ち駒の見た目は vendor-*.css の流用） */
+:root {
+  /* 色は shogi-kifu-narabe css/style.css のデザイン変数（vendor-*.css が参照する） */
+  --paper:        #efe7d2;
+  --paper-deep:   #ddd0ac;
+  --surface:      #f8f4e9;
+  --surface-2:    #f0e9d6;
+  --sumi:         #231f18;
+  --sumi-soft:    #6b6252;
+  --sumi-line:    rgba(35,31,24,0.14);
+  --bengara:      #9c4a30;
+  --bengara-deep: #723420;
+  /* 対戦相手の帯（キャラ置き場）の高さ。layout.js が実測して盤の大きさを決める */
+  --stage-h: clamp(5.5rem, 15dvh, 9rem);
+}
+* { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+html { font-size: clamp(14px, 3.6vmin + 4px, 19px); }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #1c1814; color: var(--sumi); font-family: system-ui, -apple-system, "Hiragino Sans", "Yu Gothic", sans-serif; }
+body { display: flex; justify-content: center; touch-action: manipulation; -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; }
+#app-frame {
+  width: 100%; max-width: 30rem; height: 100dvh; display: flex; flex-direction: column;
+  padding-top: env(safe-area-inset-top, 0px); padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--paper);
+}
+.stage-band { flex: 1 1 var(--stage-h); min-height: var(--stage-h); display: flex; justify-content: space-between; align-items: flex-end; padding: 0 0.5rem; background: linear-gradient(180deg, var(--paper-deep), var(--paper)); }
+.stage-panel { flex: 1; min-width: 0; align-self: center; display: flex; flex-direction: column; gap: 0.25rem; padding-right: 0.5rem; }
+.status-line { font-size: 1rem; font-weight: 700; line-height: 1.3; color: var(--sumi); overflow-wrap: anywhere; }
+.status-line--alert { color: var(--bengara-deep); }
+.status-sub { min-height: 1.1em; font-size: 0.75rem; line-height: 1.3; color: var(--sumi-soft); overflow-wrap: anywhere; }
+.stage-controls { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.125rem; }
+.stage-btn { min-height: 2.25rem; padding: 0 0.625rem; white-space: nowrap; font: inherit; font-size: 0.75rem; color: var(--sumi); background: var(--surface); border: 1px solid var(--sumi-line); border-radius: 4px; cursor: pointer; touch-action: manipulation; }
+.stage-btn:active { background: var(--surface-2); }
+.stage-btn[disabled] { opacity: 0.4; cursor: default; }
+.stage-btn--primary { color: var(--paper); background: var(--bengara); border-color: var(--bengara-deep); }
+.stage-btn--primary:active { background: var(--bengara-deep); }
+.character-slot { flex: 0 0 auto; height: 100%; max-height: 16rem; aspect-ratio: 3 / 4; display: flex; align-items: center; justify-content: center; border: 1px dashed var(--sumi-line); border-radius: 6px; color: var(--sumi-soft); font-size: 0.75rem; background: rgba(255,255,255,0.35); }
+.player-clock { flex: 0 0 auto; align-self: stretch; display: flex; align-items: center; margin-left: 0.25rem; padding: 0 0.5rem; font-variant-numeric: tabular-nums; font-weight: 700; font-size: 1.125rem; color: var(--paper); background: var(--sumi); border-radius: 4px; }
+/* 盤は幅で頭打ちのとき、余った高さはキャラ帯が受ける（盤を縦に引き伸ばさない） */
+#board.board-container { flex: 0 0 auto; }
+
+/* 手番の側の時計を強調する */
+.player-clock { transition: background-color 0.15s, opacity 0.15s; opacity: 0.55; }
+.player-clock--active { opacity: 1; background: var(--bengara-deep); }
+
+/* 動ける先の印（盤の上に重ねる。タップは盤が受ける） */
+.target-marks-layer { position: absolute; inset: 0; pointer-events: none; }
+.target-mark { position: absolute; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+.target-mark--move::after { content: ""; width: 28%; height: 28%; border-radius: 50%; background: rgba(156, 74, 48, 0.55); }
+.target-mark--capture::after { content: ""; width: 86%; height: 86%; border-radius: 50%; border: 0.22rem solid rgba(156, 74, 48, 0.7); box-sizing: border-box; }
+
+/* 成り選択ポップアップ（流用元 css/style.css の .nari-popup* を、この repo のデザイン変数で作り直したもの） */
+.nari-popup-overlay { position: fixed; inset: 0; display: flex; justify-content: center; align-items: center; z-index: 500; background: rgba(20, 20, 20, 0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); }
+.nari-popup { display: flex; gap: 1rem; padding: 1.25rem; border-radius: 4px; background: var(--surface); box-shadow: 0 16px 48px rgba(40, 30, 15, 0.3); }
+.nari-popup-btn { position: relative; display: flex; justify-content: center; align-items: center; width: 6.25rem; height: 8.75rem; overflow: hidden; border: 1px solid var(--paper-deep); border-radius: 4px; background: var(--surface); cursor: pointer; touch-action: manipulation; transition: background-color 0.15s; }
+.nari-popup-btn:active { background: var(--surface-2); }
+.nari-popup-btn--promote { border-color: var(--bengara); }

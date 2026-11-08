@@ -1,0 +1,8 @@
+# id: user-ibisha-shiken-black
+# source: user-ibisha-shiken-black.kif
+# tags: ibisha
+# side: black
+# weight: 10
+7g7f 3c3d 2g2f 4c4d 2f2e 2b3c 3i4h 8b4b 4g4f 5a6b 4h4g 6b7b 9g9f 9c9d 5i6h 7b8b
+4g5f 7a7b 6h7h 4a5b 4i5h 3a3b 8h7g 6c6d 3g3f 5b6c 2i3g 7c7d 7h8h 8a7c 9i9h 8c8d
+8h9i 7b8c 7i8h 6a7b 6i7i 3b4c 5h6h 4c5d 6h7h 1c1d 1g1f 4b4a

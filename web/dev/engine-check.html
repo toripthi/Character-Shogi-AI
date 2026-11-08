@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>エンジン接続の自己点検</title>
+  <style>
+    body { font: 15px/1.5 system-ui, -apple-system, "Hiragino Sans", sans-serif; margin: 1rem; background: #f8f4e9; color: #231f18; }
+    h1 { font-size: 1.1rem; }
+    li { margin: .3rem 0; list-style: none; padding-left: 1.6rem; position: relative; }
+    li::before { position: absolute; left: 0; }
+    li.pass::before { content: "✅"; } li.fail::before { content: "❌"; } li.run::before { content: "⏳"; }
+    small { color: #6b6252; display: block; }
+    #summary { font-weight: 700; margin-top: 1rem; }
+  </style>
+</head>
+<body>
+  <h1>エンジン接続の自己点検（Worker・USI変換・ルール盤）</h1>
+  <p><small>repo のルートを <code>npm run web</code> で配信して開く。指す機能の画面ではなく、B 段階の部品を実ブラウザで確かめるページ。</small></p>
+  <ul id="list"></ul>
+  <div id="summary">実行中…</div>
+  <script type="module" src="../js/dev/engine-check.js"></script>
+</body>
+</html>

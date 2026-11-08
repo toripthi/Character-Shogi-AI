@@ -1,0 +1,208 @@
+/* ③⑤ プレイヤー情報・持ち駒
+   出典: shogi-kifu-narabe css/style.css 328〜533行（無改変の切り出し。差分管理は web/VENDOR.md） */
+/* ---------- ③⑤プレイヤー情報 ---------- */
+/* 名前＋持ち駒を一枚の駒台として扱う。
+   修正（player-info高さ根本対応・cqw近似の廃止）:
+   旧方式は「18cqw - 1.6875rem」のように、コンテナの"横幅"から駒台の高さを
+   逆算するclamp式だった。これはiPhone/iPad miniのように盤が横幅で頭打ちになる
+   画面では駒サイズとおおむね連動したが、iPad Proのように画面に余裕があり、
+   盤が"縦（高さ）"側の制約で頭打ちになる画面では、横幅だけがまだ余っているため
+   cqwが過大な値を返し、駒台がclamp上限に張り付いて分厚くなりすぎ、盤を圧迫していた
+   （幅が同程度でも高さ律速か幅律速かで必要な駒台高さが変わるため、横幅だけを見る
+   近似はどの上限値を選んでも縦横比次第でどこかの端末で破綻する）。
+   そこで近似をやめ、main.js renderAll()が盤の実描画結果から算出する
+   squareSize.height（駒1個の実ピクセル高さ、asset-fit.js getSquareSizePx）を
+   そのつどCSS変数 --piece-h に反映し、駒台の高さはこの実測値から直接計算する。
+   盤が幅・高さどちらの制約で頭打ちになっていても、--piece-hは常に「今実際に
+   描画されている駒のサイズ」なので、駒台は駒がちょうど収まる最小限の高さになり、
+   余った分は必ず盤の取り分に回る。
+   修正（駒台の余白詰め・新規要望）: バッファ値は元々0.4375rem(7px @16pxフォント基準)
+   だったが、実機（iPhone14/iPad mini）で駒台の見た目の余白が目立つとの指摘を受け、
+   0.1875rem(3px @16pxフォント基準)まで詰めた。
+   このバッファの当初の狙いは「盤上の座標ラベル（筋番号1〜9）との被り回避」だったが、
+   実際にはその被り回避は.board-containerのpadding-top（座標ラベル専用の余白。
+   下記.board-container参照）だけで完結しており、このバッファとは独立している。
+   そのためここを詰めても座標ラベルとの被りは再発しない。詰めた後も駒台自体の
+   見た目のゆとり（駒の角が枠線に接触して窮屈に見えるのを防ぐ最小限の呼吸代）
+   として0.1875rem分は残す。
+   端末間で変えない固定値である点は変わらない（--piece-h自体が実測連動のため、
+   固定バッファのままで各端末に追従する）。
+   子要素（.player-info-box / .hand-piece）は縦中央寄せのまま。
+   親だけ伸ばし、名前欄・持ち駒の横幅・並びは変えない。 */
+:root {
+  --player-info-buffer: 0.1875rem;
+}
+
+.player-info {
+  height: calc(var(--piece-h, 36px) + var(--player-info-buffer));
+  min-height: 2.25rem;
+  margin: 0.125rem 0.5rem;
+  display: flex;
+  align-items: center;
+  padding: 0;
+  flex-shrink: 0;
+  gap: 0;
+  border: 1px solid var(--sumi-line);
+  border-radius: 4px;
+  background: var(--surface);
+  box-shadow: inset 0 1px 2px rgba(60,45,20,0.06);
+  overflow: hidden;
+}
+
+
+.player-info--opponent {
+  justify-content: flex-start;
+}
+
+.player-info--self {
+  justify-content: flex-end;
+}
+
+/* 名前欄は固定幅ボックス化する。
+   根拠：持ち駒を7種（歩香桂銀金角飛）すべて持った状態でもレイアウトが破綻しない
+   幅を確保する必要がある。基準幅390px時の盤マス約39px角×7種で
+   持ち駒欄は最大約275px必要なため、残りを名前欄に割り当てる。
+   幅は clamp(5.375rem, 22vw, 7.5rem) の相対指定とし、狭幅でも持ち駒7種が潰れない。
+   player-info.js側でこの幅に文字が収まるかを実測し、
+   収まらない場合のみフォントサイズを段階的に縮小する。省略記号での切り捨ては
+   行わない）。 */
+.player-info-box {
+  flex-shrink: 0;
+  width: clamp(5.375rem, 22vw, 7.5rem);
+  /* 修正（player-info高さ根本対応）: 親(.player-info)と同じ実測値ベースの式で
+     連動させる。height:100%だけだと親のborder(1px×2)の影響で実寸がズレるため、
+     親から2px（border分）を引いた式を明示して上下限を一致させる。
+     中身は縦中央寄せのまま。
+     修正（駒台の余白詰め・新規要望）: バッファを--player-info-buffer変数に統一。
+     親.player-infoと必ず同じ値を使うことで上下限を一致させ続ける。 */
+  height: calc(var(--piece-h, 36px) + var(--player-info-buffer) - 2px);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.0625rem;
+  padding: 0.125rem 0.25rem;
+  border-radius: 4px;
+  background: linear-gradient(180deg, var(--surface) 0%, var(--surface-2) 100%);
+  border: 1px solid var(--paper-deep);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+  /* 対局者名を長押しすると、iOS標準の「コピー」テキスト選択メニューが立ち上がって
+     しまう。コピーできても意味のあるデータではなく、UIの見た目を崩すだけの誤操作
+     要因なので、盤・駒画像と同じ組み合わせ（user-select系＋-webkit-touch-callout:none）
+     で確実に止める。 */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.player-label {
+  /* 【不具合修正】画面幅が広がるほど文字が相対的に小さく見える問題への対応。
+     .player-info-boxの幅は clamp(5.375rem, 22vw, 7.5rem) で画面幅に連動して
+     広がるが、font-sizeが0.625remの固定値だったため、ボックスが広がる
+     iPad miniのような大画面ほど、箱に対して文字が小さく見えていた。
+     ボックス幅と同じ拡大率（5.375rem→7.5remは1.395倍）で文字サイズも
+     広がるようclamp()化し、ボックスとほぼ同じ画面幅（約545px）で
+     双方が上限に達するよう揃える。 */
+  font-size: clamp(0.625rem, 2.558vw, 0.8721rem);
+  line-height: 1.2;
+  color: var(--bengara);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  /* 【不具合修正】親(.player-info-box)はflexboxのため、指定が無いと
+     子要素は中身の幅をそのまま確保しようとし、labelEl.clientWidthが
+     「実際に使える幅」ではなく「中身に必要な幅」を返してしまい、
+     player-info.js側の縮小判定（scrollWidth <= clientWidth）が
+     常にtrueになって機能しなくなる。.player-nameと同じく、
+     親の幅で頭打ちにする指定が必要。 */
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.player-label:empty {
+  display: none;
+}
+
+/* 「先手/後手」部分。常に等倍を確保し、フォントサイズは一切操作しない
+   （player-info.js側もこの前提で実装している）。 */
+.player-label-side {
+  white-space: nowrap;
+}
+
+/* 段級位部分。縮小対象。「先手/後手」の可読性を優先するため、
+   色をsumi（本文の黒系）にして、赤系のsideラベルと視覚的に区別する
+   （縮小されて読みにくくなりがちな段級位を、色でも見分けやすくする）。 */
+.player-label-rank {
+  display: inline-block;
+  color: var(--sumi);
+  white-space: nowrap;
+}
+
+.player-name {
+  /* 【不具合修正】.player-labelと同じ理由・同じ考え方で、.player-info-box
+     の幅拡大率(1.395倍)に合わせてclamp()化した。
+     player-info.js側の縮小ロジック(PLAYER_NAME_FONT_SIZES)はem単位の
+     相対倍率で動作するため、この基本フォントサイズが変わっても
+     そのまま正しく機能する。 */
+  font-size: clamp(0.875rem, 3.581vw, 1.2209rem);
+  line-height: 1.25;
+  color: var(--sumi);
+  font-weight: 600;
+  white-space: nowrap;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: clip;
+}
+
+.hand-pieces-container {
+  flex: 1;
+  display: flex;
+  /* 持ち駒欄も player-info-box と同様、長押しでコピーメニューが立ち上がる誤操作を防ぐ。
+     駒画像自体は既に個別にこの指定を持つが、余白部分（駒の無い枠内）を長押しした
+     場合にも同じ挙動になるよう、コンテナ側にも指定しておく。 */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+.hand-pieces {
+  display: flex;
+}
+
+.hand-pieces--right {
+  justify-content: flex-end;
+}
+
+.hand-pieces--left {
+  justify-content: flex-start;
+}
+
+.hand-piece {
+  position: relative;
+  /* 持ち駒の背景は透明にし、駒画像の透過を活かす（選択時の背景は残す） */
+  background-color: transparent;
+  border-radius: 4px;
+  cursor: pointer;
+  flex-shrink: 0;
+  /* 持ち駒タップ時もダブルタップズーム等のジェスチャーを抑止する */
+  touch-action: manipulation;
+}
+
+.hand-piece--selected {
+  background-color: rgba(156,74,48,0.14);
+  box-shadow: 0 0 0 2px var(--bengara);
+}
+
+.hand-piece-count {
+  position: absolute;
+  bottom: 0.0625rem;
+  right: 0.125rem;
+  font-size: 0.6875rem;
+  color: var(--surface);
+  background-color: rgba(0, 0, 0, 0.7);
+  padding: 0 0.1875rem;
+  border-radius: 4px;
+  pointer-events: none;
+}
+

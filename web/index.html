@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>Character Shogi AI</title>
+  <link rel="stylesheet" href="./css/app.css">
+  <link rel="stylesheet" href="./css/vendor-player-info.css">
+  <link rel="stylesheet" href="./css/vendor-board.css">
+</head>
+<body>
+  <div id="app-frame">
+    <!-- 対戦相手の帯: 右上にキャラ（表情差分）。左は将来の吹き出し・メッセージ欄 -->
+    <div id="stage-band" class="stage-band">
+      <div class="stage-panel">
+        <div id="status-line" class="status-line"></div>
+        <div id="status-sub" class="status-sub"></div>
+        <div class="stage-controls">
+          <button id="btn-resign" class="stage-btn" type="button">投了</button>
+          <button id="btn-new" class="stage-btn stage-btn--primary" type="button">新しい対局</button>
+        </div>
+      </div>
+      <div id="character-slot" class="character-slot" data-expression="normal">
+        <span class="character-slot-label"></span>
+      </div>
+    </div>
+    <!-- 対戦相手: 名前・持ち駒・経過時間（右上） -->
+    <div class="player-info player-info--opponent">
+      <div class="player-info-box">
+        <span id="opponent-label" class="player-label"></span>
+        <span id="opponent-name" class="player-name"></span>
+      </div>
+      <div id="opponent-hand" class="hand-pieces-container"></div>
+      <div id="opponent-clock" class="player-clock" aria-label="対戦相手の経過時間">00:00</div>
+    </div>
+    <div id="board" class="board-container"></div>
+    <!-- 自分: 持ち駒・名前・経過時間（右下） -->
+    <div class="player-info player-info--self">
+      <div id="self-hand" class="hand-pieces-container"></div>
+      <div class="player-info-box">
+        <span id="self-label" class="player-label"></span>
+        <span id="self-name" class="player-name"></span>
+      </div>
+      <div id="self-clock" class="player-clock" aria-label="自分の経過時間">00:00</div>
+    </div>
+  </div>
+  <script type="module" src="./js/main.js"></script>
+</body>
+</html>

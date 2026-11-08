@@ -1,0 +1,5 @@
+# id: sample-untagged-2
+# tags: sample
+# side: black
+# weight: 5
+7g7f 3c3d 2g2f

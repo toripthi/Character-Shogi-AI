@@ -1,0 +1,31 @@
+{
+  "$comment": "駒スプライト画像の『構造』の定義。ShogiHome/ShogiGUI互換フォーマット（縦4段・横8列）。将棋ソフト取り込み用として確立された標準フォーマットに準拠する。画像固有のサイズ（幅・高さ）はここには持たず、assets-manifest.jsonの各pieces要素で管理する。ここに書くのは、どの駒画像にも共通する『列・行が何を意味するか』という構造情報のみ。base/promotedIdはPieceType（USI準拠、domain-model.md 2.2節のPieceType定義に統一）に統一している。",
+
+  "grid": {
+    "cols": 8,
+    "rows": 4
+  },
+
+  "rows_meaning": [
+    { "row": 0, "facing": "upright",  "promoted": false, "note": "正立・非成り。col0は「王」表記" },
+    { "row": 1, "facing": "upright",  "promoted": true,  "note": "正立・成り。col0は「玉」表記" },
+    { "row": 2, "facing": "inverted", "promoted": false, "note": "倒立・非成り。col0は「王」表記" },
+    { "row": 3, "facing": "inverted", "promoted": true,  "note": "倒立・成り。col0は「玉」表記" }
+  ],
+
+  "columns": [
+    { "col": 0, "base": "OU", "promotedId": null, "note": "王将/玉将。標準フォーマットでは、成り段（row1, row3）に玉表記、非成り段（row0, row2）に王表記が配置される。行の意味自体はrows_meaningのpromotedと同じ軸（成り/非成り）を流用しているが、玉に将棋のルール上の『成り』はないため、ここでのpromoted trueは『玉表記を使う行』という意味で読み替える。どちらを先手・後手に使うかはassets-system.md 4.1.5節のdetermineKingLabels()を参照。空セル判定には使わない（empty_cellsを参照）" },
+    { "col": 1, "base": "HI", "promotedId": "RY" },
+    { "col": 2, "base": "KA", "promotedId": "UM" },
+    { "col": 3, "base": "KI", "promotedId": null, "note": "金は成らないため、成駒段（row1, row3）のこの列は空セル。成駒段はempty_cellsで定義された空セルとなる。promotedIdは参照用であり空セル判定には使わない" },
+    { "col": 4, "base": "GI", "promotedId": "NG" },
+    { "col": 5, "base": "KE", "promotedId": "NK" },
+    { "col": 6, "base": "KY", "promotedId": "NY" },
+    { "col": 7, "base": "FU", "promotedId": "TO" }
+  ],
+
+  "empty_cells": [
+    { "row": 1, "col": 3 },
+    { "row": 3, "col": 3 }
+  ]
+}

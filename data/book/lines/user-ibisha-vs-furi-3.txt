@@ -1,0 +1,7 @@
+# id: user-ibisha-vs-furi-3
+# source: user-ibisha-vs-furi-3.kif
+# tags: ibisha
+# side: white
+# weight: 10
+7g7f 8c8d 6g6f 8d8e 8h7g 3c3d 2h6h 7a6b 5i4h 7c7d 7i7h 6b7c 4h3h 5a4b 3h2h 4b3b
+3i3h 3a4b 7h6g 4a3a 1g1f 1c1d 6i5h 7c8d 6h7h 6a5a

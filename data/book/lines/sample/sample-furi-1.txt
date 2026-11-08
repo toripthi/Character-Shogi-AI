@@ -1,0 +1,5 @@
+# id: sample-furi-1
+# tags: furibisha, sample
+# side: black
+# weight: 10
+7g7f 3c3d 7f7e 4c4d 2g2f

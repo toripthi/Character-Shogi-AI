@@ -1,0 +1,174 @@
+/* ④ 盤面
+   出典: shogi-kifu-narabe css/style.css 534〜705行（無改変の切り出し。差分管理は web/VENDOR.md） */
+/* ---------- ④盤面 ---------- */
+.board-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  /* contain設計の伸縮役。ヘッダー/バー/駒台/下部は固定高さのため、
+     縦不足時はここが縮んでスクロールを出さない。 */
+  flex: 1 1 auto;
+  min-height: 0;
+  min-width: 0;
+  overflow: hidden;
+  /* 上に筋の座標（数字）、右に段の座標（漢数字）を出すための最小限の余白。
+     修正（レイアウト調整）: 盤の表示面積を優先し、必要最小限まで詰める。
+     修正（筋番号ラベルの上半分が切れる不具合対応）: padding-topが
+     ラベルのfont-size（0.625rem）とほぼ同じ値だったため、ラベル文字を
+     この領域の中央に配置しても、文字の実際の描画高さ（line-height等を
+     含む）がわずかにpadding-topをはみ出し、overflow:hiddenで上半分が
+     切れる余地が残っていた。0.625rem→0.875remに増やし、文字がはみ出さない
+     余裕を持たせる（board-view.js renderCoordinates()のfileLabelTop計算と
+     セットで、padding-topの実測値を使うためここを変えれば自動で追従する）。 */
+  padding: 0.875rem 0.875rem 0.1875rem 0.25rem;
+  touch-action: manipulation;
+}
+
+.board-wrap {
+  /* 盤画像と同じ矩形を持つラッパー。pieces-layer / coordinate-label はこの要素の
+     top:0,left:0,width:100%,height:100% を基準にするため、常に盤画像の実位置と一致する。
+     asset-fit.jsのclientWidth基準計算はこの実表示サイズをそのまま使う。
+
+     修正（盤サイズ根本対応・aspect-ratio依存の廃止）: 従来はwidth:100%+
+     aspect-ratio+max-height:100%の組み合わせをブラウザに計算させていたが、
+     .board-containerが横長（縦に対して幅が余る）領域になった場合に、
+     この要素自体の枠サイズ（＝boardImageEl.clientWidthとして駒配置計算が
+     参照する値）と、object-fit:containで実際に縮小表示される絵の見た目が
+     食い違い、駒が盤の絵の外側にはみ出す不具合があった。
+     そのため幅・高さは固定値をここでは指定せず、board-view.jsの
+     syncBoardWrapSize()がrenderBoard()のたびに.board-containerの実測
+     clientWidth/clientHeightから「アスペクト比を保って収まる最大サイズ」を
+     計算し、style.width/style.heightとして直接px指定する
+     （このブロックにwidth/height/aspect-ratio/max-width/max-heightを
+     置かないこと。JS側のpx指定と二重に効くと優先順位でどちらが勝つか
+     不明瞭になり、同じ種類のズレを再発させる恐れがある）。 */
+  position: relative;
+  display: block;
+  margin: auto;
+}
+
+.board-image {
+  /* 元画像(878x960)のアスペクト比を保つ。board-layout.jsonの margin_ratio / cell_ratio は
+     このアスペクト比のまま表示される前提で実測されているため、正方形に固定したり
+     object-fit: cover でクロップしたりすると、マス目の実測比率と実際の表示がズレる。 */
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  display: block;
+  max-height: 100%;
+  user-select: none;
+  -webkit-user-select: none;
+  /* 修正②: iOS Safariで長押しすると出る「画像を保存」等のコールアウトメニューを抑制する。
+     user-select:noneだけでは防げず、-webkit-touch-calloutの指定が必要。 */
+  -webkit-touch-callout: none;
+}
+
+.pieces-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  /* 修正②: 駒素材も配布素材のため、盤画像と同様に長押し保存を抑制する（念のための統一対応） */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* テクスチャ盤（画像に線が焼き込まれていない盤）用の格子線・星オーバーレイ。
+   board-image の直後に挿入され、pieces-layer / square-highlights-layer より
+   下に敷かれる（駒・ハイライトが線の上に来る）。 */
+.grid-overlay-layer {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+
+.board-piece {
+  position: absolute;
+  cursor: pointer;
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+}
+
+/* 修正③（新規要望）: 選択中マスは「直前に動いた駒の移動元」と同系色（淡い白）とし、
+   下記 selected-blink アニメーションで点滅させる。
+   以前は赤系の固定背景、その後さらに黄系点滅（.board-piece--last-move）と誤って
+   同じキーフレームを共有していた時期があったが、白系に統一する方針を明確にし、
+   専用のキーフレーム（selected-blink）に分離した。
+   なお .board-piece--last-move（直前に動いた駒の黄色点滅）自体は廃止済み。
+   移動先マスの表現は placeSquareHighlights() が描く静的な背景ハイライト
+   （.board-square-highlight--to、濃い淡い白）に一本化している。 */
+.board-piece--selected {
+  animation: selected-blink 1.4s ease-in-out infinite;
+  border-radius: 4px;
+}
+
+@keyframes selected-blink {
+  0%, 100% {
+    background-color: rgba(255, 255, 255, 0.08);
+  }
+  50% {
+    background-color: rgba(255, 255, 255, 0.45);
+  }
+}
+
+/* 修正③（新規要望）: 直前に指した手の「移動元マス」「移動先マス（現在位置）」の
+   ハイライト。移動元は空マスになっていることが多いため、駒要素とは別に
+   マス背景専用のレイヤー要素（.board-square-highlight）として描画する
+   （js/ui/board-view.js placeSquareHighlights() 参照）。
+   移動元＝淡い白、移動先（現在位置）＝それよりやや濃い淡い白、で明確に区別する。
+   静的な背景色のみでアニメーションは付けない（動く点滅は選択中/直前手駒側に譲る）。 */
+.board-square-highlight {
+  position: absolute;
+  pointer-events: none;
+  border-radius: 4px;
+}
+
+.board-square-highlight--from {
+  background-color: rgba(255, 255, 255, 0.28);
+}
+
+.board-square-highlight--to {
+  background-color: rgba(255, 255, 255, 0.48);
+}
+
+.board-piece img {
+  pointer-events: none;
+}
+
+.coordinate-label {
+  position: absolute;
+  font-size: 0.625rem;
+  color: var(--sumi);
+  transform: translate(-50%, -50%);
+  pointer-events: none;
+  /* 修正⑨（新規要望）: 盤の周囲の筋・段の数字もコピー可能な状態だったため抑止する。
+     コピーできるメリットはない一方、長押しでテキスト選択されると操作の邪魔になる。
+     盤・駒と同じ3種（user-select系＋-webkit-touch-callout:none）で確実に止める。
+     pointer-events:none はタップを盤に素通しするための指定で、本指定とは別目的。 */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  z-index: 10;
+}
+
+.coordinate-label--file {
+  top: 0;
+}
+
+.coordinate-label--rank {
+  left: 100%;
+}
+

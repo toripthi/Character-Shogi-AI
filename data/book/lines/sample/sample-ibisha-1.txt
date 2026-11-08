@@ -1,0 +1,5 @@
+# id: sample-ibisha-1
+# tags: ibisha, sample
+# side: black
+# weight: 10
+7g7f 8c8d 2g2f 3c3d 2f2e
