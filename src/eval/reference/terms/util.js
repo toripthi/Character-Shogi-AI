@@ -53,3 +53,17 @@ export function forEachPiece(board, cb) {
     }
   }
 }
+
+/**
+ * 両玉のマスを探す（2026-11-09：玉との距離で評価を変える項が使う）。玉がいない色は null。
+ * @returns {{ black: {file:number, rank:number}|null, white: {file:number, rank:number}|null }}
+ */
+export function findKings(board) {
+  const kings = { black: null, white: null };
+  forEachPiece(board, ({ piece, file, rank }) => {
+    if (piece.type === "king") {
+      kings[piece.color] = { file, rank };
+    }
+  });
+  return kings;
+}

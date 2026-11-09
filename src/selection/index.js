@@ -12,6 +12,7 @@ import { searchBestMove } from "../search/index.js";
 import { filterAllowedMoves } from "../behavior/checkPolicy.js";
 import { createRng } from "../core/rng.js";
 import { retreatTerm } from "../eval/terms/retreat.js";
+import { captureTerm } from "../eval/terms/capture.js";
 import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
 
 /**
@@ -22,6 +23,8 @@ import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
  *     margin（slip の広い margin を含む）＋余裕点を渡す。省略なら打ち切りなし＝従来どおり）
  *   order?: {move,score}[]（前の反復の採点。この順で読むと打ち切りが効きやすい）
  *   retreatWeight?: number（既定 0 = 後退を見ない。挙動は接続前と同じ）
+ *   captureWeight?: number（既定 0 = 取る手を見ない。取った駒の価値 × 重みを手のスコアに足す。負なら減点。
+ *     retreat と同じく、実際に指すルートの手の採点にだけ・margin 判定より前に加える。詰みの点には足さない）
  *   maxNodes?: number（全ルート手の合計のノード予算・docs/NODE-BUDGET-DESIGN.md §5。
  *     残り予算を超えた候補手の探索が中断したら、その反復（この呼び出し1回分）は破棄する。
  *     stats.aborted が true になる。深さ1の採点は必ず完了させること（呼び出し側の責務））
@@ -33,6 +36,7 @@ import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
 export function scoreRootMoves(board, options = {}) {
   const depth = options.depth ?? 2;
   const retreatWeight = options.retreatWeight ?? 0;
+  const captureWeight = options.captureWeight ?? 0;
   const evaluate = options.evaluate;
   const context = options.context;
   const style = options.style ?? {};
@@ -60,11 +64,12 @@ export function scoreRootMoves(board, options = {}) {
   let aborted = null; // null | { by: "nodes"|"hard", usi: string|null }
   for (const move of moves) {
     const penalty = retreatWeight !== 0 ? retreatWeight * retreatTerm(board, move) : 0;
+    const bonus = captureWeight !== 0 ? captureWeight * captureTerm(board, move, style) : 0;
     board.makeMove(move);
-    // 打ち切り窓: 最終点 -reply - penalty が bestFinal - margin 以上の手だけが候補になりうる。
-    // reply > B なら候補外が確定（B = -(bestFinal - margin) - penalty）。
+    // 打ち切り窓: 最終点 -reply - penalty + bonus が bestFinal - margin 以上の手だけが候補になりうる。
+    // reply > B なら候補外が確定（B = -(bestFinal - margin) - penalty + bonus）。
     const childBeta = pruneMargin !== null && bestFinal > -Infinity && depth - 1 >= 1
-      ? -(bestFinal - pruneMargin) - penalty + 1e-7
+      ? -(bestFinal - pruneMargin) - penalty + bonus + 1e-7
       : undefined;
     const reply = searchBestMove(board, {
       beta: childBeta,
@@ -94,8 +99,8 @@ export function scoreRootMoves(board, options = {}) {
     // 詰みの点数は「100000 − 手数」にそろえる（1手詰め 99999・3手詰め 99997）。詰みには後退ペナルティを掛けない
     // （ペナルティで、早い詰みが遅い詰みや詰まない手より低くならないように）。
     const normalized = toMatePlies(-reply.score, depth);
-    scored.push({ move, score: isMateScore(normalized) ? normalized : normalized - penalty });
-    if (-reply.score - penalty > bestFinal) bestFinal = -reply.score - penalty;
+    scored.push({ move, score: isMateScore(normalized) ? normalized : normalized - penalty + bonus });
+    if (-reply.score - penalty + bonus > bestFinal) bestFinal = -reply.score - penalty + bonus;
   }
   scored.sort((a, b) => b.score - a.score);
   scored.stats = {

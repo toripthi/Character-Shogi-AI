@@ -7,5 +7,6 @@ export default {
   name: "守り屋気質",
   group: "temperament",
   description: "飛車を可愛がり、馬の守りを重く見る。",
-  weights: { rookDanger: 150, horseGuard: 60 },
+  // attack は既定（バランス）20 への加算。守り 10。capture は取る手への減点（取った駒の価値の5%。駒交換を怖がる）
+  weights: { rookDanger: 150, horseGuard: 60, attack: -10, capture: -0.05 },
 };

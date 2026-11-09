@@ -271,7 +271,9 @@ export function createPlayer(options = {}) {
   function chooseSearchMove(board, t0, context, style) {
     // ルート採点が必要な条件：margin > 0 または slipRate > 0、または後退ペナルティ（4-0-5）が0でない。
     const retreatWeight = style.weights.retreat ?? 0;
-    const needsScoring = selectionOpts.margin > 0 || selectionOpts.slipRate > 0 || retreatWeight !== 0;
+    // 取る手への加減点（2026-11-09 §7）も、ルート採点でしか入れられないので、0でなければ採点経路に入る。
+    const captureWeight = style.weights.capture ?? 0;
+    const needsScoring = selectionOpts.margin > 0 || selectionOpts.slipRate > 0 || retreatWeight !== 0 || captureWeight !== 0;
     if (searchOpts.maxNodes !== undefined) {
       // 予算つき反復深化（opt-in。docs/NODE-BUDGET-DESIGN.md §5）。
       return chooseSearchMoveBudget(board, t0, context, needsScoring, retreatWeight, style);
@@ -305,6 +307,7 @@ export function createPlayer(options = {}) {
       quiescence: searchOpts.quiescence,
       useCheckPolicy: searchOpts.useCheckPolicy,
       retreatWeight,
+      captureWeight,
       context,
       pruneMargin: pruneMarginOf(),
     });
@@ -386,6 +389,7 @@ export function createPlayer(options = {}) {
         quiescence: searchOpts.quiescence,
         useCheckPolicy: searchOpts.useCheckPolicy,
         retreatWeight,
+        captureWeight: style.weights.capture ?? 0,
         context,
         pruneMargin: d >= 2 ? pruneMarginOf() : undefined,
         order: bestScored ?? undefined,

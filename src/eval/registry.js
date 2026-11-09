@@ -17,6 +17,7 @@ import { attackTerm, rookFileTerm } from "./terms/attack.js";
 import { rookDangerTerm } from "./terms/rookDanger.js";
 import { horseGuardTerm } from "./terms/horseGuard.js";
 import { retreatTerm } from "./terms/retreat.js";
+import { captureTerm } from "./terms/capture.js";
 import { castleFuriTerm, castleIbishaTerm } from "./terms/castle.js";
 import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
 
@@ -24,7 +25,7 @@ export const TERMS = {
   material: { kind: "position", label: "駒得", defaultWeight: 1, eval: materialTerm },
   advance: { kind: "position", label: "前進", defaultWeight: 0, eval: advanceTerm },
   control: { kind: "position", label: "敵陣制圧", defaultWeight: 0, eval: controlTerm },
-  attack: { kind: "position", label: "攻め駒", defaultWeight: 0, eval: attackTerm },
+  attack: { kind: "position", label: "攻め駒", defaultWeight: 20, eval: attackTerm },
   rookFile: { kind: "position", label: "飛車の筋", defaultWeight: 0, eval: rookFileTerm },
   rookDanger: { kind: "position", label: "飛車への愛着", defaultWeight: 0, eval: rookDangerTerm },
   horseGuard: { kind: "position", label: "馬の守り", defaultWeight: 0, eval: horseGuardTerm },
@@ -35,6 +36,8 @@ export const TERMS = {
   rookHome: { kind: "position", label: "居飛車の筋（自陣）", defaultWeight: 0, eval: rookHomeTerm },
   // 未接続（retreat.js 参照）
   retreat: { kind: "move", label: "後退ペナルティ", defaultWeight: 0, eval: retreatTerm },
+  // 取る手への加減点（2026-11-09 §7）。取った駒の価値を返す。重みは気質ごと（攻め +0.1 / 受け -0.05）
+  capture: { kind: "move", label: "取る手の加減点", defaultWeight: 0, eval: captureTerm },
 };
 
 export const TERM_IDS = Object.keys(TERMS);
