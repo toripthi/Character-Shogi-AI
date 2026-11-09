@@ -14,6 +14,11 @@ import { createRules } from "./engine/rules.js";
 import { createEngineClient } from "./engine/engine-client.js";
 import { createGame } from "./game/game.js";
 import { buildSettings, rawFromSearch, resolveRaw, loadSavedRaw, saveRaw } from "./game/settings.js";
+import { drawFurigoma, describeFurigoma } from "./game/furigoma.js";
+import { createStartScreen } from "./ui/start-screen.js";
+import { createChoiceDialog } from "./ui/choice-dialog.js";
+import { personaDisplayName } from "../../src/characters/axes.js";
+import { createRng } from "../../src/core/rng.js";
 import { describeResult } from "./game/termination.js";
 import { logToKif } from "./game/kif.js";
 import { addLog, listLogs, removeLog, logFileBase, logSummary } from "./game/log-store.js";
@@ -39,6 +44,9 @@ let rawSettings = null; // 入力欄の値（文字列）
 let engine = null;
 let rules = null;
 let menu = null;
+let startScreen = null;
+let dialog = null;
+let gameCount = 0; // 振り駒をシード付きで引くときの通し番号
 let current = { phase: "idle", boardState: createInitialBoardState(null), lastMove: null, selection: null, targets: [], humanSide: "SENTE" };
 
 function renderAll() {
@@ -73,7 +81,7 @@ function renderAll() {
   const oppSide = bs.isFlipped ? "SENTE" : "GOTE";
   const selfSide = bs.isFlipped ? "GOTE" : "SENTE";
   const personaId = game?.getLog()?.engine?.personaId ?? settings?.config.persona;
-  renderPlayerInfoBox($("opponent-label"), $("opponent-name"), oppSide, personaId ? `AI（${personaId}）` : "AI", null);
+  renderPlayerInfoBox($("opponent-label"), $("opponent-name"), oppSide, personaId ? `AI（${personaDisplayName(personaId)}）` : "AI", null);
   renderPlayerInfoBox($("self-label"), $("self-name"), selfSide, "あなた", null);
 }
 
@@ -91,21 +99,28 @@ function renderStatus() {
     case "over": line = describeResult(v.result, v.humanSide) || "対局終了"; alert = true; break;
   }
   if (v.message) sub = v.message;
-  else if (v.phase !== "idle") sub = `${v.plies} 手`;
+  else if (v.phase !== "idle") sub = `${v.plies} 手${v.takebacks ? `・待った${v.takebacks}回` : ""}`;
   if (v.phase === "over" && v.result?.error) sub = v.result.error;
   $("status-line").textContent = line;
   $("status-line").classList.toggle("status-line--alert", alert);
   $("status-sub").textContent = sub;
   $("btn-resign").disabled = !["human", "choosing", "ai"].includes(v.phase);
+  // 待った：対局中（自分の番か AI の思考中）で、自分が1手以上指しているときだけ。始まる前・終局後は押せない
+  $("btn-takeback").disabled = !v.canTakeback;
 }
 
 function renderClocks() {
   if (!game) return;
-  const ms = game.clockMs();
+  // 持ち時間があれば残り時間、無制限なら経過時間を出す
+  const left = game.remainingMs();
+  const ms = left ?? game.clockMs();
   const ai = current.aiSide ?? "GOTE";
   const me = current.humanSide;
   $("self-clock").textContent = formatClock(ms[me]);
   $("opponent-clock").textContent = formatClock(ms[ai]);
+  for (const [id, side] of [["self-clock", me], ["opponent-clock", ai]]) {
+    $(id).classList.toggle("player-clock--low", !!left && left[side] <= 10_000 && current.phase !== "over");
+  }
   const live = current.phase === "over" || current.phase === "idle" ? null : current.turn;
   $("self-clock").classList.toggle("player-clock--active", live === me);
   $("opponent-clock").classList.toggle("player-clock--active", live === ai);
@@ -113,7 +128,7 @@ function renderClocks() {
 
 function onGameChange(v) {
   current = v;
-  if (v.phase === "over") popup?.close();
+  if (v.phase === "over") { popup?.close(); dialog?.close(); }
   renderAll();
   renderStatus();
   renderClocks();
@@ -175,10 +190,16 @@ function setupInput() {
   $("btn-resign").addEventListener("click", () => {
     if (confirm("投了しますか？")) game.resign();
   });
+  // 新しい対局は、必ず開始画面から（手番・棋風・持ち時間を選ぶ）。指している対局は、開始画面で「対局開始」を押した時点で中断として記録する
   $("btn-new").addEventListener("click", () => {
-    if (["human", "choosing", "ai"].includes(current.phase) && !confirm("いまの対局を中止して、新しく始めますか？（中断として記録します）")) return;
-    popup.close();
-    newGame();
+    const playing = ["human", "choosing", "ai"].includes(current.phase);
+    startScreen.open({ cancellable: game !== null, message: playing ? "いまの対局は、始めると中断として記録されます。" : "" });
+  });
+  // 待った：2択の確認のあと、1手戻す（自分が最後に指した手を取り消して、自分の番に戻る）
+  $("btn-takeback").addEventListener("click", async () => {
+    if (!game?.canTakeback()) return;
+    const yes = await dialog.ask({ message: "本当に「待った」しますか？", yes: "待ったする", no: "やっぱり待ったしない" });
+    if (yes && game?.canTakeback()) game.takeback(); // 確認中に状況が変わっていたら（終局など）何もしない
   });
   $("btn-menu").addEventListener("click", () => menu.open("settings"));
 }
@@ -186,14 +207,25 @@ function setupInput() {
 /** いまの設定で新しい対局を始める。指している対局があれば中断として記録する */
 function newGame() {
   game?.abandon();
+  // 手番：先手・後手の指定、または振り駒（シードがあれば同じ並びで再現。なければ毎回ランダム）
+  let humanSide = settings.humanSide;
+  let furigoma = null;
+  if (settings.furigoma) {
+    const random = settings.seed !== undefined ? createRng(((settings.seed ^ 0x5bd1e995) + gameCount * 7919) >>> 0) : Math.random;
+    furigoma = drawFurigoma(random);
+    humanSide = furigoma.humanSide;
+  }
+  gameCount++;
   const thisGame = createGame({
     rules,
     engine,
-    humanSide: settings.humanSide,
+    humanSide,
+    timeControl: settings.timeControl,
+    startMessage: furigoma ? describeFurigoma(furigoma) : "",
     config: settings.config,
     seed: settings.seed,
     playStyle: settings.playStyle,
-    meta: { settingsRaw: rawSettings },
+    meta: { settingsRaw: rawSettings, ...(furigoma ? { furigoma } : {}) },
     ...(settings.maxMoves ? { maxMoves: settings.maxMoves } : {}),
     askPromotion: (pieceType) => popup.ask(pieceType),
     onChange: (v) => { if (game === thisGame) onGameChange(v); }, // 破棄した対局の遅れた通知は無視する
@@ -218,42 +250,49 @@ async function init() {
   popup = createPromotionPopup({ layouts, manifest, pieceId: look.pieceId });
   rules = createRules();
   engine = createEngineClient();
+  dialog = createChoiceDialog();
+  startScreen = createStartScreen({
+    getRaw: () => rawSettings,
+    onStart: (choice) => {
+      // 開始画面の選択が優先（URL の旧 persona 指定は外す）。不正ならここで Error（開始画面に表示される）
+      const raw = { ...rawSettings, ...choice, persona: "" };
+      const built = buildSettings(raw);
+      rawSettings = raw;
+      settings = built;
+      saveRaw(localStorage, rawSettings);
+      startScreen.close();
+      popup.close();
+      dialog.close();
+      newGame();
+    },
+  });
   menu = createMenuSheet({
     personas: PERSONAS,
     getRaw: () => rawSettings,
+    // 設定シートは保存だけ（対局は始めない。次の対局から効く）
     onApply: (raw) => {
-      const built = buildSettings(raw); // 不正ならここで Error（シートに表示される）
-      if (["human", "choosing", "ai"].includes(current.phase) && !confirm("いまの対局を中止して、この設定で新しく始めますか？（中断として記録します）")) throw new Error("キャンセルしました");
-      rawSettings = { ...raw };
-      settings = built;
+      const merged = { ...rawSettings, ...raw };
+      buildSettings(merged); // 不正ならここで Error（シートに表示される）
+      rawSettings = merged;
       saveRaw(localStorage, rawSettings);
-      popup.close();
-      newGame();
     },
     getLogs: () => listLogs(localStorage),
     actions: logActions,
     summary: (log) => logSummary(log, describeResult),
   });
   // 検証用（?debug=1 のときだけ）。画面の自動操作の試験が、対局の手順（ログ）を読むための窓口。通常は付けない
-  if (new URLSearchParams(location.search).get("debug") === "1") window.__csai = { getLog: () => game?.getLog(), view: () => game?.view() ?? current };
+  if (new URLSearchParams(location.search).get("debug") === "1") window.__csai = { getLog: () => game?.getLog(), view: () => game?.view() ?? current, tap: (square) => game?.tapSquare(square) };
   initBoardView($("board"), layouts, manifest, renderAll);
   setupInput();
   renderAll();
   renderStatus();
   addEventListener("resize", renderAll);
-  setInterval(renderClocks, 250);
+  setInterval(() => { game?.checkTimeout(); renderClocks(); }, 250); // 時間切れの判定と時計の表示
 
-  // 設定：既定 < 保存済み < URL。不正なら黙って直さず、設定画面を開いて理由を見せる
+  // 設定：既定 < 保存済み < URL。対局は必ず開始画面から始める（URL の指定は開始画面の初期値になる。不正な値は開始時にエラーで知らせる）
   rawSettings = resolveRaw({ saved: loadSavedRaw(localStorage), url: rawFromSearch(location.search) });
-  try {
-    settings = buildSettings(rawSettings);
-  } catch (e) {
-    $("status-line").textContent = "設定を確認してください";
-    $("status-line").classList.add("status-line--alert");
-    menu.open("settings", e.message);
-    return;
-  }
-  newGame();
+  $("status-line").textContent = "対局の設定を選んでください";
+  startScreen.open({ cancellable: false });
 }
 
 init().catch((e) => {

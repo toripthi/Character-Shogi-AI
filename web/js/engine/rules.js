@@ -34,6 +34,17 @@ export function createRules({ sfen } = {}) {
       legalCache = null;
       return true;
     },
+    /** 「待った」：手順を n 手に戻す（初形から n 手を指し直す。違法手が混ざっていればエラー） */
+    rewind(n) {
+      const keep = moves.slice(0, n);
+      board = new ShogiBoard(sfen);
+      moves = [];
+      legalCache = null;
+      for (const u of keep) {
+        if (!board.makeMoveByUSI(u)) throw new Error(`手順を戻せません: ${u}`);
+        moves.push(u);
+      }
+    },
     /** 合法手が無ければ詰み（打ち歩詰めは違法手なので、合法手0＝詰み）。手番側の負け。 */
     result() {
       if (legal().size > 0) return { over: false };

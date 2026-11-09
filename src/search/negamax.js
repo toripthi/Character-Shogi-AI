@@ -63,7 +63,7 @@ export function negamax(board, depth, alpha, beta, evaluate, style, ctx) {
     return quiescenceSearch(board, alpha, beta, evaluate, style, stats, ctx, 0);
   }
 
-  let moves = fb.legalMoves();
+  let moves = fb.legalMovesForSearch(); // 歩・角・飛は成れるとき成る手だけ読む
   if (moves.length === 0) {
     // 手番側が詰み: 深さ余裕が大きい（=早い詰み）ほど強く加点（DECISIONS D-002）
     return -(MATE_SCORE + depth);
@@ -143,7 +143,7 @@ function quiescenceSearch(board, alpha, beta, evaluate, style, stats, ctx, qd) {
     return alpha;
   }
   const values = (ctx.qValues ??= resolveStyle(style).pieceValues);
-  const captures = orderMovesInt(board, fb.legalCaptures(), style, null);
+  const captures = orderMovesInt(board, fb.legalCapturesForSearch(), style, null);
   for (const move of captures) {
     // デルタ剪定（2026-10-18）：取る駒の価値に余裕を足しても alpha に届かない取りは読まない。
     const capType = (move >>> 21) & 0xf;

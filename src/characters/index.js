@@ -6,8 +6,10 @@ import { TRAITS } from "./traits/index.js";
 import { PERSONAS } from "./personas/index.js";
 import { composeStyle } from "./compose.js";
 import { createRng } from "../core/rng.js";
+import { parseAxisPersonaId, personaSpecFromAxes } from "./axes.js";
 
 export { TRAITS, PERSONAS, composeStyle };
+export { OPENING_AXIS, TEMPERAMENT_AXIS, axisPersonaId, personaSpecFromAxes, parseAxisPersonaId, listAxisPersonas } from "./axes.js";
 
 /** UI用: 特性の一覧（group が同じものは排他 = ラジオボタン、なければチェックボックス） */
 export function listTraits() {
@@ -96,7 +98,12 @@ export function drawOpenings(openings, seed) {
  * @returns {{ id: string, name: string, description: string, traits: string[], style: object }}
  */
 export function resolvePersona(ref) {
-  const spec = typeof ref === "string" ? PERSONAS[ref] : ref;
+  // 文字列は、登録済みのペルソナ id か、軸の組み合わせ id（"random-balance" など。axes.js）
+  let spec = ref;
+  if (typeof ref === "string") {
+    const axes = PERSONAS[ref] ? null : parseAxisPersonaId(ref);
+    spec = PERSONAS[ref] ?? (axes ? personaSpecFromAxes(axes.opening, axes.temperament) : undefined);
+  }
   if (!spec) {
     throw new Error(`未知のペルソナ "${ref}"（${Object.keys(PERSONAS).join(", ")}）`);
   }

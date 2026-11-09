@@ -106,6 +106,12 @@ const PROMOTABLE = [
   false,
 ];
 
+/**
+ * 探索で「成れるときは常に成る」対象の駒種（歩・角・飛）。香・桂・銀は不成が有用な場面があるので対象外。
+ * 探索専用（legalMovesForSearch / legalCapturesForSearch）。通常の legalMoves() には影響しない。
+ */
+const FORCE_PROMOTE = [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0];
+
 const PROMOTED_TYPE = [
   0,
   PROM_PAWN,
@@ -779,8 +785,23 @@ export class FastBoard {
     return this._genLegal(true);
   }
 
-  /** @private 合法手生成の本体（capturesOnly=true で捕獲手のみ・順序も一致） */
-  _genLegal(capturesOnly) {
+  /**
+   * 探索用の合法手。legalMoves() から「成れるのに成らない歩・角・飛の手」だけを除いたもの
+   * （順序は legalMoves() と同じ）。成れる手は常に成る手のほうを読む（2026-11 ユーザー指示 ①）。
+   * 成れる場合、成る手は必ず合法なので、手が全部消えることはない（合法手0の判定は変わらない）。
+   * 相手（人間）が不成で指した手を盤に反映するのは通常の legalMoves() 側の仕事で、ここでは扱わない。
+   */
+  legalMovesForSearch() {
+    return this._genLegal(false, true);
+  }
+
+  /** 探索用の捕獲手（legalCaptures() から同様に不成の歩・角・飛を除く）。静止探索用。 */
+  legalCapturesForSearch() {
+    return this._genLegal(true, true);
+  }
+
+  /** @private 合法手生成の本体（capturesOnly=true で捕獲手のみ・順序も一致。forcePromote=true で歩角飛の不成を除く） */
+  _genLegal(capturesOnly, forcePromote = false) {
     const moves = [];
     const board = this.board;
     const turn = this.turnN;
@@ -845,19 +866,21 @@ export class FastBoard {
                 : !this.isAttackedByRaw(king, e, to, from);
             if (safe) {
               // base（非成り）
-              if (BASE_RANK_OK[turn][ptype][r]) {
+              const canPromote = PROMOTABLE[ptype] && (ZONE[turn][r] === 1 || ZONE[turn][fromR] === 1);
+              if (BASE_RANK_OK[turn][ptype][r] && !(forcePromote && canPromote && FORCE_PROMOTE[ptype] === 1)) {
                 moves.push(encodeMove(from, to, false, ptype, capType));
               }
               // 成り（base → promote の順）
-              if (PROMOTABLE[ptype] && (ZONE[turn][r] === 1 || ZONE[turn][fromR] === 1)) {
+              if (canPromote) {
                 moves.push(encodeMove(from, to, true, ptype, capType));
               }
             }
           } else {
-            if (BASE_RANK_OK[turn][ptype][r]) {
+            const canPromote = PROMOTABLE[ptype] && (ZONE[turn][r] === 1 || ZONE[turn][fromR] === 1);
+            if (BASE_RANK_OK[turn][ptype][r] && !(forcePromote && canPromote && FORCE_PROMOTE[ptype] === 1)) {
               moves.push(encodeMove(from, to, false, ptype, capType));
             }
-            if (PROMOTABLE[ptype] && (ZONE[turn][r] === 1 || ZONE[turn][fromR] === 1)) {
+            if (canPromote) {
               moves.push(encodeMove(from, to, true, ptype, capType));
             }
           }
@@ -2055,6 +2078,11 @@ export class ShogiBoardFast {
   /** 合法な捕獲手のみ（legalMoves().filter(捕獲) と同一内容・同一順序。静止探索用） */
   legalCaptures() {
     return this._movsFromInts(this.fb.legalCaptures());
+  }
+
+  /** 探索用の合法手（成れるときの歩・角・飛の不成を除く。FastBoard.legalMovesForSearch 参照） */
+  legalMovesForSearch() {
+    return this._movsFromInts(this.fb.legalMovesForSearch());
   }
 
   /** 内部 int 手 → tsshogi Move 互換オブジェクト化 */

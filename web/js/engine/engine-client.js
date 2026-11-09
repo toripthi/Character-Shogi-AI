@@ -48,6 +48,8 @@ export function createEngineClient({ workerUrl = new URL("./engine-worker.js", i
   return {
     newGame: (opts) => call("newGame", opts ?? {}),
     think: (moves) => call("think", { moves }),
+    /** 「待った」：AI の内部状態を、平手から plies 手の局面を考える前に戻す（思考中なら、その思考が終わってから順に処理される） */
+    rollback: (plies) => call("rollback", { plies }),
     restart() { terminate("エンジンを作り直しました"); start(); },
     terminate,
   };

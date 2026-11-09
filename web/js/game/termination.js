@@ -55,6 +55,7 @@ export function describeResult(result, humanSide) {
   switch (result.reason) {
     case "checkmate": return `詰みです。${who}`;
     case "resign": return result.winner === humanSide ? "AI が投了しました。あなたの勝ち" : "投了しました。あなたの負け";
+    case "timeout": return result.winner === humanSide ? "AI が時間切れです。あなたの勝ち" : "時間切れです。あなたの負け";
     case "perpetual-check": return `連続王手の千日手です。${who}`;
     case "sennichite": return "千日手です。引き分け";
     case "max-moves": return `${DEFAULT_MAX_MOVES} 手に達したので引き分けとします`;

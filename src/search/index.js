@@ -1,6 +1,6 @@
 import { evaluate as defaultEvaluate, evaluateScore as defaultEvaluateScore, resolveStyle } from "../eval/index.js";
 import { intToMove } from "../core/fastboard.js";
-import { MATE_SCORE } from "./constants.js";
+import { MATE_SCORE, toMatePlies } from "./constants.js";
 import { negamax, filterAllowedWithFallback } from "./negamax.js";
 import { orderMovesInt } from "./ordering.js";
 import { storeTt } from "./tt.js";
@@ -53,9 +53,12 @@ export function searchBestMove(board, options = {}) {
 
   // ルートも内部 int 手で動く（最終結果だけ Move オブジェクト化する）。
   const fb = board.fb;
-  const rootMoves = orderMovesInt(board, fb.legalMoves(), style, tt);
+  const rootMoves = orderMovesInt(board, fb.legalMovesForSearch(), style, tt);
   if (rootMoves.length === 0) {
-    return { bestMove: null, score: -MATE_SCORE, nodes: 0, qnodes: 0, breakdown: null, ttHits: 0 };
+    // 手番側が詰み（内部値は negamax と同じ「残り深さ」基準。以前は -MATE_SCORE 固定で、1手詰めと3手詰めが
+    // 同点になり、手の選び方次第で3手詰めを選ぶことがあった。2026-11 修正）。
+    const raw = -(MATE_SCORE + Math.max(depth, 0));
+    return { bestMove: null, score: options.rawScores ? raw : toMatePlies(raw, Math.max(depth, 0)), nodes: 0, qnodes: 0, breakdown: null, ttHits: 0 };
   }
   if (depth <= 0) {
     const leaf = evaluate(board, style);
@@ -134,7 +137,8 @@ export function searchBestMove(board, options = {}) {
   }
   let out = {
     bestMove: bestMove === null ? null : intToMove(fb, bestMove),
-    score: bestScore,
+    // 詰みの点数は「100000 − 手数」の表記にして返す（rawScores:true なら内部値のまま。scoreRootMoves が使う）
+    score: options.rawScores ? bestScore : toMatePlies(bestScore, depth),
     nodes: stats.nodes,
     qnodes: stats.qnodes,
     breakdown: bestBreakdown,

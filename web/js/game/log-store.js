@@ -44,5 +44,5 @@ export function logSummary(log, describe) {
   const when = `${d.getMonth() + 1}/${d.getDate()} ${p(d.getHours())}:${p(d.getMinutes())}`;
   const persona = log.engine?.personaId ?? log.config?.persona ?? "AI";
   const result = log.result?.reason === "abandoned" ? "中断" : describe({ over: true, ...log.result }, log.humanSide);
-  return { title: `${when}　${persona}　深さ${log.config?.search?.depth ?? "?"}　${log.humanSide === "SENTE" ? "先手" : "後手"}`, detail: `${log.moves?.length ?? 0}手　${result}${log.playStyle ? `　［${log.playStyle}］` : ""}` };
+  return { title: `${when}　${persona}　深さ${log.config?.search?.depth ?? "?"}　${log.humanSide === "SENTE" ? "先手" : "後手"}`, detail: `${log.moves?.length ?? 0}手　${result}${log.takebackCount ? `　待った${log.takebackCount}回` : ""}${log.playStyle ? `　［${log.playStyle}］` : ""}` };
 }

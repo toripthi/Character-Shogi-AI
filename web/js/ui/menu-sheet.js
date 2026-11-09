@@ -8,8 +8,7 @@ import { STYLES } from "../game/settings.js";
 /** 入力欄の定義。type: select | number | text */
 function fieldsFor(personas) {
   return [
-    { group: "AI" },
-    { key: "persona", label: "AI の個性", type: "select", options: Object.values(personas).map((p) => [p.id, `${p.name}（${p.id}）`]), describe: (v) => personas[v]?.description ?? "" },
+    { group: "AI（手番・棋風・持ち時間は、対局の開始画面で選びます）" },
     { key: "depth", label: "探索の深さ", type: "select", options: [1, 2, 3, 4, 5, 6].map((n) => [String(n), String(n)]), hint: "大きいほど強く、遅くなります（既定 3）" },
     { key: "book", label: "定跡", type: "select", options: [["1", "使う"], ["0", "使わない"]] },
     { group: "探索の予算（空欄＝既定。入れるなら両方）" },
@@ -20,7 +19,6 @@ function fieldsFor(personas) {
     { key: "slip", label: "悪手を選ぶ確率 slip（0〜1）", type: "number", placeholder: "既定 0", inputmode: "decimal" },
     { key: "slipMargin", label: "悪手の許容差 slipMargin（cp）", type: "number", placeholder: "既定 500", inputmode: "decimal" },
     { group: "対局" },
-    { key: "side", label: "あなたの手番", type: "select", options: [["sente", "先手"], ["gote", "後手"]] },
     { key: "seed", label: "seed", type: "number", placeholder: "空欄＝毎回ランダム", inputmode: "numeric", hint: "同じ seed・同じ設定なら AI は同じように指します" },
     { key: "style", label: "指し方（記録用）", type: "select", options: [["", "未指定"], ...STYLES.map((s) => [s, s])] },
     { key: "maxMoves", label: "手数の上限（引き分け）", type: "number", inputmode: "numeric" },
@@ -38,7 +36,7 @@ const el = (tag, cls, text) => {
  * @param {object} o
  * @param {object} o.personas PERSONAS
  * @param {()=>object} o.getRaw 入力欄の現在値（文字列の組）
- * @param {(raw:object)=>void} o.onApply 「この設定で新しい対局」。不正なら Error を投げる（画面に出す）
+ * @param {(raw:object)=>void} o.onApply 「設定を保存」。不正なら Error を投げる（画面に出す）
  * @param {()=>Array} o.getLogs
  * @param {{kif:Function, json:Function, copy:Function, all:Function, remove:Function}} o.actions ログの書き出し・削除
  * @param {(log:object)=>{title:string, detail:string}} o.summary
@@ -67,7 +65,7 @@ export function createMenuSheet({ personas, getRaw, onApply, getLogs, actions, s
 
   const foot = el("div", "sheet-foot");
   const error = el("div", "sheet-error");
-  const apply = el("button", "stage-btn stage-btn--primary sheet-apply", "この設定で新しい対局");
+  const apply = el("button", "stage-btn stage-btn--primary sheet-apply", "設定を保存");
   apply.type = "button";
   foot.append(error, apply);
   sheet.append(head, body, foot);
@@ -105,7 +103,7 @@ export function createMenuSheet({ personas, getRaw, onApply, getLogs, actions, s
     }
     settingsPane.append(row);
   }
-  settingsPane.append(el("p", "sheet-note", "変更は次の対局から効きます（いまの対局は続きます）。「新しい対局」で始めると、指している対局は中断として記録されます。"));
+  settingsPane.append(el("p", "sheet-note", "保存した設定は、次に始める対局から効きます（いまの対局は続きます）。対局は「新しい対局」の開始画面から始めます。"));
 
   function fillSettings() {
     const raw = getRaw();

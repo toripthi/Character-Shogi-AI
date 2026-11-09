@@ -12,6 +12,7 @@ import { searchBestMove } from "../search/index.js";
 import { filterAllowedMoves } from "../behavior/checkPolicy.js";
 import { createRng } from "../core/rng.js";
 import { retreatTerm } from "../eval/terms/retreat.js";
+import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
 
 /**
  * ルートの各手を個別探索し、スコアつき候補列を作る。
@@ -41,7 +42,8 @@ export function scoreRootMoves(board, options = {}) {
   const budgetTotal = hasBudget ? Math.max(0, Math.floor(options.maxNodes)) : null;
   const hardDeadlineMs = hasBudget ? options.hardDeadlineMs ?? null : null;
 
-  let moves = board.legalMoves();
+  // 歩・角・飛は成れるとき成る手だけ読む（探索用の合法手。オラクル盤には無いので全合法手にフォールバック）
+  let moves = board.legalMovesForSearch ? board.legalMovesForSearch() : board.legalMoves();
   if (useCheckPolicy && depth >= 2) {
     const filtered = filterAllowedMoves(board, moves);
     moves = filtered.length > 0 ? filtered : moves;
@@ -72,6 +74,7 @@ export function scoreRootMoves(board, options = {}) {
       quiescence,
       useCheckPolicy,
       transposition: null,
+      rawScores: true, // 内部値（残り深さ基準）のまま受け取り、下で根の深さを使って「100000 − 手数」にする
       context,
       maxNodes: hasBudget && depth >= 2 ? budgetTotal - usedNodes - usedQnodes : undefined,
       hardDeadlineMs: hasBudget && depth >= 2 ? hardDeadlineMs : undefined,
@@ -88,7 +91,10 @@ export function scoreRootMoves(board, options = {}) {
       continue; // 候補外が確定（値は境界値なので載せない）
     }
     // searchBestMove の score は相手番視点なので反転させる
-    scored.push({ move, score: -reply.score - penalty });
+    // 詰みの点数は「100000 − 手数」にそろえる（1手詰め 99999・3手詰め 99997）。詰みには後退ペナルティを掛けない
+    // （ペナルティで、早い詰みが遅い詰みや詰まない手より低くならないように）。
+    const normalized = toMatePlies(-reply.score, depth);
+    scored.push({ move, score: isMateScore(normalized) ? normalized : normalized - penalty });
     if (-reply.score - penalty > bestFinal) bestFinal = -reply.score - penalty;
   }
   scored.sort((a, b) => b.score - a.score);
@@ -117,6 +123,12 @@ export function selectMove(scored, options = {}) {
   const rng = options.rng ?? createRng(options.seed ?? 1);
 
   const best = scored[0].score;
+  // 詰ませられる局面では、いちばん早い詰みの手だけを指す（margin・slip・softmax で詰み手順をぼかさない。
+  // 詰みの点は「残り深さ」ぶんしか違わないので、margin の内側に遅い詰みや詰まない手が混ざるのを防ぐ）。
+  // 乱数は使わない（同じ局面で乱数列の進み方が変わらないよう、ここでは rng を消費しない）。
+  if (isMateScore(best) && best > 0) {
+    return scored[0];
+  }
   const useWide = rng() < slipRate;
   const activeMargin = useWide ? slipMargin : margin;
   const candidates = scored.filter((s) => best - s.score <= activeMargin);

@@ -81,3 +81,18 @@ body { display: flex; justify-content: center; touch-action: manipulation; -webk
 .sheet-log-detail { margin-top: 0.125rem; font-size: 0.8125rem; color: var(--sumi-soft); }
 .sheet-log-actions { display: flex; flex-wrap: wrap; gap: 0.375rem; margin-top: 0.5rem; }
 .stage-btn--icon { padding: 0 0.5rem; font-size: 1rem; }
+
+/* 開始画面・2択ダイアログ・待ったボタン */
+.start-overlay { z-index: 650; }
+.start-title { font-size: 1.0625rem; font-weight: 700; color: var(--sumi); }
+.seg { display: flex; gap: 0.375rem; }
+.seg-btn { flex: 1 1 0; min-height: 2.5rem; padding: 0 0.5rem; font: inherit; font-size: 0.9375rem; color: var(--sumi); background: var(--surface); border: 1px solid var(--sumi-line); border-radius: 4px; cursor: pointer; touch-action: manipulation; }
+.seg-btn--on { color: var(--paper); background: var(--bengara); border-color: var(--bengara-deep); font-weight: 700; }
+.start-persona { margin: 0.375rem 0 0; }
+.start-custom[hidden] { display: none; }
+.dialog-overlay { position: fixed; inset: 0; z-index: 700; display: flex; justify-content: center; align-items: center; padding: 1rem; background: rgba(20, 20, 20, 0.45); }
+.dialog { width: 100%; max-width: 20rem; padding: 1rem; background: var(--paper); border-radius: 6px; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3); }
+.dialog-message { margin: 0 0 1rem; font-size: 1rem; line-height: 1.5; color: var(--sumi); }
+.dialog-actions { display: flex; flex-direction: column; gap: 0.5rem; }
+.dialog-actions .stage-btn { min-height: 2.75rem; font-size: 0.9375rem; }
+.player-clock--low { color: #ffd6d0; }

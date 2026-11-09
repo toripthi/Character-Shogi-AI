@@ -38,6 +38,10 @@ export function createClock({ now = () => Date.now() } = {}) {
       since = turnStart = t;
       return used;
     },
+    /** 動いている側が今の手に使った ms（動いていなければ 0）。「1手○秒」の残り時間用 */
+    turnElapsed() {
+      return running ? Math.max(0, now() - turnStart) : 0;
+    },
     /** side の累計 ms */
     elapsed(side) {
       settle();

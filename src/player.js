@@ -12,7 +12,8 @@ import { createBook } from "./book/index.js";
 import { REJOIN_MAX_ABS_DEFAULT } from "./book/constants.js";
 import { classifyMatchup, INITIAL_MATCHUP } from "./behavior/matchup.js";
 import { createPlanner, PLANS } from "./plan/index.js";
-import { DEFAULT_MAX_NODES, PRUNE_SLACK_DEFAULT } from "./search/constants.js";
+import { DEFAULT_MAX_NODES, PRUNE_SLACK_DEFAULT, MATE_SCORE } from "./search/constants.js";
+import { findMate } from "./search/mate.js";
 // 4-2：これらの重みのどれかが 0 でないとき、戦法の文脈（{ me, matchup }）を探索に渡す。
 const CONTEXT_TERM_IDS = ["castleFuri", "castleIbisha", "rookSwung", "rookHome"];
 
@@ -23,7 +24,11 @@ let nextPlayerId = 1;
  *   search?:{depth?:number, quiescence?:boolean, useCheckPolicy?:boolean,
  *     maxNodes?:number, maxDepth?:number},
  *   selection?:{margin?:number, slipRate?:number, slipMargin?:number, temperature?:number},
- *   book?:{enabled?:boolean}, mate?:{enabled?:boolean}}} [options]
+ *   book?:{enabled?:boolean}, mate?:{enabled?:boolean, maxPlies?:number, nodeLimit?:number, timeLimitMs?:number}}} [options]
+ *
+ * mate（詰み探索。src/search/mate.js）: 手番側が詰ませられるなら、評価や margin/slip に関係なく必ずその手を指す
+ *   （source:"mate"）。既定は enabled:true・maxPlies:1（＝1手詰めは絶対に逃さない）。3手詰め以上を読ませるのは
+ *   maxPlies を奇数で上げる（棋力の級データ＝Phase 5 で決める）。mate:{enabled:false} で外せる。
  *
  * search.maxNodes / search.maxDepth（docs/NODE-BUDGET-DESIGN.md §5、opt-in）:
  *   反復深化で 1手あたりのノード数の上限をかけられる。指定しなければ現在と同じ
@@ -118,7 +123,15 @@ export function createPlayer(options = {}) {
   if (planRef && !planData) throw new Error(`未知の plan "${planRef}"（${Object.keys(PLANS).join(", ")}）`);
   const planner = planData ? createPlanner(planData) : null;
   const BALANCE_STYLE = resolvePersona("balance").style;
-  const mateOpts = { enabled: options.mate?.enabled ?? false };
+  const mateOpts = {
+    enabled: options.mate?.enabled ?? true,
+    maxPlies: options.mate?.maxPlies ?? 1,
+    nodeLimit: options.mate?.nodeLimit ?? 20000,
+    timeLimitMs: options.mate?.timeLimitMs,
+  };
+  if (!Number.isInteger(mateOpts.maxPlies) || mateOpts.maxPlies < 1) {
+    throw new Error(`mate.maxPlies は 1 以上の整数で指定してください: ${options.mate?.maxPlies}`);
+  }
   const baseSeed = options.seed ?? 1;
 
   const state = {
@@ -218,6 +231,17 @@ export function createPlayer(options = {}) {
     }
     const side = board.turn();
     const context = contextFor(board, side);
+    // 詰み探索（定跡・手順・探索より先）。詰ませられる局面では、評価の差や選び方（margin・slip）に関係なく詰ます。
+    if (mateOpts.enabled) {
+      const mate = findMate(board, mateOpts);
+      if (mate.found) {
+        return {
+          move: mate.move,
+          source: "mate",
+          info: { score: MATE_SCORE - mate.plies, depth: mate.plies, nodes: mate.nodes, qnodes: 0, ms: Date.now() - t0, breakdown: null, matePlies: mate.plies },
+        };
+      }
+    }
     if (bookActive) {
       const hit = tryBook(board, side);
       if (hit) {
@@ -245,9 +269,6 @@ export function createPlayer(options = {}) {
   }
 
   function chooseSearchMove(board, t0, context, style) {
-    if (mateOpts.enabled) {
-      throw new Error("mate は Phase 4-4 で実装する（今は enabled:false のみ）");
-    }
     // ルート採点が必要な条件：margin > 0 または slipRate > 0、または後退ペナルティ（4-0-5）が0でない。
     const retreatWeight = style.weights.retreat ?? 0;
     const needsScoring = selectionOpts.margin > 0 || selectionOpts.slipRate > 0 || retreatWeight !== 0;
@@ -401,13 +422,36 @@ export function createPlayer(options = {}) {
     };
   }
 
+  /**
+   * 手を決める前の内部状態を取り出す／戻す（「待った」用。web の engine/session.js が使う）。
+   * 対象：手選びの乱数・定跡の自手数と外れ・戦法の判定（4-2）。置換表は局面ごとに正しい値だけを持つので、
+   * 戻すときは作り直す（探索の結果は変わらない。次の1手が少し遅くなるだけ）。
+   */
+  function saveState() {
+    return {
+      rng: state.rng.getState(),
+      sides: { black: { ...state.sides.black }, white: { ...state.sides.white } },
+      matchup: { black: state.matchup.black, white: state.matchup.white },
+    };
+  }
+  function restoreState(saved) {
+    state.rng.setState(saved.rng);
+    state.sides = { black: { ...saved.sides.black }, white: { ...saved.sides.white } };
+    state.matchup = { black: saved.matchup.black, white: saved.matchup.white };
+    state.transposition = new Map();
+    state.ttKey = null;
+  }
+
   return {
     id,
     persona: resolved,
     search: searchOpts,
     selection: selectionOpts,
     book: bookOpts,
+    mate: mateOpts,
     newGame,
+    saveState,
+    restoreState,
     /** 手番の色の戦法（"ibisha" / "furibisha"）。オールラウンダー以外は null。newGame(seed) で抽選される。 */
     opening: (side) => state.opening[side],
     chooseMove,

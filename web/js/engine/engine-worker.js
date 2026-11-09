@@ -2,6 +2,7 @@
  * モジュール Worker の入口。メッセージの受け渡しだけを行い、中身は session.js。
  *   → { id, type:"newGame", config, seed, bookUrl? }   ← { id, ok:true, result: 実際の設定 } | { id, ok:false, error }
  *   → { id, type:"think", moves:[usi,...] }            ← { id, ok:true, result:{usi, source, info, opening} } | { id, ok:false, error }
+ *   → { id, type:"rollback", plies }                   ← { id, ok:true, result:{restored} }（「待った」。AI の内部状態を plies 手目の前に戻す）
  * 思考は同期処理で最悪10秒（HARD_TIME_LIMIT_MS）かかるため、メインスレッドでは回さない。
  */
 import { createEngineSession } from "./session.js";
@@ -29,6 +30,8 @@ self.onmessage = async (e) => {
       result = session.newGame({ config: p.config, seed: p.seed, bookData });
     } else if (type === "think") {
       result = session.think(p.moves ?? []);
+    } else if (type === "rollback") {
+      result = session.rollback(p.plies ?? 0);
     } else {
       throw new Error(`不明なメッセージ: ${type}`);
     }

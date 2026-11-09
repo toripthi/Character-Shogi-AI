@@ -15,4 +15,9 @@ export {
   listTraits,
   listPersonas,
   resolvePersona,
+  OPENING_AXIS,
+  TEMPERAMENT_AXIS,
+  axisPersonaId,
+  personaSpecFromAxes,
+  listAxisPersonas,
 } from "./characters/index.js";

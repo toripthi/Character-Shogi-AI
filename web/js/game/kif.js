@@ -6,6 +6,8 @@
  */
 import { createInitialBoardState } from "../models/board.js";
 import { usiToMove, applyUsi } from "../engine/usi.js";
+import { describeTimeControl } from "./time-control.js";
+import { personaDisplayName } from "../../../src/characters/axes.js";
 
 const FILE = ["", "１", "２", "３", "４", "５", "６", "７", "８", "９"];
 const RANK = ["", "一", "二", "三", "四", "五", "六", "七", "八", "九"];
@@ -30,7 +32,7 @@ const dateText = (iso) => {
 function endLine(result, plies, usedMs, total) {
   const n = String(plies + 1).padStart(4, " ");
   const word = {
-    checkmate: "詰み", resign: "投了", sennichite: "千日手", "perpetual-check": "反則勝ち", "max-moves": "持将棋",
+    checkmate: "詰み", resign: "投了", sennichite: "千日手", "perpetual-check": "反則勝ち", "max-moves": "持将棋", timeout: "切れ負け",
     "engine-error": "中断", abandoned: "中断",
   }[result?.reason];
   if (!word) return null;
@@ -45,15 +47,18 @@ export function logToKif(log, { names = {} } = {}) {
   const human = log.humanSide;
   const ai = human === "SENTE" ? "GOTE" : "SENTE";
   const personaId = log.engine?.personaId ?? log.config?.persona ?? "AI";
-  const nm = { [human]: names[human] ?? "あなた", [ai]: names[ai] ?? `AI（${personaId}）` };
+  const nm = { [human]: names[human] ?? "あなた", [ai]: names[ai] ?? `AI（${personaDisplayName(personaId)}）` };
 
   const out = ["# KIF version=2.0 encoding=UTF-8"];
   if (log.startedAt) out.push(`開始日時：${dateText(log.startedAt)}`);
   if (log.endedAt) out.push(`終了日時：${dateText(log.endedAt)}`);
   out.push("手合割：平手", `先手：${nm.SENTE}`, `後手：${nm.GOTE}`);
+  if (log.timeControl !== undefined) out.push(`持ち時間：${describeTimeControl(log.timeControl)}`);
   if (log.playStyle) out.push(`備考：指し方＝${log.playStyle}`);
   out.push("手数----指手---------消費時間--");
   out.push(`*設定：${JSON.stringify({ config: log.config, seed: log.engine?.seed ?? null, humanSide: human })}`);
+  // 「待った」（最初の手より前に戻した分）。KIF では指し手の下の * の行はその手へのコメントなので、手の下に書く
+  for (let i = 0; i < (log.takebacksAtStart ?? 0); i++) out.push("*待った");
 
   let board = createInitialBoardState(null);
   const total = { SENTE: 0, GOTE: 0 };
@@ -80,6 +85,8 @@ export function logToKif(log, { names = {} } = {}) {
       if (m.opening) bits.push(`opening=${m.opening.name ?? m.opening}`);
       out.push(`*AI ${bits.join(" ")}`);
     }
+    // 「待った」：この手まで戻して指し直した回数ぶん（取り消した手は棋譜に残さない。戻した先の手の下に書く）
+    for (let i = 0; i < (m.takebacks ?? 0); i++) out.push("*待った");
     board = applyUsi(board, m.usi, side).boardState;
     prevTo = mv.to;
   }
@@ -89,6 +96,7 @@ export function logToKif(log, { names = {} } = {}) {
   const end = endLine(log.result, moves.length, 0, total[next]);
   if (end) out.push(end);
   if (log.result?.reason === "max-moves") out.push("*手数上限で引き分け");
+  if (log.result?.reason === "timeout") out.push("*時間切れ（切れ負け）");
   if (log.result?.reason === "perpetual-check") out.push("*連続王手の千日手（王手を続けた側の反則負け）");
   if (log.result?.error) out.push(`*エラー：${log.result.error}`);
   return out.join("\n") + "\n";
