@@ -112,7 +112,7 @@ const PROMOTABLE = [
  */
 const FORCE_PROMOTE = [0, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0];
 
-const PROMOTED_TYPE = [
+export const PROMOTED_TYPE = [
   0,
   PROM_PAWN,
   PROM_LANCE,

@@ -9,7 +9,7 @@
  */
 import { filterAllowedMovesInt } from "../behavior/checkPolicy.js";
 import { MATE_SCORE, Q_DELTA_MARGIN, Q_MAX_DEPTH } from "./constants.js";
-import { orderAndFilterInt, orderMovesInt } from "./ordering.js";
+import { historyUpdate, orderAndFilterInt, orderMovesInt } from "./ordering.js";
 import { intToMove, TYPE_STRING } from "../core/fastboard.js";
 import { resolveStyle } from "../eval/index.js";
 import { probeTt, storeTt } from "./tt.js";
@@ -71,22 +71,34 @@ export function negamax(board, depth, alpha, beta, evaluate, style, ctx) {
 
   if (useCheckPolicy) {
     // 並べ替え＋無駄王手フィルタの統合（makeMoved/inCheck の確認を1回にする）
-    const ordered = orderAndFilterInt(board, moves, style, tt, true);
+    const ordered = orderAndFilterInt(board, moves, style, tt, true, ctx.history ?? null);
     if (ordered.length > 0) {
       moves = ordered;
     } else {
       // 全手が不許可なら元の候補に戻す（旧 filterAllowedWithFallback と同一のフォールバック）
-      moves = orderMovesInt(board, moves, style, tt);
+      moves = orderMovesInt(board, moves, style, tt, ctx.history ?? null);
     }
   } else {
-    moves = orderMovesInt(board, moves, style, tt);
+    moves = orderMovesInt(board, moves, style, tt, ctx.history ?? null);
   }
   const alphaOrig = alpha;
   let best = -Infinity;
   let bestMove = null;
+  let first = true;
   for (const move of moves) {
     fb.makeMove(move);
-    const score = -negamax(board, depth - 1, -beta, -alpha, evaluate, style, ctx);
+    let score;
+    if (first) {
+      score = -negamax(board, depth - 1, -beta, -alpha, evaluate, style, ctx);
+      first = false;
+    } else {
+      // PVS（2026-11-10）: 2手目以降はゼロウィンドウで「αを超えるか」だけを先に確かめ、
+      // 超えた手だけ通常ウィンドウで読み直す。返る最善手・評価値は全ウィンドウ探索と同一。
+      score = -negamax(board, depth - 1, -alpha - 1, -alpha, evaluate, style, ctx);
+      if (!(ctx.b && ctx.b.hit) && score > alpha && score < beta) {
+        score = -negamax(board, depth - 1, -beta, -alpha, evaluate, style, ctx);
+      }
+    }
     fb.unmakeMove(move);
     // 途中まで読んだ値は使わない（ctx.b.hit は子で立てた打ち切りフラグ）
     if (ctx.b && ctx.b.hit) {
@@ -100,6 +112,10 @@ export function negamax(board, depth, alpha, beta, evaluate, style, ctx) {
       alpha = best;
     }
     if (alpha >= beta) {
+      // βカットを起こした静かな手は履歴へ記録する（取る手は MVV-LVA が担当するので対象外）
+      if (((move >>> 21) & 0xf) === 0) {
+        historyUpdate(ctx.history ?? null, fb.turnN, move, depth);
+      }
       break;
     }
   }

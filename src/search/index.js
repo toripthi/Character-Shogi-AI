@@ -50,10 +50,12 @@ export function searchBestMove(board, options = {}) {
   let bestMove = null;
   let bestScore = -Infinity;
   let bestBreakdown = null;
+  // 履歴ヒューリスティックの表（think() の反復をまたいで共有される。単発の呼び出しでは毎回新しい表）
+  const history = options.history ?? new Map();
 
   // ルートも内部 int 手で動く（最終結果だけ Move オブジェクト化する）。
   const fb = board.fb;
-  const rootMoves = orderMovesInt(board, fb.legalMovesForSearch(), style, tt);
+  const rootMoves = orderMovesInt(board, fb.legalMovesForSearch(), style, tt, history);
   if (rootMoves.length === 0) {
     // 手番側が詰み（内部値は negamax と同じ「残り深さ」基準。以前は -MATE_SCORE 固定で、1手詰めと3手詰めが
     // 同点になり、手の選び方次第で3手詰めを選ぶことがあった。2026-11 修正）。
@@ -76,16 +78,29 @@ export function searchBestMove(board, options = {}) {
     useCheckPolicy && depth >= 2 ? filterAllowedWithFallback(board, rootMoves) : rootMoves;
 
   let alpha = -Infinity;
+  let firstCandidate = true;
   for (const move of candidates) {
     fb.makeMove(move);
-    const score = -negamax(board, depth - 1, -rootBeta, -alpha, evaluate, style, {
+    const childCtx = {
       quiescence,
       useCheckPolicy,
       tt,
       stats,
       b,
       evalScore,
-    });
+      history,
+    };
+    let score;
+    if (firstCandidate) {
+      score = -negamax(board, depth - 1, -rootBeta, -alpha, evaluate, style, childCtx);
+      firstCandidate = false;
+    } else {
+      // 根も PVS（negamax と同じ形）: ゼロウィンドウで確かめ、αを超えた候補だけ読み直す
+      score = -negamax(board, depth - 1, -alpha - 1, -alpha, evaluate, style, childCtx);
+      if (!(b && b.hit) && score > alpha && score < rootBeta) {
+        score = -negamax(board, depth - 1, -rootBeta, -alpha, evaluate, style, childCtx);
+      }
+    }
     fb.unmakeMove(move);
     // 途中まで読んだ値は使わない（中断された候補手の結果は捨てる）
     if (b && b.hit) {
@@ -182,6 +197,8 @@ export function think(board, options = {}) {
   let aborted = false;
   let hardLimitHit = false;
   const tt = options.transposition ?? new Map();
+  // 履歴は反復深化の全深さで共有する（浅い深さで貯めた統計が深い深さの並べ替えを助ける）
+  const history = options.history ?? new Map();
 
   for (let depth = 1; depth <= maxDepth; depth++) {
     if (depth >= 2) {
@@ -200,6 +217,7 @@ export function think(board, options = {}) {
       ...options,
       depth,
       transposition: tt,
+      history,
       maxNodes: depth >= 2 && budgetTotal !== Infinity ? budgetTotal - nodesTotal - qnodesTotal : undefined,
       hardDeadlineMs: depth >= 2 && hardTimeLimitMs != null ? t0 + hardTimeLimitMs : undefined,
     });
