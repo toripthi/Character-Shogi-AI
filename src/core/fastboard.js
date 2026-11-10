@@ -547,6 +547,9 @@ export class FastBoard {
   constructor() {
     this.board = new Uint8Array(BLEN);
     this.turnN = BLACK;
+    // 手数（SFEN の末尾の「手数」と同じ数え方：次に指す手が何手目か。初形は 1）。makeMove で +1、unmakeMove で -1。
+    // 玉の位置の評価（2026-11-10 §4）が「対局の手数」を見るために持つ。sfen() の出力には載せない（局面の同一判定に使うため）。
+    this.plyN = 1;
     this.hands = [new Uint16Array(7), new Uint16Array(7)];
     this.kingSq = new Int16Array(2); // -1 = 不在
     this.piecePos = [new Uint8Array(40), new Uint8Array(40)];
@@ -566,6 +569,7 @@ export class FastBoard {
   clear() {
     this.board.fill(0);
     this.turnN = BLACK;
+    this.plyN = 1;
     this.hands[0].fill(0);
     this.hands[1].fill(0);
     this.kingSq[0] = -1;
@@ -597,6 +601,10 @@ export class FastBoard {
     }
     this.hands[BLACK] = hands[0];
     this.hands[WHITE] = hands[1];
+    if (sections.length === 4) {
+      const n = Number(sections[3]);
+      this.plyN = Number.isInteger(n) && n >= 1 ? n : 1;
+    }
     this._computeZobrist();
     return true;
   }
@@ -1376,6 +1384,7 @@ export class FastBoard {
       }
     }
     this.turnN = mover ^ 1;
+    this.plyN++;
   }
 
   _growZobristStack() {
@@ -1396,6 +1405,7 @@ export class FastBoard {
     const mover = this.turnN ^ 1;
     const enemy = this.turnN;
     this.turnN = mover;
+    this.plyN--;
     // Zobrist は、makeMove で積んだ値に戻す（どの経路で戻っても同じ）
     this.zsp--;
     this.zhi = this.zsHi[this.zsp];
@@ -2194,6 +2204,11 @@ export class ShogiBoardFast {
   /** 手番 Color（"black" / "white"） */
   turn() {
     return COLOR_STRING[this.fb.turnN];
+  }
+
+  /** 手数（SFEN の末尾と同じ数え方：次に指す手が何手目か。初形は 1。SFEN で渡された手数から数え始める） */
+  moveNumber() {
+    return this.fb.plyN;
   }
 
   /** 王手がかかっているか */

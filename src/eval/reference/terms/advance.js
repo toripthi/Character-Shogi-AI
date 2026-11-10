@@ -8,12 +8,14 @@
  * 2026-11-09 改修（docs/specs/eval-2piece-spec-2026-11-09.md §9）：
  *   加点に敵玉との距離係数を掛ける（敵玉から遠い駒の前進は点にならない）。
  *   前進の役割は「駒をぶつかる位置まで運ぶこと」で、玉に向かわない前進に点を与えないため。
- *   飛・角・馬・龍は距離係数を掛けない（§8。遠くから利く駒）。相手の駒の減点も同じ数え方（相手から見た敵玉＝自玉との距離）。
+ *   相手の駒の減点も同じ数え方（相手から見た敵玉＝自玉との距離）。
+ * 2026-11-10 §3：前進の対象を歩・桂馬・銀だけに限定。金・香・飛・角・成り駒（と金・成桂・成銀・馬・龍など）には
+ *   前進項の加点を付けない。対象の3種には距離係数を掛ける（飛・角・馬・龍はもう対象外なので、距離係数の例外はなくなった）。
  */
 import { chebyshev, attackPct } from "../../proximity.js";
 import { enemyOf, forEachPiece, findKings } from "./util.js";
 
-const LONG_RANGE = new Set(["bishop", "rook", "horse", "dragon"]);
+const TARGETS = new Set(["pawn", "knight", "silver"]);
 
 function advanceBonus(rank, color) {
   // rank: 1〜9（1が先手から見て敵陣側）。中央5段を0として前進を加点。
@@ -29,14 +31,11 @@ export function advanceTerm(board) {
   const kings = findKings(board);
   let score = 0;
   forEachPiece(board, ({ piece, file, rank }) => {
-    if (piece.type === "king") {
-      return;
+    if (!TARGETS.has(piece.type)) {
+      return; // 歩・桂・銀以外は前進項の対象外
     }
-    let pct = 100;
-    if (!LONG_RANGE.has(piece.type)) {
-      const enemyKing = kings[enemyOf(piece.color)];
-      pct = attackPct(enemyKing ? chebyshev(file, rank, enemyKing.file, enemyKing.rank) : null);
-    }
+    const enemyKing = kings[enemyOf(piece.color)];
+    const pct = attackPct(enemyKing ? chebyshev(file, rank, enemyKing.file, enemyKing.rank) : null);
     const b = advanceBonus(rank, piece.color) * pct;
     if (piece.color === turn) {
       score += b;

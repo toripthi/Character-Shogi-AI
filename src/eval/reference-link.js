@@ -43,3 +43,6 @@ export const referenceMatchForm = (...a) => need("matchForm")(...a);
 export const referenceCastlePoints = (...a) => need("castlePoints")(...a);
 export const referenceRookSwungTerm = (...a) => need("rookSwungTerm")(...a);
 export const referenceRookHomeTerm = (...a) => need("rookHomeTerm")(...a);
+export const referenceKingHomeTerm = (...a) => need("kingHomeTerm")(...a);
+export const referenceKingAdvanceTerm = (...a) => need("kingAdvanceTerm")(...a);
+export const referenceKingGuardTerm = (...a) => need("kingGuardTerm")(...a);

@@ -11,7 +11,7 @@ import { scoreRootMoves, selectMove } from "./selection/index.js";
 import { createBook } from "./book/index.js";
 import { REJOIN_MAX_ABS_DEFAULT } from "./book/constants.js";
 import { classifyMatchup, INITIAL_MATCHUP } from "./behavior/matchup.js";
-import { createPlanner, PLANS } from "./plan/index.js";
+import { createPlanner, PLANS, pawnsInContact } from "./plan/index.js";
 import { DEFAULT_MAX_NODES, PRUNE_SLACK_DEFAULT, MATE_SCORE } from "./search/constants.js";
 import { findMate } from "./search/mate.js";
 // 4-2：これらの重みのどれかが 0 でないとき、戦法の文脈（{ me, matchup }）を探索に渡す。
@@ -112,16 +112,27 @@ export function createPlayer(options = {}) {
   const variants = new Map();
   if (resolved.openings) {
     for (const [oid, v] of Object.entries(resolved.openings.variants)) {
-      variants.set(oid, { opening: oid, style: v.style, bookTags: options.book?.tags ?? v.bookTags, usesContext: hasContext(v.style) });
+      variants.set(oid, { opening: oid, style: v.style, bookTags: options.book?.tags ?? v.bookTags, usesContext: hasContext(v.style), planRef: v.plan });
     }
   } else {
-    variants.set(null, { opening: null, style: resolved.style, bookTags: options.book?.tags ?? resolved.bookTags ?? [], usesContext: hasContext(resolved.style) });
+    variants.set(null, { opening: null, style: resolved.style, bookTags: options.book?.tags ?? resolved.bookTags ?? [], usesContext: hasContext(resolved.style), planRef: resolved.plan });
   }
-  // 手順テンプレート層（定跡と探索の間）。options.plan（plan オブジェクト／id／false）、なければペルソナの plan。
-  const planRef = options.plan === undefined ? resolved.plan : options.plan;
-  const planData = planRef ? (typeof planRef === "string" ? PLANS[planRef] : planRef) : null;
-  if (planRef && !planData) throw new Error(`未知の plan "${planRef}"（${Object.keys(PLANS).join(", ")}）`);
-  const planner = planData ? createPlanner(planData) : null;
+  // 手順テンプレート層（定跡と探索の間）。options.plan（plan オブジェクト／id／false。全戦法に同じものを使う）、
+  // なければ戦法ごと（variant）の plan（振り飛車党の plan は特性から。2026-11-10 §1）。ペルソナ単位の plan は variant にも入る。
+  const plannerOfRef = (ref) => {
+    const data = ref ? (typeof ref === "string" ? PLANS[ref] : ref) : null;
+    if (ref && !data) throw new Error(`未知の plan "${ref}"（${Object.keys(PLANS).join(", ")}）`);
+    return data ? createPlanner(data) : null;
+  };
+  const plannerCache = new Map(); // plan id → planner（同じ plan を戦法ごとに作り直さない）
+  const plannerOf = (ref) => {
+    if (typeof ref !== "string") return plannerOfRef(ref);
+    if (!plannerCache.has(ref)) plannerCache.set(ref, plannerOfRef(ref));
+    return plannerCache.get(ref);
+  };
+  for (const v of variants.values()) {
+    v.planner = options.plan === undefined ? plannerOf(v.planRef) : plannerOf(options.plan);
+  }
   const BALANCE_STYLE = resolvePersona("balance").style;
   const mateOpts = {
     enabled: options.mate?.enabled ?? true,
@@ -145,6 +156,8 @@ export function createPlayer(options = {}) {
     // 戦法の判定（4-2）の状態を手番の色ごとに持つ。ttKey は置換表を作った文脈（手番・判定結果）。
     matchup: { black: INITIAL_MATCHUP, white: INITIAL_MATCHUP },
     ttKey: null,
+    // 手順テンプレートを抜けたか（色ごと。歩同士が接触したら true、戻らない。2026-11-10 §2）。定跡には影響しない。
+    planLeft: { black: false, white: false },
   };
   const variantOf = (side) => variants.get(state.opening[side]);
 
@@ -155,6 +168,7 @@ export function createPlayer(options = {}) {
     state.sides = { black: { own: 0, left: false }, white: { own: 0, left: false } };
     state.matchup = { black: INITIAL_MATCHUP, white: INITIAL_MATCHUP };
     state.ttKey = null;
+    state.planLeft = { black: false, white: false };
   }
 
   /**
@@ -199,6 +213,13 @@ export function createPlayer(options = {}) {
    * 大損なら null（探索に任せる）。docs/PLAN.md。
    */
   function tryPlan(board, side, context) {
+    const planner = variantOf(side).planner;
+    if (!planner || state.planLeft[side]) return null;
+    // 歩同士の距離が1になったら、テンプレートを抜ける（ラッチ。§2）。手の前の盤面で判定する。
+    if (pawnsInContact(board, side)) {
+      state.planLeft[side] = true;
+      return null;
+    }
     const matchup = context?.matchup ?? (state.matchup[side] = classifyMatchup(board, side, state.matchup[side]));
     const step = planner.next(board, side, matchup, state.rng);
     if (!step) return null;
@@ -253,9 +274,10 @@ export function createPlayer(options = {}) {
         };
       }
     }
-    if (planner) {
+    {
       const hit = tryPlan(board, side, context);
       if (hit) {
+        const planner = variantOf(side).planner;
         return {
           move: hit.move,
           source: "plan",

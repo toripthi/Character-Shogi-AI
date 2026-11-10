@@ -20,6 +20,7 @@ import { retreatTerm } from "./terms/retreat.js";
 import { captureTerm } from "./terms/capture.js";
 import { castleFuriTerm, castleIbishaTerm } from "./terms/castle.js";
 import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
+import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
 
 export const TERMS = {
   material: { kind: "position", label: "駒得", defaultWeight: 1, eval: materialTerm },
@@ -34,6 +35,10 @@ export const TERMS = {
   castleIbisha: { kind: "position", label: "居飛車の囲い", defaultWeight: 0, eval: castleIbishaTerm },
   rookSwung: { kind: "position", label: "振り飛車の筋（自陣）", defaultWeight: 0, eval: rookSwungTerm },
   rookHome: { kind: "position", label: "居飛車の筋（自陣）", defaultWeight: 0, eval: rookHomeTerm },
+  // 玉の位置（2026-11-10 §4）。重みは自己対局の測定で 40/40/15 に決めた（scripts/measure-king.js、報告書参照）。
+  kingHome: { kind: "position", label: "玉の初期位置（11〜30手目）", defaultWeight: 40, eval: kingHomeTerm },
+  kingAdvance: { kind: "position", label: "玉の出すぎ（30手目まで）", defaultWeight: 40, eval: kingAdvanceTerm },
+  kingGuard: { kind: "position", label: "玉の守り（金2銀1）", defaultWeight: 15, eval: kingGuardTerm },
   // 未接続（retreat.js 参照）
   retreat: { kind: "move", label: "後退ペナルティ", defaultWeight: 0, eval: retreatTerm },
   // 取る手への加減点（2026-11-09 §7）。取った駒の価値を返す。重みは気質ごと（攻め +0.1 / 受け -0.05）

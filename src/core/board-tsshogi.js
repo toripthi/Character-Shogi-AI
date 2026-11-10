@@ -33,6 +33,14 @@ export class ShogiBoard {
     if (!ok) {
       throw new Error(`Invalid SFEN: ${sfen}`);
     }
+    // 手数（SFEN の末尾と同じ数え方。fastboard の moveNumber と同じ意味。2026-11-10）
+    const n = Number(String(sfen).trim().split(/\s+/).at(-1));
+    this.plyN = String(sfen).trim().split(/\s+/).length >= 4 && Number.isInteger(n) && n >= 1 ? n : 1;
+  }
+
+  /** 手数（次に指す手が何手目か。初形は 1） */
+  moveNumber() {
+    return this.plyN;
   }
 
   /** @returns {import("tsshogi").Move[]} */
@@ -124,12 +132,15 @@ export class ShogiBoard {
 
   /** @param {import("tsshogi").Move} move */
   makeMove(move) {
-    return this.position.doMove(move);
+    const ok = this.position.doMove(move);
+    if (ok) this.plyN++;
+    return ok;
   }
 
   /** @param {import("tsshogi").Move} move */
   unmakeMove(move) {
     this.position.undoMove(move);
+    this.plyN--;
   }
 
   isGameOver() {

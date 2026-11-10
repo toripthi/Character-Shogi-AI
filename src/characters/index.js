@@ -32,6 +32,8 @@ export function listPersonas() {
 }
 
 const tagsOf = (traits) => [...new Set(traits.flatMap((t) => TRAITS[t]?.bookTags ?? []))];
+/** 手順テンプレートの id。ペルソナの plan が優先、なければ特性の plan（先頭のもの）。なければ null。 */
+const planOf = (spec, traits) => spec.plan ?? traits.map((t) => TRAITS[t]?.plan).find((p) => p) ?? null;
 
 /**
  * オールラウンダー（D-029 (e)）：choose を持つ特性があれば、候補ごとに「その特性を候補に置き換えた」
@@ -57,7 +59,7 @@ function resolveOpenings(spec) {
   const variants = {};
   for (const id of Object.keys(weights)) {
     const vTraits = traits.map((t) => (t === chooserId ? id : t));
-    variants[id] = { traits: vTraits, bookTags: tagsOf(vTraits), style: composeStyle({ ...spec, traits: vTraits }) };
+    variants[id] = { traits: vTraits, bookTags: tagsOf(vTraits), plan: planOf(spec, vTraits), style: composeStyle({ ...spec, traits: vTraits }) };
   }
   return { chooser: chooserId, weights, variants };
 }
@@ -121,8 +123,9 @@ export function resolvePersona(ref) {
     openings: resolveOpenings(spec),
     // 定跡を使うか（D-029）。false のペルソナ（balance）は book を有効にしても引かない。
     usesBook: spec.usesBook !== false,
-    // 手順テンプレートの id（src/plan）。なければ null（テンプレートを使わない）
-    plan: spec.plan ?? null,
+    // 手順テンプレートの id（src/plan）。ペルソナの plan、なければ特性の plan（振り飛車党）。なければ null（使わない）。
+    // オールラウンダーは戦法が決まる前なので null。実際に使う plan は戦法ごとの variants[*].plan。
+    plan: planOf(spec, spec.traits ?? []),
     style,
   };
 }

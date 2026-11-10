@@ -12,6 +12,7 @@ import { rookDangerTerm } from "./terms/rookDanger.js";
 import { horseGuardTerm } from "./terms/horseGuard.js";
 import { matchForm, castlePoints } from "./terms/castle.js";
 import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
+import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
 
 registerReference({
   materialTerm,
@@ -25,4 +26,7 @@ registerReference({
   castlePoints,
   rookSwungTerm,
   rookHomeTerm,
+  kingHomeTerm,
+  kingAdvanceTerm,
+  kingGuardTerm,
 });
