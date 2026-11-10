@@ -36,8 +36,10 @@ export const TERMS = {
   rookSwung: { kind: "position", label: "振り飛車の筋（自陣）", defaultWeight: 0, eval: rookSwungTerm },
   rookHome: { kind: "position", label: "居飛車の筋（自陣）", defaultWeight: 0, eval: rookHomeTerm },
   // 玉の位置（2026-11-10 §4）。重みは自己対局の測定で 40/40/15 に決めた（scripts/measure-king.js、報告書参照）。
+  // kingAdvance のみ 2026-11-10 夜に本人の設計判断で 80 に変更：「3段目以上にいる限り一律」のゾーン罰とし、
+  // 初期位置の居座り罰（kingHome 40）と同額で拮抗していた状態を崩すため。段ごとの逓増にはしない。
   kingHome: { kind: "position", label: "玉の初期位置（11〜30手目）", defaultWeight: 40, eval: kingHomeTerm },
-  kingAdvance: { kind: "position", label: "玉の出すぎ（30手目まで）", defaultWeight: 40, eval: kingAdvanceTerm },
+  kingAdvance: { kind: "position", label: "玉の出すぎ（30手目まで）", defaultWeight: 80, eval: kingAdvanceTerm },
   kingGuard: { kind: "position", label: "玉の守り（金2銀1）", defaultWeight: 15, eval: kingGuardTerm },
   // 未接続（retreat.js 参照）
   retreat: { kind: "move", label: "後退ペナルティ", defaultWeight: 0, eval: retreatTerm },
