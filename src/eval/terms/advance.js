@@ -2,17 +2,15 @@
  * 評価項: 前進PST（位置価値テーブル）。
  * 攻め将棋は前進寄り（REQUIREMENTS §5.3）。
  * 段ベースの簡易テーブルで、玉には適用しない。
- * 符号は手番視点（自陣→敵陣への前進を加点）。
- * 初期配置の合計が0になるよう中央（5段）を0点にする。
+ * 符号は手番視点（自分の駒の合計 − 相手の駒の合計）。
+ * 値は持ち主から見た段 × 10（自陣の後段＝1段目で10、敵陣の後段＝9段目で90）で、全て正の値。
+ * 敵玉との距離係数は掛けない。意味の説明は参照実装のファイル先頭を見る。
  *
  * 2026-11-05：駒リストを直接読む高速版。値は参照実装（src/eval/reference/terms/advance.js）と同じ。
- * 2026-11-09 改修（docs/specs/eval-2piece-spec-2026-11-09.md §9）：加点に敵玉との距離係数を掛ける
- *   （飛・角・馬・龍は掛けない）。意味の説明は参照実装のファイル先頭を見る。
  * 2026-11-10 §3：前進の対象を歩・桂馬・銀だけに限定（金・香・飛・角・成り駒・馬・龍には前進項の加点を付けない）。
- *   対象の3種には、これまでどおり敵玉との距離係数を掛ける。
+ * 2026-11-21 改修：中央0点の符号つき表＋距離係数から、この一律の段表に作り替えた。
  */
-import { IX_F, IX_R, PAWN, KNIGHT, SILVER } from "./fast.js";
-import { ATTACK_PCT } from "../proximity.js";
+import { IX_R, PAWN, KNIGHT, SILVER } from "./fast.js";
 import { referenceAdvanceTerm } from "../reference-link.js";
 
 // 前進の対象（歩・桂馬・銀。成っていないものだけ）の型の集合（ビット）
@@ -32,9 +30,6 @@ export function advanceTerm(board) {
   for (let c = 0; c < 2; c++) {
     const pos = fb.piecePos[c];
     const n = fb.pieceCnt[c];
-    const enemyKing = fb.kingSq[c ^ 1];
-    const ekf = enemyKing >= 0 ? IX_F[enemyKing] : 0;
-    const ekr = enemyKing >= 0 ? IX_R[enemyKing] : 0;
     let side = 0;
     for (let i = 0; i < n; i++) {
       const ix = pos[i];
@@ -42,14 +37,9 @@ export function advanceTerm(board) {
       if (((TARGET_MASK >> t) & 1) === 0) {
         continue; // 歩・桂・銀以外は前進項の対象外
       }
-      // rank: 1〜9（1が先手から見て敵陣側）。中央5段を0として前進を加点。
+      // rank: 1〜9（1が先手から見て敵陣側）。持ち主から見た段（自陣の後段＝1）× 10。
       const rank = IX_R[ix];
-      const b = c === 0 ? (5 - rank) * 10 : (rank - 5) * 10;
-      let pct = 100;
-      if (enemyKing >= 0) {
-        pct = ATTACK_PCT[Math.max(Math.abs(IX_F[ix] - ekf), Math.abs(rank - ekr))];
-      }
-      side += b * pct;
+      side += (c === 0 ? 10 - rank : rank) * 10;
     }
     if (c === turn) {
       score += side;
@@ -57,5 +47,5 @@ export function advanceTerm(board) {
       score -= side;
     }
   }
-  return score / 100;
+  return score;
 }
