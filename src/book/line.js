@@ -5,7 +5,7 @@
  *   # tags: furibisha      （カンマ区切り。空可）
  *   # side: black          （black / white / both。必須）
  *   # weight: 10           （既定 1）
- *   # personaWeights: seme=5, mamori=1   （任意）
+ *   # personaWeights: seme=5, uke=1   （任意）
  *   # trap: ...            （任意）
  *   # trigger: 7           （任意。PATCH §3）
  *   # source: user.kif     （KIF 取り込みで付く。任意）

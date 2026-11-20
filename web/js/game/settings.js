@@ -3,7 +3,7 @@
  * 不正な値は黙って直さずエラーにする（棋力の測定で、意図しない設定で指すのを避ける）。
  *
  * 入力の形（raw）はすべて文字列。空欄は「指定なし（エンジンの既定）」:
- *   side('sente'|'gote'|'furigoma'), opening('random'|'ibisha'|'furi'), temperament('balance'|'seme'|'mamori'),
+ *   side('sente'|'gote'|'furigoma'), opening('random'|'ibisha'|'furi'), temperament('balance'|'seme'|'uke'),
  *   time(持ち時間のプリセット id。game/time-control.js), customMin, customInc,
  *   depth, maxNodes, maxDepth, margin, slip, slipMargin, book('1'|'0'), seed, style, maxMoves,
  *   persona（旧：ペルソナ id を直接指定。URL のときだけ使える。保存はしない。指定すると opening・temperament より優先）
@@ -41,11 +41,11 @@ export function buildSettings(raw) {
   const side = String(r.side).toLowerCase();
   if (side !== "sente" && side !== "gote" && side !== "furigoma") throw new Error(`side は sente・gote・furigoma のどれかです: "${r.side}"`);
   if (String(r.book) !== "0" && String(r.book) !== "1") throw new Error(`book は 0 か 1 です: "${r.book}"`);
-  // ペルソナ：旧 persona が指定されていればそれ、なければ 戦法×気質（"ibisha-seme" など。characters/axes.js）
+  // ペルソナ：旧 persona が指定されていればそれ、なければ 戦型×棋風（"ibisha-seme" など。characters/axes.js）
   const legacy = String(r.persona ?? "").trim();
   let persona = legacy;
   if (!persona) {
-    personaSpecFromAxes(String(r.opening), String(r.temperament)); // 不正ならここでエラー（戦法・気質の値）
+    personaSpecFromAxes(String(r.opening), String(r.temperament)); // 不正ならここでエラー（戦型・棋風の値）
     persona = axisPersonaId(String(r.opening), String(r.temperament));
   }
   const timeControl = buildTimeControl({ time: r.time, customMin: r.customMin, customInc: r.customInc });

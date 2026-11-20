@@ -7,8 +7,8 @@
  */
 import balance from "./balance.js";
 import seme from "./seme.js";
-import mamori from "./mamori.js";
+import uke from "./uke.js";
 import ibishaSeme from "./ibisha-seme.js";
-import furiMamori from "./furi-mamori.js";
+import furiUke from "./furi-uke.js";
 
-export const PERSONAS = Object.fromEntries([balance, seme, mamori, ibishaSeme, furiMamori].map((p) => [p.id, p]));
+export const PERSONAS = Object.fromEntries([balance, seme, uke, ibishaSeme, furiUke].map((p) => [p.id, p]));

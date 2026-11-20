@@ -74,7 +74,7 @@ function openingRng(seed, side) {
 }
 
 /**
- * 対局開始時の戦法の抽選（D-029 (e)）。先手・後手を別々に引く。openings が null なら両方 null。
+ * 対局開始時の戦型の抽選（D-029 (e)）。先手・後手を別々に引く。openings が null なら両方 null。
  * @param {ReturnType<typeof resolveOpenings>} openings resolvePersona(...).openings
  * @param {number} seed
  * @returns {{ black: string|null, white: string|null }}
@@ -116,15 +116,15 @@ export function resolvePersona(ref) {
     name: spec.name ?? "カスタム",
     description: spec.description ?? "",
     traits: [...(spec.traits ?? [])],
-    // 定跡の戦法タグ（特性の bookTags の和集合、D-015）。composeStyle の戻り値は変えない。
+    // 定跡の戦型タグ（特性の bookTags の和集合、D-015）。composeStyle の戻り値は変えない。
     bookTags: tagsOf(spec.traits ?? []),
-    // オールラウンダー（D-029 (e)）：対局開始時に戦法を抽選する。通常のペルソナは null。
-    // このとき style / bookTags は「戦法が決まる前」の値（戦法の重み・タグを含まない）。実際に使う一式は variants。
+    // オールラウンダー（D-029 (e)）：対局開始時に戦型を抽選する。通常のペルソナは null。
+    // このとき style / bookTags は「戦型が決まる前」の値（戦型の重み・タグを含まない）。実際に使う一式は variants。
     openings: resolveOpenings(spec),
     // 定跡を使うか（D-029）。false のペルソナ（balance）は book を有効にしても引かない。
     usesBook: spec.usesBook !== false,
     // 手順テンプレートの id（src/plan）。ペルソナの plan、なければ特性の plan（振り飛車党）。なければ null（使わない）。
-    // オールラウンダーは戦法が決まる前なので null。実際に使う plan は戦法ごとの variants[*].plan。
+    // オールラウンダーは戦型が決まる前なので null。実際に使う plan は戦型ごとの variants[*].plan。
     plan: planOf(spec, spec.traits ?? []),
     style,
   };

@@ -1,11 +1,11 @@
 /**
  * 棋風の2つの軸（開始画面の選択肢）。2026-11 ユーザー指示 ③。
  *
- *   戦法の軸（opening）：   ランダム / 居飛車 / 振り飛車     （特性 allround / ibisha / furibisha）
- *   気質の軸（temperament）：バランス / 攻め / 守り           （特性 なし / seme / mamori）
+ *   戦型の軸（opening）：   ランダム / 居飛車 / 振り飛車     （特性 allround / ibisha / furibisha）
+ *   棋風の軸（temperament）：バランス / 攻め / 守り           （特性 なし / seme / uke）
  *
  * 3×3 = 9 通りの組み合わせはどれも選べる。ペルソナの id は `${opening}-${temperament}`
- * （例 "ibisha-seme"、"random-balance"）。既存のペルソナ ibisha-seme・furi-mamori は同じ id・同じ中身（そのまま使う）。
+ * （例 "ibisha-seme"、"random-balance"）。既存のペルソナ ibisha-seme・furi-uke は同じ id・同じ中身（そのまま使う）。
  * それ以外の組み合わせは、ここで特性から組み立てる（resolvePersona が "xxx-yyy" 形式の id を受け取れる）。
  * 純データ・純関数（Node / ブラウザ / Worker 共通）。
  */
@@ -20,7 +20,7 @@ export const OPENING_AXIS = Object.freeze([
 export const TEMPERAMENT_AXIS = Object.freeze([
   { id: "balance", name: "バランス", traits: [], description: "攻めにも守りにも偏らない（駒得を基準に指す）" },
   { id: "seme", name: "攻め", traits: ["seme"], description: "前のめりに攻める。飛車の筋と敵陣制圧を好み、後退を嫌う" },
-  { id: "mamori", name: "守り", traits: ["mamori"], description: "飛車を可愛がり、馬の守りを重く見る" },
+  { id: "uke", name: "受け", traits: ["uke"], description: "飛車を可愛がり、馬の守りを重く見る" },
 ]);
 
 export const axisPersonaId = (opening, temperament) => `${opening}-${temperament}`;
@@ -39,20 +39,20 @@ export function parseAxisPersonaId(id) {
 
 /**
  * 軸の組み合わせ → ペルソナの定義（resolvePersona に渡せる形）。
- * 既存のペルソナ（ibisha-seme・furi-mamori）があればそれをそのまま返す。
+ * 既存のペルソナ（ibisha-seme・furi-uke）があればそれをそのまま返す。
  * @throws 未知の軸の値
  */
 export function personaSpecFromAxes(opening, temperament) {
   const o = byId(OPENING_AXIS, opening);
   const t = byId(TEMPERAMENT_AXIS, temperament);
-  if (!o) throw new Error(`未知の戦法 "${opening}"（${OPENING_AXIS.map((a) => a.id).join(", ")}）`);
-  if (!t) throw new Error(`未知の気質 "${temperament}"（${TEMPERAMENT_AXIS.map((a) => a.id).join(", ")}）`);
+  if (!o) throw new Error(`未知の戦型 "${opening}"（${OPENING_AXIS.map((a) => a.id).join(", ")}）`);
+  if (!t) throw new Error(`未知の棋風 "${temperament}"（${TEMPERAMENT_AXIS.map((a) => a.id).join(", ")}）`);
   const id = axisPersonaId(o.id, t.id);
   if (PERSONAS[id]) return PERSONAS[id];
   return {
     id,
     name: `${o.name}×${t.name}`,
-    description: `戦法：${o.description}。気質：${t.description}。`,
+    description: `戦型：${o.description}。棋風：${t.description}。`,
     traits: [...o.traits, ...t.traits],
   };
 }

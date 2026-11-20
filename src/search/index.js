@@ -24,7 +24,7 @@ export { orderMoves } from "./ordering.js";
  */
 export function searchBestMove(board, options = {}) {
   const depth = options.depth ?? 2;
-  // 文脈（4-2：{ me, matchup }）は、戦法の項だけが使う。文脈がなければ従来どおり。
+  // 文脈（4-2：{ me, matchup }）は、戦型の項だけが使う。文脈がなければ従来どおり。
   const context = options.context;
   const evaluate = options.evaluate ?? ((b, st) => defaultEvaluate(b, st, context));
   // 葉ノード・静止探索の評価は score だけでよい（内訳 breakdown は根の最善手のときだけ要る）ので、内訳を

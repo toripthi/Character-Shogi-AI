@@ -13,6 +13,8 @@ import { filterAllowedMoves } from "../behavior/checkPolicy.js";
 import { createRng } from "../core/rng.js";
 import { retreatTerm } from "../eval/terms/retreat.js";
 import { captureTerm } from "../eval/terms/capture.js";
+import { knightJumpTerm } from "../eval/terms/knightJump.js";
+import { dropDefenseTerm } from "../eval/terms/dropDefense.js";
 import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
 
 /**
@@ -24,7 +26,12 @@ import { MATE_SCORE, toMatePlies, isMateScore } from "../search/constants.js";
  *   order?: {move,score}[]（前の反復の採点。この順で読むと打ち切りが効きやすい）
  *   retreatWeight?: number（既定 0 = 後退を見ない。挙動は接続前と同じ）
  *   captureWeight?: number（既定 0 = 取る手を見ない。取った駒の価値 × 重みを手のスコアに足す。負なら減点。
- *     retreat と同じく、実際に指すルートの手の採点にだけ・margin 判定より前に加える。詰みの点には足さない）
+ *     retreat と同じく、実際に指すルートの手の採点にだけ・margin 判定より前に加える。詰みの点には足さない。
+ *     重みが負のとき、玉の筋との距離の傾斜は captureTerm 側で反転して適用される（capture.js の冒頭参照）
+ *   knightJumpWeight?: number（既定 0 = 見ない。自玉に最も近い桂を跳ねる手（knightJumpTerm = 1）のスコアから引く。
+ *     retreat と同じ受け口・同じ扱い）
+ *   dropDefenseWeight?: number（既定 0 = 見ない。自陣への打ち込み報酬（dropDefenseTerm = 1）のスコアに足す。
+ *     capture と同じ受け口・同じ扱い）
  *   maxNodes?: number（全ルート手の合計のノード予算・docs/NODE-BUDGET-DESIGN.md §5。
  *     残り予算を超えた候補手の探索が中断したら、その反復（この呼び出し1回分）は破棄する。
  *     stats.aborted が true になる。深さ1の採点は必ず完了させること（呼び出し側の責務））
@@ -37,6 +44,8 @@ export function scoreRootMoves(board, options = {}) {
   const depth = options.depth ?? 2;
   const retreatWeight = options.retreatWeight ?? 0;
   const captureWeight = options.captureWeight ?? 0;
+  const knightJumpWeight = options.knightJumpWeight ?? 0;
+  const dropDefenseWeight = options.dropDefenseWeight ?? 0;
   const evaluate = options.evaluate;
   const context = options.context;
   const style = options.style ?? {};
@@ -63,8 +72,12 @@ export function scoreRootMoves(board, options = {}) {
   let usedQnodes = 0;
   let aborted = null; // null | { by: "nodes"|"hard", usi: string|null }
   for (const move of moves) {
-    const penalty = retreatWeight !== 0 ? retreatWeight * retreatTerm(board, move) : 0;
-    const bonus = captureWeight !== 0 ? captureWeight * captureTerm(board, move, style) : 0;
+    const penalty =
+      (retreatWeight !== 0 ? retreatWeight * retreatTerm(board, move) : 0) +
+      (knightJumpWeight !== 0 ? knightJumpWeight * knightJumpTerm(board, move) : 0);
+    const bonus =
+      (captureWeight !== 0 ? captureWeight * captureTerm(board, move, style, captureWeight) : 0) +
+      (dropDefenseWeight !== 0 ? dropDefenseWeight * dropDefenseTerm(board, move) : 0);
     board.makeMove(move);
     // 打ち切り窓: 最終点 -reply - penalty + bonus が bestFinal - margin 以上の手だけが候補になりうる。
     // reply > B なら候補外が確定（B = -(bestFinal - margin) - penalty + bonus）。

@@ -19,7 +19,10 @@ import { horseGuardTerm } from "./terms/horseGuard.js";
 import { retreatTerm } from "./terms/retreat.js";
 import { captureTerm } from "./terms/capture.js";
 import { castleFuriTerm, castleIbishaTerm } from "./terms/castle.js";
-import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
+import { rookSwungTerm, rookHomeTerm, rookEdgeTerm } from "./terms/rook.js";
+import { mobilityTerm } from "./terms/mobility.js";
+import { knightJumpTerm } from "./terms/knightJump.js";
+import { dropDefenseTerm } from "./terms/dropDefense.js";
 import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
 
 export const TERMS = {
@@ -35,16 +38,25 @@ export const TERMS = {
   castleIbisha: { kind: "position", label: "居飛車の囲い", defaultWeight: 0, eval: castleIbishaTerm },
   rookSwung: { kind: "position", label: "振り飛車の筋（自陣）", defaultWeight: 0, eval: rookSwungTerm },
   rookHome: { kind: "position", label: "居飛車の筋（自陣）", defaultWeight: 0, eval: rookHomeTerm },
-  // 玉の位置（2026-11-10 §4）。重みは自己対局の測定で 40/40/15 に決めた（scripts/measure-king.js、報告書参照）。
-  // kingAdvance のみ 2026-11-10 夜に本人の設計判断で 80 に変更：「3段目以上にいる限り一律」のゾーン罰とし、
-  // 初期位置の居座り罰（kingHome 40）と同額で拮抗していた状態を崩すため。段ごとの逓増にはしない。
+  // 飛車の横揺れ対策（2026-11-12 設計、2026-11-20 実装）：端の飛車への罰（項は「相手 − 自分」の個数、重み 30 で −30）
+  // と、角・飛車の可動範囲への加点（項はマス数の差。係数 2 は仮置き）。
+  rookEdge: { kind: "position", label: "飛車の端（減点）", defaultWeight: 30, eval: rookEdgeTerm },
+  mobility: { kind: "position", label: "角・飛車の可動範囲", defaultWeight: 2, eval: mobilityTerm },
+  // 玉の位置（2026-11-10 §4）。kingHome・kingGuard の重みは自己対局の測定で 40/15 に決めた（scripts/measure-king.js、報告書参照）。
+  // kingAdvance は 2026-11-20 の本人決定で段階罰に変更：項が、気質ごとの段階表（eval/kingPos.js の
+  // KING_ADVANCE_STAGES_*。style.kingAdvanceStages で渡る）から罰点をそのまま返すため、重みは倍率（既定 1）。
+  // 従来は「30手目まで一律 80・31手目から 0」の崖だった。kingHome の窓（11〜30手目）は従来どおり。
   kingHome: { kind: "position", label: "玉の初期位置（11〜30手目）", defaultWeight: 40, eval: kingHomeTerm },
-  kingAdvance: { kind: "position", label: "玉の出すぎ（30手目まで）", defaultWeight: 80, eval: kingAdvanceTerm },
+  kingAdvance: { kind: "position", label: "玉の出すぎ（段階罰）", defaultWeight: 1, eval: kingAdvanceTerm },
   kingGuard: { kind: "position", label: "玉の守り（金2銀1）", defaultWeight: 15, eval: kingGuardTerm },
   // 未接続（retreat.js 参照）
   retreat: { kind: "move", label: "後退ペナルティ", defaultWeight: 0, eval: retreatTerm },
-  // 取る手への加減点（2026-11-09 §7）。取った駒の価値を返す。重みは気質ごと（攻め +0.1 / 受け -0.05）
-  capture: { kind: "move", label: "取る手の加減点", defaultWeight: 0, eval: captureTerm },
+  // 取る手への加減点（2026-11-09 §7）。取った駒の価値を返す。重みは棋風ごとの合計（攻め +0.15 / バランス +0.05 / 守り -0.05。2026-11-12 調整）
+  capture: { kind: "move", label: "取る手の加減点", defaultWeight: 0.05, eval: captureTerm },
+  // 守りの桂（2026-11-12 設計、2026-11-20 実装）：自玉に最も近い桂を跳ねる手に −30（全棋風の既定）。
+  knightJump: { kind: "move", label: "守りの桂（跳ぶ手の減点）", defaultWeight: 30, eval: knightJumpTerm },
+  // 自陣への打ち込み報酬（2026-11-13 着想、2026-11-20 実装）：既定 0。受けの特性だけが +30（仮置き）を足す。
+  dropDefense: { kind: "move", label: "自陣への打ち込み（受けの報酬）", defaultWeight: 0, eval: dropDefenseTerm },
 };
 
 export const TERM_IDS = Object.keys(TERMS);

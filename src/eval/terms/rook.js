@@ -9,7 +9,7 @@
  */
 import { STANCE_FILES } from "../../behavior/matchup.js";
 import { IX_F, IX_R, ROOK, colorNum } from "./fast.js";
-import { referenceRookSwungTerm, referenceRookHomeTerm } from "../reference-link.js";
+import { referenceRookSwungTerm, referenceRookHomeTerm, referenceRookEdgeTerm } from "../reference-link.js";
 
 const CAMP_MIN_RANK = 7; // 自分の視点の段（9が最奥）
 
@@ -50,3 +50,34 @@ function sided(board, context, range, reference) {
 export const rookSwungTerm = (board, _style, context) => sided(board, context, STANCE_FILES.furi, referenceRookSwungTerm);
 
 export const rookHomeTerm = (board, _style, context) => sided(board, context, STANCE_FILES.ibisha, referenceRookHomeTerm);
+
+/**
+ * 飛車の端（2026-11-20 実装、設計は 2026-11-12「飛車の横揺れ対策」）：端（1筋・9筋）にある飛車の数。
+ * 文脈は不要。rook のみ（dragon は除く）。手番側視点で「相手 − 自分」（重み 30 で、自玉側の端飛車が −30 の罰）。
+ * 値は参照実装（src/eval/reference/terms/rook.js）と同じ。
+ */
+export function rookEdgeTerm(board) {
+  const fb = board.fb;
+  if (!fb) {
+    return referenceRookEdgeTerm(board);
+  }
+  const cells = fb.board;
+  const count = (c) => {
+    const pos = fb.piecePos[c];
+    const n = fb.pieceCnt[c];
+    let k = 0;
+    for (let i = 0; i < n; i++) {
+      const ix = pos[i];
+      if ((cells[ix] & 15) !== ROOK) {
+        continue;
+      }
+      const f = IX_F[ix];
+      if (f === 1 || f === 9) {
+        k++;
+      }
+    }
+    return k;
+  };
+  const turn = fb.turnN;
+  return count(turn ^ 1) - count(turn);
+}

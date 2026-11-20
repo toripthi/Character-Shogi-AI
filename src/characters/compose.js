@@ -6,18 +6,22 @@
  *   2. spec.traits の各特性の weights を「加算」する
  *   3. spec.weights を「上書き」する（微調整）
  * 同じ group の特性を2つ選ぶ、未知の特性・未知の評価項を使う、はエラー。
+ * 玉の出すぎの段階表（kingAdvanceStages）は重みとは別のキャラデータ：特性が持つものを採用し、
+ * spec.kingAdvanceStages があれば上書きする。持つ特性がなければ未指定（評価側の既定＝バランス）。
  */
 import { DEFAULT_WEIGHTS, assertKnownTerms, resolveStyle } from "../eval/index.js";
+import { assertKingAdvanceStages } from "../eval/kingPos.js";
 import { TRAITS } from "./traits/index.js";
 
 /**
- * @param {{ traits?: string[], weights?: Record<string, number>, pieceSet?: string, pieceValues?: object }} [spec]
+ * @param {{ traits?: string[], weights?: Record<string, number>, pieceSet?: string, pieceValues?: object, kingAdvanceStages?: [number, number][] }} [spec]
  * @param {Record<string, object>} [traitTable] 特性の表（テスト用に差し替え可）
  */
 export function composeStyle(spec = {}, traitTable = TRAITS) {
   const weights = { ...DEFAULT_WEIGHTS };
   const groups = new Map(); // group → 選ばれた特性id
   const seen = new Set();
+  let kingAdvanceStages;
 
   for (const id of spec.traits ?? []) {
     const trait = traitTable[id];
@@ -40,10 +44,26 @@ export function composeStyle(spec = {}, traitTable = TRAITS) {
     for (const [term, w] of Object.entries(trait.weights ?? {})) {
       weights[term] = (weights[term] ?? 0) + w;
     }
+    if (trait.kingAdvanceStages !== undefined) {
+      assertKingAdvanceStages(trait.kingAdvanceStages, `特性 ${id} の kingAdvanceStages`);
+      if (kingAdvanceStages !== undefined && kingAdvanceStages !== trait.kingAdvanceStages) {
+        throw new Error(`特性 "${id}" の kingAdvanceStages が、既に選ばれた特性のものと競合している`);
+      }
+      kingAdvanceStages = trait.kingAdvanceStages;
+    }
   }
 
   assertKnownTerms(spec.weights, "上書きの weights");
   Object.assign(weights, spec.weights);
+  if (spec.kingAdvanceStages !== undefined) {
+    assertKingAdvanceStages(spec.kingAdvanceStages, "上書きの kingAdvanceStages");
+    kingAdvanceStages = spec.kingAdvanceStages;
+  }
 
-  return resolveStyle({ pieceSet: spec.pieceSet, pieceValues: spec.pieceValues, weights });
+  return resolveStyle({
+    pieceSet: spec.pieceSet,
+    pieceValues: spec.pieceValues,
+    weights,
+    ...(kingAdvanceStages !== undefined ? { kingAdvanceStages } : {}),
+  });
 }

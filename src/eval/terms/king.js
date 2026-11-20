@@ -1,15 +1,16 @@
 /**
  * 評価項: 玉の位置（2026-11-10 指示書 §4）。駒リストを直接読む高速版。値は参照実装
  * （src/eval/reference/terms/king.js）と同じ。定義は src/eval/kingPos.js の冒頭を見る。
- *   kingHome … 11〜30手目に初期位置の玉を減点／kingAdvance … 30手目まで3段目以上の玉を減点／
+ *   kingHome … 11〜30手目に初期位置の玉を減点／kingAdvance … 3段目以上の玉を段階表の罰点で減点／
  *   kingGuard … 自玉に近い金2枚・銀1枚の守り（距離係数つき）。いずれも「自分 − 相手」（手番視点）。
  */
 import { IX_F, IX_R, GOLD, SILVER } from "./fast.js";
 import { DEFENSE_PCT } from "../proximity.js";
 import {
   inKingHomeWindow,
-  inKingAdvanceWindow,
   KING_ADVANCE_MIN_OWN_RANK,
+  kingAdvancePenalty,
+  kingAdvanceStagesOf,
   GUARD_GOLDS,
   GUARD_SILVERS,
 } from "../kingPos.js";
@@ -38,13 +39,14 @@ export function kingHomeTerm(board) {
   return at(turn ^ 1) - at(turn);
 }
 
-export function kingAdvanceTerm(board) {
+export function kingAdvanceTerm(board, style) {
   const fb = board.fb;
-  if (!fb) return referenceKingAdvanceTerm(board);
-  if (!inKingAdvanceWindow(fb.plyN)) return 0;
+  if (!fb) return referenceKingAdvanceTerm(board, style);
+  const penalty = kingAdvancePenalty(fb.plyN, kingAdvanceStagesOf(style));
+  if (penalty === 0) return 0;
   const turn = fb.turnN;
   const at = (c) => (fb.kingSq[c] >= 0 && ownRank(fb, c) >= KING_ADVANCE_MIN_OWN_RANK ? 1 : 0);
-  return at(turn ^ 1) - at(turn);
+  return (at(turn ^ 1) - at(turn)) * penalty;
 }
 
 /** c の玉の守り（百分率の合計）：自玉に近い金 GUARD_GOLDS 枚・銀 GUARD_SILVERS 枚（GUARD_* は 2・1 固定の実装）。 */

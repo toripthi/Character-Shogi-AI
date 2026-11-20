@@ -11,7 +11,8 @@ import { attackTerm, rookFileTerm } from "./terms/attack.js";
 import { rookDangerTerm } from "./terms/rookDanger.js";
 import { horseGuardTerm } from "./terms/horseGuard.js";
 import { matchForm, castlePoints } from "./terms/castle.js";
-import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
+import { rookSwungTerm, rookHomeTerm, rookEdgeTerm } from "./terms/rook.js";
+import { mobilityTerm } from "./terms/mobility.js";
 import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
 
 registerReference({
@@ -26,6 +27,8 @@ registerReference({
   castlePoints,
   rookSwungTerm,
   rookHomeTerm,
+  rookEdgeTerm,
+  mobilityTerm,
   kingHomeTerm,
   kingAdvanceTerm,
   kingGuardTerm,

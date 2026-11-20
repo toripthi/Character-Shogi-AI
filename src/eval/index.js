@@ -5,12 +5,14 @@
  * 評価値は手番側視点（negamax）。項ごとの寄与(breakdown)を必ず返す。
  *
  * style の形:
- *   { pieceSet?: "kyuui"|"neutral"|"aono", pieceValues?: {...}, weights?: { 項id: 重み } }
+ *   { pieceSet?: "kyuui"|"neutral"|"aono", pieceValues?: {...}, weights?: { 項id: 重み },
+ *     kingAdvanceStages?: [[手数, 罰点], ...]（玉の出すぎの段階表。eval/kingPos.js。未指定はバランス） }
  * style は不変として扱う（変えたいときは新しいオブジェクトを作る）。
  * 作り方は characters/compose.js を見る。
  */
 import { PIECE_SETS } from "./pieceSets.js";
 import { TERMS, DEFAULT_WEIGHTS, POSITION_TERM_IDS, assertKnownTerms } from "./registry.js";
+import { assertKingAdvanceStages } from "./kingPos.js";
 
 export { PIECE_SETS, PIECE_SET_NAMES, handValueOf } from "./pieceSets.js";
 export {
@@ -38,10 +40,14 @@ export function resolveStyle(style = {}) {
     throw new Error(`未知の駒セット "${pieceSet}"（${Object.keys(PIECE_SETS).join(", ")}）`);
   }
   assertKnownTerms(style.weights, "style.weights");
+  if (style.kingAdvanceStages !== undefined) {
+    assertKingAdvanceStages(style.kingAdvanceStages, "style.kingAdvanceStages");
+  }
   const resolved = {
     pieceSet,
     pieceValues: style.pieceValues ?? PIECE_SETS[pieceSet],
     weights: Object.freeze({ ...DEFAULT_WEIGHTS, ...style.weights }),
+    ...(style.kingAdvanceStages !== undefined ? { kingAdvanceStages: style.kingAdvanceStages } : {}),
   };
   Object.defineProperty(resolved, RESOLVED, { value: true });
   return Object.freeze(resolved);
@@ -60,7 +66,7 @@ export function evaluate(board, style = {}, context = undefined) {
   const breakdown = {};
   for (const id of POSITION_TERM_IDS) {
     const weight = s.weights[id];
-    // context は戦法の項（4-2）だけが使う。他の項は無視する。
+    // context は戦型の項（4-2）だけが使う。他の項は無視する。
     const value = weight === 0 ? 0 : TERMS[id].eval(board, s, context) * weight;
     breakdown[id] = value;
     score += value;

@@ -1,6 +1,6 @@
 /**
  * 開始画面（この repo 独自）。対局を始める前に必ず出る。選ぶもの：
- *   手番（先手 / 後手 / 振り駒）、相手の棋風（戦法：ランダム・居飛車・振り飛車 × 気質：バランス・攻め・守り）、持ち時間。
+ *   手番（先手 / 後手 / 振り駒）、相手の棋風（戦型：ランダム・居飛車・振り飛車 × 棋風：バランス・攻め・守り）、持ち時間。
  * 画面は入力を集めて渡すだけ。検証・保存・対局の開始は呼び出し側（main.js）と game/settings.js が持つ。
  * 前回の選択を初期値にする（getRaw）。入力欄の文字は 16px 以上（iOS Safari の拡大防止）。
  */
@@ -65,8 +65,8 @@ export function createStartScreen({ getRaw, onStart }) {
 
   const body = el("div", "sheet-body");
   const side = segmented("手番", SIDES);
-  const opening = segmented("相手の戦法", OPENING_AXIS.map((a) => [a.id, a.name]), () => refreshPersona());
-  const temperament = segmented("相手の気質", TEMPERAMENT_AXIS.map((a) => [a.id, a.name]), () => refreshPersona());
+  const opening = segmented("相手の戦型", OPENING_AXIS.map((a) => [a.id, a.name]), () => refreshPersona());
+  const temperament = segmented("相手の棋風", TEMPERAMENT_AXIS.map((a) => [a.id, a.name]), () => refreshPersona());
   const personaNote = el("p", "sheet-hint start-persona");
 
   const time = el("select", "sheet-input");
@@ -87,8 +87,8 @@ export function createStartScreen({ getRaw, onStart }) {
 
   const group = (title, ...nodes) => { body.append(el("h3", "sheet-group", title), ...nodes); };
   group("手番", side.el, el("p", "sheet-hint", "振り駒は、対局を始めるたびに歩5枚を振って決めます。"));
-  group("相手の戦法", opening.el);
-  group("相手の気質", temperament.el, personaNote);
+  group("相手の戦型", opening.el);
+  group("相手の棋風", temperament.el, personaNote);
   group("持ち時間", time, custom, timeHint);
 
   const foot = el("div", "sheet-foot");

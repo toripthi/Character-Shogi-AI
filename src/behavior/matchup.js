@@ -1,8 +1,8 @@
 /**
- * 戦法の判定（4-2）。純関数。定義は確定（指示書 4-2「判定の定義」、src/eval/castles.js の冒頭）。
+ * 戦型の判定（4-2）。純関数。定義は確定（指示書 4-2「判定の定義」、src/eval/castles.js の冒頭）。
  *  - 筋の範囲は、この STANCE_FILES だけに書く（他の場所に数字を直書きしない）。
  *  - 飛車の筋は、その色の視点（先手は筋そのまま、後手は 10 − 筋）。rook か dragon。盤上になければ判定しない。
- *  - 相手の戦法は一度「振り飛車」と判定したら、その局では戻さない（ラッチ）。
+ *  - 相手の戦型は一度「振り飛車」と判定したら、その局では戻さない（ラッチ）。
  *  - 角換わりは、6条件がすべて同時に成り立つ局面を一度でも見たら、その局では固定（ラッチ）。
  */
 
@@ -49,7 +49,7 @@ function findRookFile(board, color) {
   return null;
 }
 
-/** 筋（その色の視点）から戦法を決める。居飛車 1〜4、振り飛車 5〜9、中飛車は 5。 */
+/** 筋（その色の視点）から戦型を決める。居飛車 1〜4、振り飛車 5〜9、中飛車は 5。 */
 export function stanceOfFile(file) {
   if (file >= STANCE_FILES.ibisha[0] && file <= STANCE_FILES.ibisha[1]) return { type: "ibisha", naka: false };
   if (file >= STANCE_FILES.furi[0] && file <= STANCE_FILES.furi[1]) return { type: "furi", naka: file === STANCE_FILES.naka };
@@ -81,7 +81,7 @@ export function isKakugawari(board) {
 export function classifyMatchup(board, myColor, prev = INITIAL_MATCHUP) {
   const oppColor = myColor === "black" ? "white" : "black";
   let opponent = prev.opponent;
-  // 相手の戦法：ラッチ。一度 furi になったら戻さない。飛車がなければ前回の判定を保つ。
+  // 相手の戦型：ラッチ。一度 furi になったら戻さない。飛車がなければ前回の判定を保つ。
   if (opponent !== "furi") {
     const f = rookFileOf(board, oppColor);
     if (f !== null) {

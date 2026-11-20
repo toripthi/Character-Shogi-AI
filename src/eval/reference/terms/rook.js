@@ -35,3 +35,25 @@ export const rookSwungTerm = (board, _style, context) =>
 
 export const rookHomeTerm = (board, _style, context) =>
   sided(board, context, (file, rank) => file >= STANCE_FILES.ibisha[0] && file <= STANCE_FILES.ibisha[1] && rank >= CAMP_MIN_RANK);
+
+/**
+ * 飛車の端（2026-11-20 実装、設計は 2026-11-12「飛車の横揺れ対策」）：端（1筋・9筋）にある飛車の数。
+ * 文脈は不要。rook のみ（dragon は除く。rookSwung・rookHome と同じ）。
+ * 手番側視点で「相手 − 自分」（自分の飛車が端にあるほど小さくなる。重み 30 で −30 の罰になる）。
+ */
+function countEdgeRooks(board, color) {
+  let n = 0;
+  for (let f = 1; f <= 9; f++) {
+    for (let r = 1; r <= 9; r++) {
+      const p = board.pieceAt(`${f}${"abcdefghi"[r - 1]}`);
+      if (p && p.color === color && p.type === "rook" && (f === 1 || f === 9)) n++;
+    }
+  }
+  return n;
+}
+
+export function rookEdgeTerm(board) {
+  const turn = board.turn();
+  const enemy = turn === "black" ? "white" : "black";
+  return countEdgeRooks(board, enemy) - countEdgeRooks(board, turn);
+}

@@ -37,6 +37,18 @@ export function pawnsInContact(board, side) {
   return mine.some(([f, r]) => theirs.some(([g, s]) => Math.max(Math.abs(f - g), Math.abs(r - s)) === 1));
 }
 
+/**
+ * 相手が持ち駒を1枚でも持っているか。2026-11-20 追加（設計は 2026-11-12「手順テンプレートを抜ける条件」）。
+ * 歩同士の接触（pawnsInContact）と同じく、組み立ての終わりの合図にする。相手が駒を取った時点で
+ * 「相手が何をしてこようとやることが決まっている」序盤ではなくなる（角で好き勝手やるハックの防止）。
+ * 適用範囲は手順テンプレートだけ（定跡には適用しない。pawnsInContact と同じ）。
+ */
+export function opponentHasHand(board, side) {
+  const enemy = side === "black" ? "white" : "black";
+  const hand = board.hand(enemy);
+  return Object.values(hand).some((n) => n > 0);
+}
+
 export function createPlanner(plan) {
   if (!plan) throw new Error("createPlanner: plan が必要");
 

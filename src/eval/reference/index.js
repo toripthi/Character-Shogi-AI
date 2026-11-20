@@ -16,12 +16,13 @@ import { attackTerm, rookFileTerm } from "./terms/attack.js";
 import { rookDangerTerm } from "./terms/rookDanger.js";
 import { horseGuardTerm } from "./terms/horseGuard.js";
 import { castleFuriTerm, castleIbishaTerm } from "./terms/castle.js";
-import { rookSwungTerm, rookHomeTerm } from "./terms/rook.js";
+import { rookSwungTerm, rookHomeTerm, rookEdgeTerm } from "./terms/rook.js";
+import { mobilityTerm } from "./terms/mobility.js";
 import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
 import "./register.js"; // 評価の項（terms）の参照実装の受け口に登録（2026-11-07）
 
 export { materialTerm, advanceTerm, controlTerm, attackTerm, rookFileTerm, rookDangerTerm, horseGuardTerm };
-export { castleFuriTerm, castleIbishaTerm, rookSwungTerm, rookHomeTerm };
+export { castleFuriTerm, castleIbishaTerm, rookSwungTerm, rookHomeTerm, rookEdgeTerm, mobilityTerm };
 export { kingHomeTerm, kingAdvanceTerm, kingGuardTerm };
 export { matchForm, castlePoints } from "./terms/castle.js";
 export { rookFileOf } from "./matchup-ref.js";
@@ -39,6 +40,8 @@ export const REFERENCE_TERMS = {
   castleIbisha: castleIbishaTerm,
   rookSwung: rookSwungTerm,
   rookHome: rookHomeTerm,
+  rookEdge: rookEdgeTerm,
+  mobility: mobilityTerm,
   kingHome: kingHomeTerm,
   kingAdvance: kingAdvanceTerm,
   kingGuard: kingGuardTerm,

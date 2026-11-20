@@ -11,10 +11,10 @@ import { scoreRootMoves, selectMove } from "./selection/index.js";
 import { createBook } from "./book/index.js";
 import { REJOIN_MAX_ABS_DEFAULT } from "./book/constants.js";
 import { classifyMatchup, INITIAL_MATCHUP } from "./behavior/matchup.js";
-import { createPlanner, PLANS, pawnsInContact } from "./plan/index.js";
+import { createPlanner, PLANS, pawnsInContact, opponentHasHand } from "./plan/index.js";
 import { DEFAULT_MAX_NODES, PRUNE_SLACK_DEFAULT, MATE_SCORE } from "./search/constants.js";
 import { findMate } from "./search/mate.js";
-// 4-2：これらの重みのどれかが 0 でないとき、戦法の文脈（{ me, matchup }）を探索に渡す。
+// 4-2：これらの重みのどれかが 0 でないとき、戦型の文脈（{ me, matchup }）を探索に渡す。
 const CONTEXT_TERM_IDS = ["castleFuri", "castleIbisha", "rookSwung", "rookHome"];
 
 let nextPlayerId = 1;
@@ -106,7 +106,7 @@ export function createPlayer(options = {}) {
     : null;
   // ペルソナが usesBook: false（balance）なら、book.enabled でも引かない（D-029）。
   const bookActive = bookOpts.enabled && resolved.usesBook !== false;
-  // 戦法ごとの一式（評価 style・定跡タグ・文脈を使うか）。オールラウンダー（D-029 (e)）は戦法ごとに1つ、
+  // 戦型ごとの一式（評価 style・定跡タグ・文脈を使うか）。オールラウンダー（D-029 (e)）は戦型ごとに1つ、
   // それ以外は1つだけ（キー null）。どれを使うかは手番の色ごとの抽選結果（state.opening）で決まる。
   const hasContext = (style) => CONTEXT_TERM_IDS.some((id) => (style.weights[id] ?? 0) !== 0);
   const variants = new Map();
@@ -117,14 +117,14 @@ export function createPlayer(options = {}) {
   } else {
     variants.set(null, { opening: null, style: resolved.style, bookTags: options.book?.tags ?? resolved.bookTags ?? [], usesContext: hasContext(resolved.style), planRef: resolved.plan });
   }
-  // 手順テンプレート層（定跡と探索の間）。options.plan（plan オブジェクト／id／false。全戦法に同じものを使う）、
-  // なければ戦法ごと（variant）の plan（振り飛車党の plan は特性から。2026-11-10 §1）。ペルソナ単位の plan は variant にも入る。
+  // 手順テンプレート層（定跡と探索の間）。options.plan（plan オブジェクト／id／false。全戦型に同じものを使う）、
+  // なければ戦型ごと（variant）の plan（振り飛車党の plan は特性から。2026-11-10 §1）。ペルソナ単位の plan は variant にも入る。
   const plannerOfRef = (ref) => {
     const data = ref ? (typeof ref === "string" ? PLANS[ref] : ref) : null;
     if (ref && !data) throw new Error(`未知の plan "${ref}"（${Object.keys(PLANS).join(", ")}）`);
     return data ? createPlanner(data) : null;
   };
-  const plannerCache = new Map(); // plan id → planner（同じ plan を戦法ごとに作り直さない）
+  const plannerCache = new Map(); // plan id → planner（同じ plan を戦型ごとに作り直さない）
   const plannerOf = (ref) => {
     if (typeof ref !== "string") return plannerOfRef(ref);
     if (!plannerCache.has(ref)) plannerCache.set(ref, plannerOfRef(ref));
@@ -147,16 +147,17 @@ export function createPlayer(options = {}) {
 
   const state = {
     rng: createRng(baseSeed),
-    // 手番の色ごとの戦法（オールラウンダーのみ。それ以外は null）。手選びの乱数 rng とは別系統で抽選する。
+    // 手番の色ごとの戦型（オールラウンダーのみ。それ以外は null）。手選びの乱数 rng とは別系統で抽選する。
     opening: drawOpenings(resolved.openings, baseSeed),
     // 置換表は newGame() ごとに作り直し、局の中では使い回す。
     transposition: new Map(),
     // 手番の色ごとの定跡の状態（自己対局は単一 player で両手番を指すため）。
     sides: { black: { own: 0, left: false }, white: { own: 0, left: false } },
-    // 戦法の判定（4-2）の状態を手番の色ごとに持つ。ttKey は置換表を作った文脈（手番・判定結果）。
+    // 戦型の判定（4-2）の状態を手番の色ごとに持つ。ttKey は置換表を作った文脈（手番・判定結果）。
     matchup: { black: INITIAL_MATCHUP, white: INITIAL_MATCHUP },
     ttKey: null,
-    // 手順テンプレートを抜けたか（色ごと。歩同士が接触したら true、戻らない。2026-11-10 §2）。定跡には影響しない。
+    // 手順テンプレートを抜けたか（色ごと。歩同士が接触した、または相手が持ち駒を持ったら true、戻らない。
+    // 2026-11-10 §2／2026-11-20 追加）。定跡には影響しない。
     planLeft: { black: false, white: false },
   };
   const variantOf = (side) => variants.get(state.opening[side]);
@@ -172,7 +173,7 @@ export function createPlayer(options = {}) {
   }
 
   /**
-   * 手番の戦法の文脈を、ルートで1回だけ決めて固定する（D-019）。探索の内側では判定しない。
+   * 手番の戦型の文脈を、ルートで1回だけ決めて固定する（D-019）。探索の内側では判定しない。
    * 文脈（手番・判定結果）が変わったら置換表を作り直す（評価が文脈で変わるため）。
    */
   function contextFor(board, side) {
@@ -215,8 +216,9 @@ export function createPlayer(options = {}) {
   function tryPlan(board, side, context) {
     const planner = variantOf(side).planner;
     if (!planner || state.planLeft[side]) return null;
-    // 歩同士の距離が1になったら、テンプレートを抜ける（ラッチ。§2）。手の前の盤面で判定する。
-    if (pawnsInContact(board, side)) {
+    // 歩同士の距離が1になった、または相手が持ち駒を持ったら、テンプレートを抜ける（ラッチ。§2／2026-11-20 追加）。
+    // 手の前の盤面で判定する。
+    if (pawnsInContact(board, side) || opponentHasHand(board, side)) {
       state.planLeft[side] = true;
       return null;
     }
@@ -295,7 +297,16 @@ export function createPlayer(options = {}) {
     const retreatWeight = style.weights.retreat ?? 0;
     // 取る手への加減点（2026-11-09 §7）も、ルート採点でしか入れられないので、0でなければ採点経路に入る。
     const captureWeight = style.weights.capture ?? 0;
-    const needsScoring = selectionOpts.margin > 0 || selectionOpts.slipRate > 0 || retreatWeight !== 0 || captureWeight !== 0;
+    // 守りの桂（knightJump）・自陣への打ち込み報酬（dropDefense）も手の項なので、同じく採点経路で入れる。
+    const knightJumpWeight = style.weights.knightJump ?? 0;
+    const dropDefenseWeight = style.weights.dropDefense ?? 0;
+    const needsScoring =
+      selectionOpts.margin > 0 ||
+      selectionOpts.slipRate > 0 ||
+      retreatWeight !== 0 ||
+      captureWeight !== 0 ||
+      knightJumpWeight !== 0 ||
+      dropDefenseWeight !== 0;
     if (searchOpts.maxNodes !== undefined) {
       // 予算つき反復深化（opt-in。docs/NODE-BUDGET-DESIGN.md §5）。
       return chooseSearchMoveBudget(board, t0, context, needsScoring, retreatWeight, style);
@@ -330,6 +341,8 @@ export function createPlayer(options = {}) {
       useCheckPolicy: searchOpts.useCheckPolicy,
       retreatWeight,
       captureWeight,
+      knightJumpWeight,
+      dropDefenseWeight,
       context,
       pruneMargin: pruneMarginOf(),
     });
@@ -412,6 +425,8 @@ export function createPlayer(options = {}) {
         useCheckPolicy: searchOpts.useCheckPolicy,
         retreatWeight,
         captureWeight: style.weights.capture ?? 0,
+        knightJumpWeight: style.weights.knightJump ?? 0,
+        dropDefenseWeight: style.weights.dropDefense ?? 0,
         context,
         pruneMargin: d >= 2 ? pruneMarginOf() : undefined,
         order: bestScored ?? undefined,
@@ -450,7 +465,7 @@ export function createPlayer(options = {}) {
 
   /**
    * 手を決める前の内部状態を取り出す／戻す（「待った」用。web の engine/session.js が使う）。
-   * 対象：手選びの乱数・定跡の自手数と外れ・戦法の判定（4-2）。置換表は局面ごとに正しい値だけを持つので、
+   * 対象：手選びの乱数・定跡の自手数と外れ・戦型の判定（4-2）。置換表は局面ごとに正しい値だけを持つので、
    * 戻すときは作り直す（探索の結果は変わらない。次の1手が少し遅くなるだけ）。
    */
   function saveState() {
@@ -478,7 +493,7 @@ export function createPlayer(options = {}) {
     newGame,
     saveState,
     restoreState,
-    /** 手番の色の戦法（"ibisha" / "furibisha"）。オールラウンダー以外は null。newGame(seed) で抽選される。 */
+    /** 手番の色の戦型（"ibisha" / "furibisha"）。オールラウンダー以外は null。newGame(seed) で抽選される。 */
     opening: (side) => state.opening[side],
     chooseMove,
     bookStats: () => (book ? { ...book.stats } : null),
