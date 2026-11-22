@@ -1,24 +1,27 @@
 /**
- * 棋風の2つの軸（開始画面の選択肢）。2026-11 ユーザー指示 ③。
+ * 棋風の2つの軸（開始画面の選択肢）。2026-11 ユーザー指示 ③。2026-11-21 本人決定で訂正。
  *
- *   戦型の軸（opening）：   ランダム / 居飛車 / 振り飛車     （特性 allround / ibisha / furibisha）
+ *   戦型の軸（opening）：   居飛車 / 振り飛車 / ランダム     （特性 ibisha / furibisha / random）
  *   棋風の軸（temperament）：バランス / 攻め / 守り           （特性 なし / seme / uke）
  *
- * 3×3 = 9 通りの組み合わせはどれも選べる。ペルソナの id は `${opening}-${temperament}`
- * （例 "ibisha-seme"、"random-balance"）。既存のペルソナ ibisha-seme・furi-uke は同じ id・同じ中身（そのまま使う）。
+ * 選択肢は 3×3 だが、実在するペルソナは 居飛車×棋風 と 振り飛車×棋風 の6つだけ。
+ * ランダムはペルソナ（人格）ではなく、対局開始時に居飛車か振り飛車へ振り分ける選択の仕組みで、
+ * 振り分けられた後は確定した戦型のペルソナと完全に同一になる（評価・定跡・手順テンプレートとも）。
+ * 選択の id は `${opening}-${temperament}`（例 "ibisha-seme"、"random-balance"）。
+ * 既存のペルソナ ibisha-seme・furi-uke は同じ id・同じ中身（そのまま使う）。
  * それ以外の組み合わせは、ここで特性から組み立てる（resolvePersona が "xxx-yyy" 形式の id を受け取れる）。
  * 純データ・純関数（Node / ブラウザ / Worker 共通）。
  */
 import { PERSONAS } from "./personas/index.js";
 
 export const OPENING_AXIS = Object.freeze([
-  { id: "random", name: "ランダム", traits: ["allround"], description: "居飛車か振り飛車かは対局開始時に決まる" },
   { id: "ibisha", name: "居飛車", traits: ["ibisha"], description: "居飛車の囲いを組み、飛車を自陣の1〜4筋に置く" },
   { id: "furi", name: "振り飛車", traits: ["furibisha"], description: "振り飛車の囲いを組み、飛車を5〜9筋（自陣）に振る" },
+  { id: "random", name: "ランダム", traits: ["random"], description: "対局開始時に居飛車か振り飛車へ振り分ける。決まったあとは、その戦型として指す" },
 ]);
 
 export const TEMPERAMENT_AXIS = Object.freeze([
-  { id: "balance", name: "バランス", traits: [], description: "攻めにも守りにも偏らない（駒得を基準に指す）" },
+  { id: "balance", name: "バランス", traits: [], description: "攻めにも守りにも偏らない、素直な指し回し" },
   { id: "seme", name: "攻め", traits: ["seme"], description: "前のめりに攻める。飛車の筋と敵陣制圧を好み、後退を嫌う" },
   { id: "uke", name: "受け", traits: ["uke"], description: "飛車を可愛がり、馬の守りを重く見る" },
 ]);
@@ -40,6 +43,8 @@ export function parseAxisPersonaId(id) {
 /**
  * 軸の組み合わせ → ペルソナの定義（resolvePersona に渡せる形）。
  * 既存のペルソナ（ibisha-seme・furi-uke）があればそれをそのまま返す。
+ * ランダムの組み合わせはペルソナではなく「振り分けの指定」で、解決すると対局開始時の
+ * 抽選の一式（openings）になる。
  * @throws 未知の軸の値
  */
 export function personaSpecFromAxes(opening, temperament) {
@@ -64,9 +69,12 @@ export function personaDisplayName(id) {
   return a ? personaSpecFromAxes(a.opening, a.temperament).name : String(id);
 }
 
-/** UI 用：9通りの一覧 */
+/**
+ * UI 用：実在するペルソナの一覧（居飛車×棋風・振り飛車×棋風の6つ）。
+ * ランダムはペルソナではないので含まない（選択肢としては OPENING_AXIS にある）。
+ */
 export function listAxisPersonas() {
-  return OPENING_AXIS.flatMap((o) =>
+  return OPENING_AXIS.filter((o) => o.id !== "random").flatMap((o) =>
     TEMPERAMENT_AXIS.map((t) => ({ opening: o.id, temperament: t.id, ...personaSpecFromAxes(o.id, t.id) })),
   );
 }

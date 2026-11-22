@@ -50,7 +50,8 @@ export function createPlayer(options = {}) {
   } else if (options.traits) {
     resolved = resolvePersona({ id: "custom", traits: options.traits, weights: options.weights });
   } else {
-    resolved = resolvePersona(options.persona ?? "balance");
+    // ペルソナ指定なしは素の基準ペルソナ（D-011）。
+    resolved = resolvePersona(options.persona ?? "baseline");
   }
   const searchOpts = {
     depth: options.search?.depth ?? 3,
@@ -104,9 +105,9 @@ export function createPlayer(options = {}) {
   const book = bookOpts.enabled
     ? createBook(options.book?.data ?? (() => { throw new Error("book.enabled のとき book.data が必要"); })())
     : null;
-  // ペルソナが usesBook: false（balance）なら、book.enabled でも引かない（D-029）。
+  // ペルソナが usesBook: false（baseline）なら、book.enabled でも引かない（D-011）。
   const bookActive = bookOpts.enabled && resolved.usesBook !== false;
-  // 戦型ごとの一式（評価 style・定跡タグ・文脈を使うか）。オールラウンダー（D-029 (e)）は戦型ごとに1つ、
+  // 戦型ごとの一式（評価 style・定跡タグ・文脈を使うか）。ランダム（D-029 (e)）は戦型ごとに1つ、
   // それ以外は1つだけ（キー null）。どれを使うかは手番の色ごとの抽選結果（state.opening）で決まる。
   const hasContext = (style) => CONTEXT_TERM_IDS.some((id) => (style.weights[id] ?? 0) !== 0);
   const variants = new Map();
@@ -133,7 +134,7 @@ export function createPlayer(options = {}) {
   for (const v of variants.values()) {
     v.planner = options.plan === undefined ? plannerOf(v.planRef) : plannerOf(options.plan);
   }
-  const BALANCE_STYLE = resolvePersona("balance").style;
+  const BASELINE_STYLE = resolvePersona("baseline").style;
   const mateOpts = {
     enabled: options.mate?.enabled ?? true,
     maxPlies: options.mate?.maxPlies ?? 1,
@@ -147,7 +148,7 @@ export function createPlayer(options = {}) {
 
   const state = {
     rng: createRng(baseSeed),
-    // 手番の色ごとの戦型（オールラウンダーのみ。それ以外は null）。手選びの乱数 rng とは別系統で抽選する。
+    // 手番の色ごとの戦型（ランダムのみ。それ以外は null）。手選びの乱数 rng とは別系統で抽選する。
     opening: drawOpenings(resolved.openings, baseSeed),
     // 置換表は newGame() ごとに作り直し、局の中では使い回す。
     transposition: new Map(),
@@ -189,7 +190,7 @@ export function createPlayer(options = {}) {
   }
 
   /**
-   * 定跡を使えるか。外れたあとの戻り（D-022）：stickyOut=false は、盤面の評価（balance、手番側）が
+   * 定跡を使えるか。外れたあとの戻り（D-022）：stickyOut=false は、盤面の評価（基準ペルソナ、手番側）が
    * rejoinMaxAbs 以下のときだけ戻る。stickyOut=true は一度外れたら戻らない。
    * 手数（自分の手の通算）が maxOwnMoves を超えたら使わない。
    */
@@ -198,7 +199,7 @@ export function createPlayer(options = {}) {
     if (s.own >= bookOpts.maxOwnMoves) return null;
     if (s.left) {
       if (bookOpts.stickyOut) return null;
-      const abs = Math.abs(defaultEvaluate(board, BALANCE_STYLE).score);
+      const abs = Math.abs(defaultEvaluate(board, BASELINE_STYLE).score);
       if (abs > bookOpts.rejoinMaxAbs) return null;
     }
     const r = book.lookup(board, { tags: variantOf(side).bookTags, personaId: resolved.id, rng: state.rng, skipRate: bookOpts.skipRate });
@@ -465,7 +466,8 @@ export function createPlayer(options = {}) {
 
   /**
    * 手を決める前の内部状態を取り出す／戻す（「待った」用。web の engine/session.js が使う）。
-   * 対象：手選びの乱数・定跡の自手数と外れ・戦型の判定（4-2）。置換表は局面ごとに正しい値だけを持つので、
+   * 対象：手選びの乱数・定跡の自手数と外れ・戦型の判定（4-2）・手順テンプレートの離脱ラッチ（planLeft）。
+   * 離脱前に戻せば plan は再び効く（D-036）。置換表は局面ごとに正しい値だけを持つので、
    * 戻すときは作り直す（探索の結果は変わらない。次の1手が少し遅くなるだけ）。
    */
   function saveState() {
@@ -473,12 +475,14 @@ export function createPlayer(options = {}) {
       rng: state.rng.getState(),
       sides: { black: { ...state.sides.black }, white: { ...state.sides.white } },
       matchup: { black: state.matchup.black, white: state.matchup.white },
+      planLeft: { ...state.planLeft },
     };
   }
   function restoreState(saved) {
     state.rng.setState(saved.rng);
     state.sides = { black: { ...saved.sides.black }, white: { ...saved.sides.white } };
     state.matchup = { black: saved.matchup.black, white: saved.matchup.white };
+    if (saved.planLeft) state.planLeft = { ...saved.planLeft };
     state.transposition = new Map();
     state.ttKey = null;
   }
@@ -493,7 +497,7 @@ export function createPlayer(options = {}) {
     newGame,
     saveState,
     restoreState,
-    /** 手番の色の戦型（"ibisha" / "furibisha"）。オールラウンダー以外は null。newGame(seed) で抽選される。 */
+    /** 手番の色の戦型（"ibisha" / "furibisha"）。ランダム以外は null。newGame(seed) で抽選される。 */
     opening: (side) => state.opening[side],
     chooseMove,
     bookStats: () => (book ? { ...book.stats } : null),

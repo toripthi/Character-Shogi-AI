@@ -10,5 +10,8 @@ import seme from "./seme.js";
 import uke from "./uke.js";
 import ibishaSeme from "./ibisha-seme.js";
 import furiUke from "./furi-uke.js";
+import baseline from "./baseline.js";
 
-export const PERSONAS = Object.fromEntries([balance, seme, uke, ibishaSeme, furiUke].map((p) => [p.id, p]));
+// baseline は測定・比較用の素のペルソナ（D-011）。棋風ではないので、開始画面の選択肢
+// （axes.js の軸の組み合わせ）には出てこない。id 指定でのみ使う。
+export const PERSONAS = Object.fromEntries([balance, seme, uke, ibishaSeme, furiUke, baseline].map((p) => [p.id, p]));

@@ -24,6 +24,7 @@ import { mobilityTerm } from "./terms/mobility.js";
 import { knightJumpTerm } from "./terms/knightJump.js";
 import { dropDefenseTerm } from "./terms/dropDefense.js";
 import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
+import { bishopParityTerm } from "./terms/bishopParity.js";
 
 export const TERMS = {
   material: { kind: "position", label: "駒得", defaultWeight: 1, eval: materialTerm },
@@ -49,6 +50,9 @@ export const TERMS = {
   kingHome: { kind: "position", label: "玉の初期位置（11〜30手目）", defaultWeight: 40, eval: kingHomeTerm },
   kingAdvance: { kind: "position", label: "玉の出すぎ（段階罰）", defaultWeight: 1, eval: kingAdvanceTerm },
   kingGuard: { kind: "position", label: "玉の守り（金2銀1）", defaultWeight: 15, eval: kingGuardTerm },
+  // 角の筋違い（2026-11-21 本人の指示）：（筋＋段）の和が奇数のマスの角・馬への罰。項が罰点を
+  // そのまま返すため、重みは倍率（既定 1）で全棋風に効く。罰点は角 −90（2026-11-21 本人確定）／馬 −5（仮置き）。
+  bishopParity: { kind: "position", label: "角の筋違い（減点）", defaultWeight: 1, eval: bishopParityTerm },
   // 未接続（retreat.js 参照）
   retreat: { kind: "move", label: "後退ペナルティ", defaultWeight: 0, eval: retreatTerm },
   // 取る手への加減点（2026-11-09 §7）。取った駒の価値を返す。重みは棋風ごとの合計（攻め +0.15 / バランス +0.05 / 守り -0.05。2026-11-12 調整）

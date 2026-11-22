@@ -129,7 +129,7 @@ function finalize(c) {
 export function checkExit(board, lineId) {
   const w = [];
   const { ABS_EVAL_MAX, LEGAL_MIN, SEARCH_DEPTH, SEARCH_SCORE_MIN } = EXIT_LIMITS;
-  const style = resolvePersona("balance").style;
+  const style = resolvePersona("baseline").style;
   const ev = evaluate(board, style).score;
   if (Math.abs(ev) > ABS_EVAL_MAX) w.push(`line ${lineId}: 出口の評価 ${ev}（|評価| ≤ ${ABS_EVAL_MAX}）`);
   if (board.inCheck()) w.push(`line ${lineId}: 出口が王手`);

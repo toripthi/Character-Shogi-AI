@@ -14,6 +14,7 @@ import { matchForm, castlePoints } from "./terms/castle.js";
 import { rookSwungTerm, rookHomeTerm, rookEdgeTerm } from "./terms/rook.js";
 import { mobilityTerm } from "./terms/mobility.js";
 import { kingHomeTerm, kingAdvanceTerm, kingGuardTerm } from "./terms/king.js";
+import { bishopParityTerm } from "./terms/bishopParity.js";
 
 registerReference({
   materialTerm,
@@ -32,4 +33,5 @@ registerReference({
   kingHomeTerm,
   kingAdvanceTerm,
   kingGuardTerm,
+  bishopParityTerm,
 });

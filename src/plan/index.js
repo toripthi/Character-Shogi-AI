@@ -5,8 +5,9 @@
  * 後手は盤を180度回して照合し、手も回して返す。
  */
 import furiShikenMino from "./plans/furi-shiken-mino.js";
+import ibishaBasic from "./plans/ibisha-basic.js";
 
-export const PLANS = { [furiShikenMino.id]: furiShikenMino };
+export const PLANS = { [furiShikenMino.id]: furiShikenMino, [ibishaBasic.id]: ibishaBasic };
 
 const RANKS = "abcdefghi";
 /** マスを180度回す（"7g" → "3c"） */

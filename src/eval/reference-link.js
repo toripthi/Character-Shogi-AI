@@ -48,3 +48,4 @@ export const referenceMobilityTerm = (...a) => need("mobilityTerm")(...a);
 export const referenceKingHomeTerm = (...a) => need("kingHomeTerm")(...a);
 export const referenceKingAdvanceTerm = (...a) => need("kingAdvanceTerm")(...a);
 export const referenceKingGuardTerm = (...a) => need("kingGuardTerm")(...a);
+export const referenceBishopParityTerm = (...a) => need("bishopParityTerm")(...a);

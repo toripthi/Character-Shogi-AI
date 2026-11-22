@@ -36,8 +36,8 @@ const tagsOf = (traits) => [...new Set(traits.flatMap((t) => TRAITS[t]?.bookTags
 const planOf = (spec, traits) => spec.plan ?? traits.map((t) => TRAITS[t]?.plan).find((p) => p) ?? null;
 
 /**
- * オールラウンダー（D-029 (e)）：choose を持つ特性があれば、候補ごとに「その特性を候補に置き換えた」
- * 一式（traits・bookTags・style）を作る。なければ null。
+ * ランダム（戦型の振り分け。D-029 (e)）：choose を持つ特性があれば、候補ごとに「その特性を候補に
+ * 置き換えた」一式（traits・bookTags・plan・style）を作る。なければ null。
  * 抽選の重みは特性の choose、ペルソナの openingWeights で上書きできる（キーは候補の特性id）。
  */
 function resolveOpenings(spec) {
@@ -118,13 +118,13 @@ export function resolvePersona(ref) {
     traits: [...(spec.traits ?? [])],
     // 定跡の戦型タグ（特性の bookTags の和集合、D-015）。composeStyle の戻り値は変えない。
     bookTags: tagsOf(spec.traits ?? []),
-    // オールラウンダー（D-029 (e)）：対局開始時に戦型を抽選する。通常のペルソナは null。
+    // ランダム（D-029 (e)）：対局開始時に戦型を振り分ける。通常のペルソナは null。
     // このとき style / bookTags は「戦型が決まる前」の値（戦型の重み・タグを含まない）。実際に使う一式は variants。
     openings: resolveOpenings(spec),
-    // 定跡を使うか（D-029）。false のペルソナ（balance）は book を有効にしても引かない。
+    // 定跡を使うか。false のペルソナ（基準ペルソナ baseline）は book を有効にしても引かない（D-011）。
     usesBook: spec.usesBook !== false,
-    // 手順テンプレートの id（src/plan）。ペルソナの plan、なければ特性の plan（振り飛車党）。なければ null（使わない）。
-    // オールラウンダーは戦型が決まる前なので null。実際に使う plan は戦型ごとの variants[*].plan。
+    // 手順テンプレートの id（src/plan）。ペルソナの plan、なければ特性の plan（戦型の特性）。なければ null（使わない）。
+    // ランダムは戦型が決まる前なので null。実際に使う plan は戦型ごとの variants[*].plan。
     plan: planOf(spec, spec.traits ?? []),
     style,
   };
