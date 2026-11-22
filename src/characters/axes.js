@@ -69,6 +69,30 @@ export function personaDisplayName(id) {
   return a ? personaSpecFromAxes(a.opening, a.temperament).name : String(id);
 }
 
+/** 棋譜の対戦者名に使う棋風の表示名（軸の name「攻め／受け」ではなく、将棋つきの形にする） */
+const TEMPERAMENT_KIF_NAME = Object.freeze({ balance: "バランス", seme: "攻め将棋", uke: "受け将棋" });
+
+/** 確定した戦型の表示名。キーは player.opening(side) が返す特性 id（軸 id の "furi" も受ける）。 */
+const OPENING_NAME_BY_ID = Object.freeze({ ibisha: "居飛車", furibisha: "振り飛車", furi: "振り飛車" });
+
+/**
+ * 棋譜の先手／後手欄に書く対戦者名：「戦型（棋風）」の形（例 "居飛車（攻め将棋）"、"振り飛車（バランス）"）。
+ * ランダムは、対局開始時に確定した戦型（opening: player.opening(side) の値 "ibisha" | "furibisha"）を渡すと
+ * "ランダム→振り飛車（バランス）" のように、ランダムから確定したことが分かる形になる。
+ * 確定した戦型が分からなければ "ランダム（バランス）"。軸の組み合わせでない id
+ * （balance・baseline 等）は personaDisplayName の登録名そのまま。
+ */
+export function personaKifName(id, opening = null) {
+  const a = parseAxisPersonaId(id);
+  if (!a) return personaDisplayName(id);
+  const temp = TEMPERAMENT_KIF_NAME[a.temperament];
+  if (a.opening === "random") {
+    const detName = OPENING_NAME_BY_ID[opening];
+    return detName ? `ランダム→${detName}（${temp}）` : `ランダム（${temp}）`;
+  }
+  return `${byId(OPENING_AXIS, a.opening).name}（${temp}）`;
+}
+
 /**
  * UI 用：実在するペルソナの一覧（居飛車×棋風・振り飛車×棋風の6つ）。
  * ランダムはペルソナではないので含まない（選択肢としては OPENING_AXIS にある）。

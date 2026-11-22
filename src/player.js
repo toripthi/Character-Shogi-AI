@@ -217,7 +217,7 @@ export function createPlayer(options = {}) {
   function tryPlan(board, side, context) {
     const planner = variantOf(side).planner;
     if (!planner || state.planLeft[side]) return null;
-    // 歩同士の距離が1になった、または相手が持ち駒を持ったら、テンプレートを抜ける（ラッチ。§2／2026-11-20 追加）。
+    // 歩同士が正面で接触した、または相手が持ち駒を持ったら、テンプレートを抜ける（ラッチ。D-040）。
     // 手の前の盤面で判定する。
     if (pawnsInContact(board, side) || opponentHasHand(board, side)) {
       state.planLeft[side] = true;

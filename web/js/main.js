@@ -207,11 +207,14 @@ function setupInput() {
 /** いまの設定で新しい対局を始める。指している対局があれば中断として記録する */
 function newGame() {
   game?.abandon();
-  // 手番：先手・後手の指定、または振り駒（シードがあれば同じ並びで再現。なければ毎回ランダム）
+  // 対局のシード：設定で指定がなければ現在時刻から決める。振り駒もエンジンもこのシードで
+  // 再現でき、シードは対局ログに残る（D-026：Math.random で振り駒を引かない）
+  const gameSeed = settings.seed !== undefined ? settings.seed : (Date.now() + gameCount * 104729) >>> 0;
+  // 手番：先手・後手の指定、または振り駒（対局のシードから引くので、同じシードでは同じ結果）
   let humanSide = settings.humanSide;
   let furigoma = null;
   if (settings.furigoma) {
-    const random = settings.seed !== undefined ? createRng(((settings.seed ^ 0x5bd1e995) + gameCount * 7919) >>> 0) : Math.random;
+    const random = createRng(((gameSeed ^ 0x5bd1e995) + gameCount * 7919) >>> 0);
     furigoma = drawFurigoma(random);
     humanSide = furigoma.humanSide;
   }
@@ -223,7 +226,7 @@ function newGame() {
     timeControl: settings.timeControl,
     startMessage: furigoma ? describeFurigoma(furigoma) : "",
     config: settings.config,
-    seed: settings.seed,
+    seed: gameSeed,
     playStyle: settings.playStyle,
     meta: { settingsRaw: rawSettings, ...(furigoma ? { furigoma } : {}) },
     ...(settings.maxMoves ? { maxMoves: settings.maxMoves } : {}),

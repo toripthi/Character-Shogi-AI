@@ -19,7 +19,9 @@ function mirrorUsi(usi) {
 }
 
 /**
- * 自軍の歩と相手の歩の距離（チェビシェフ距離）が1になっているか。2026-11-10 §2。
+ * 自軍の歩と相手の歩が「正面で接触」しているか。D-040。
+ * 接触は、同一の筋で段差1（縦に隣り合い、正面で向き合っている）場合だけとする。
+ * 将棋の歩は前にしか進めず斜めは取れないため、斜め・横の隣接は接触に数えない。
  * 「駒を取れるか」ではなく歩同士の接触を、手順テンプレート（組み立て）の終わりの合図にする。
  * 盤上の歩だけを見る（持ち駒は見ない）。side 視点でなくても対称（自軍・相手の歩の組を探すだけ）。
  */
@@ -35,7 +37,7 @@ export function pawnsInContact(board, side) {
       else if (p.color === enemy) theirs.push([f, r]);
     }
   }
-  return mine.some(([f, r]) => theirs.some(([g, s]) => Math.max(Math.abs(f - g), Math.abs(r - s)) === 1));
+  return mine.some(([f, r]) => theirs.some(([g, s]) => f === g && Math.abs(r - s) === 1));
 }
 
 /**

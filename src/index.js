@@ -20,4 +20,5 @@ export {
   axisPersonaId,
   personaSpecFromAxes,
   listAxisPersonas,
+  personaKifName,
 } from "./characters/index.js";

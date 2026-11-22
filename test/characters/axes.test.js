@@ -3,7 +3,7 @@ import { strict as assert } from "node:assert";
 import { ShogiBoard } from "../../src/core/board.js";
 import { createPlayer } from "../../src/player.js";
 import {
-  OPENING_AXIS, TEMPERAMENT_AXIS, listAxisPersonas, personaSpecFromAxes, axisPersonaId, parseAxisPersonaId, resolvePersona, PERSONAS,
+  OPENING_AXIS, TEMPERAMENT_AXIS, listAxisPersonas, personaSpecFromAxes, axisPersonaId, parseAxisPersonaId, resolvePersona, PERSONAS, personaKifName,
 } from "../../src/characters/index.js";
 
 describe("棋風の2軸（戦型×気質）：選択肢は3×3、実在するペルソナは6つ", () => {
@@ -97,5 +97,18 @@ describe("棋風の2軸（戦型×気質）：選択肢は3×3、実在するペ
         assert.ok(["ibisha", "furibisha"].includes(pl.opening("white")));
       }
     }
+  });
+
+  it("棋譜の対戦者名は「戦型（棋風）」の形。ランダムは確定した戦型を矢印で示す", () => {
+    assert.equal(personaKifName("ibisha-balance"), "居飛車（バランス）");
+    assert.equal(personaKifName("ibisha-seme"), "居飛車（攻め将棋）");
+    assert.equal(personaKifName("furi-uke"), "振り飛車（受け将棋）");
+    assert.equal(personaKifName("furi-seme"), "振り飛車（攻め将棋）");
+    assert.equal(personaKifName("random-balance", "furibisha"), "ランダム→振り飛車（バランス）");
+    assert.equal(personaKifName("random-seme", "ibisha"), "ランダム→居飛車（攻め将棋）");
+    assert.equal(personaKifName("random-uke"), "ランダム（受け将棋）");
+    // 軸の組み合わせでない id は登録名そのまま
+    assert.equal(personaKifName("balance"), "バランス型");
+    assert.equal(personaKifName("baseline"), "基準ペルソナ");
   });
 });

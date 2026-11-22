@@ -165,18 +165,19 @@ describe("手順テンプレート：戦型の全ペルソナに紐づく・ラ�
   });
 });
 
-describe("手順テンプレート：歩同士の距離が1になったら抜ける（2026-11-10 §2）", () => {
+describe("手順テンプレート：歩同士が正面で接触したら抜ける（D-040）", () => {
   const seq = (...moves) => {
     const b = new ShogiBoard();
     for (const m of moves) play(b, m);
     return b;
   };
-  it("pawnsInContact：チェビシェフ距離1（縦・横・斜め）で true、距離2以上は false。駒を取れるかは関係ない", () => {
+  it("pawnsInContact：正面（同一の筋で段差1）でのみ true。斜め・横の隣接と段差2以上は false。駒を取れるかは関係ない", () => {
     assert.equal(pawnsInContact(new ShogiBoard(), "black"), false);
     assert.equal(pawnsInContact(seq("7g7f", "3c3d"), "black"), false);
-    assert.equal(pawnsInContact(seq("7g7f", "7c7d"), "black"), false); // 7六と7四：距離2
-    assert.equal(pawnsInContact(seq("7g7f", "7c7d", "7f7e"), "black"), true); // 7五と7四：縦に隣
-    assert.equal(pawnsInContact(seq("7g7f", "8c8d", "7f7e"), "white"), true); // 7五と8四：斜め
+    assert.equal(pawnsInContact(seq("7g7f", "7c7d"), "black"), false); // 7六と7四：同一の筋だが段差2
+    assert.equal(pawnsInContact(seq("7g7f", "7c7d", "7f7e"), "black"), true); // 7五と7四：正面で向き合う
+    assert.equal(pawnsInContact(seq("7g7f", "8c8d", "7f7e"), "white"), false); // 7五と8四：斜めは接触に数えない
+    assert.equal(pawnsInContact(seq("7g7f", "8c8d", "7f7e", "8d8e"), "black"), false); // 7五と8五：横の隣接も数えない
     assert.equal(pawnsInContact(seq("7g7f", "7c7d", "7f7e"), "white"), true); // 色に依らず対称
   });
   it("角が歩を取れる局面でも、歩が離れていれば抜けない（キーは「取れるか」ではない）", () => {
@@ -187,7 +188,7 @@ describe("手順テンプレート：歩同士の距離が1になったら抜け
   });
   it("接触したらその手番ではテンプレートを使わず、離れても戻らない（ラッチ）。newGame で解除", () => {
     const mk = () => createPlayer({ persona: "furi-uke", search: { depth: 1 }, selection: { margin: 0 }, book: { enabled: false } });
-    const touching = seq("7g7f", "8c8d", "2g2f", "8d8e"); // 先手の7六と後手の8五が斜めに隣（先手番）
+    const touching = seq("7g7f", "7c7d", "7f7e", "3c3d"); // 先手の7五と後手の7四が正面で向き合う（先手番）
     assert.equal(pawnsInContact(touching, "black"), true);
     const noContact = seq("7g7f", "3c3d"); // 先手番・接触なし：本来なら 6六歩（plan）
     const p = mk();
@@ -199,7 +200,7 @@ describe("手順テンプレート：歩同士の距離が1になったら抜け
   });
   it("ラッチは色ごと：先手が抜けても、後手の手順テンプレートは影響を受けない", () => {
     const p = createPlayer({ persona: "furi-uke", search: { depth: 1 }, selection: { margin: 0 }, book: { enabled: false } });
-    const b = seq("7g7f", "8c8d", "2g2f", "8d8e");
+    const b = seq("7g7f", "7c7d", "7f7e", "3c3d");
     assert.notEqual(p.chooseMove(b).source, "plan"); // 先手：抜ける
     // 後手番の別の局面（接触なし）：後手側は独立
     const w = seq("7g7f");
@@ -217,7 +218,7 @@ describe("手順テンプレート：待った（saveState/restoreState）で離
     const p = createPlayer({ persona: "furi-uke", search: { depth: 1 }, selection: { margin: 0 }, book: { enabled: false } });
     const noContact = seq("7g7f", "3c3d"); // 先手番・接触なし：plan が効く局面
     const saved = p.saveState(); // 離脱前の状態
-    const touching = seq("7g7f", "8c8d", "2g2f", "8d8e"); // 先手の歩が接触
+    const touching = seq("7g7f", "7c7d", "7f7e", "3c3d"); // 先手の歩が正面で接触
     assert.notEqual(p.chooseMove(touching).source, "plan"); // 接触：抜ける（ラッチ）
     assert.notEqual(p.chooseMove(noContact).source, "plan"); // ラッチが残っている
     p.restoreState(saved); // 待った：離脱前の状態に戻す

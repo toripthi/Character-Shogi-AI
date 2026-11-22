@@ -9,7 +9,7 @@ import { createRng } from "../core/rng.js";
 import { parseAxisPersonaId, personaSpecFromAxes } from "./axes.js";
 
 export { TRAITS, PERSONAS, composeStyle };
-export { OPENING_AXIS, TEMPERAMENT_AXIS, axisPersonaId, personaSpecFromAxes, parseAxisPersonaId, listAxisPersonas } from "./axes.js";
+export { OPENING_AXIS, TEMPERAMENT_AXIS, axisPersonaId, personaSpecFromAxes, parseAxisPersonaId, listAxisPersonas, personaKifName } from "./axes.js";
 
 /** UI用: 特性の一覧（group が同じものは排他 = ラジオボタン、なければチェックボックス） */
 export function listTraits() {

@@ -153,6 +153,8 @@ function toKifFile(ch) {
 
 /**
  * ライン（meta と USI）を KIF のテキストにする（UTF-8、手合割：平手、# のメタ行付き）。
+ * meta.blackName / meta.whiteName があれば、対戦者名として「先手：」「後手：」の行も書く
+ * （表示名の組み立ては characters/axes.js の personaKifName。定跡ラインの書き出しでは渡さない）。
  */
 export function exportKif(meta, usiMoves) {
   const head = [];
@@ -160,6 +162,8 @@ export function exportKif(meta, usiMoves) {
   head.push(`# tags: ${(meta.tags ?? []).join(", ")}`);
   head.push(`# side: ${meta.side}`);
   head.push(`# weight: ${meta.weight ?? 1}`);
+  if (meta.blackName) head.push(`先手：${meta.blackName}`);
+  if (meta.whiteName) head.push(`後手：${meta.whiteName}`);
   if (meta.personaWeights && Object.keys(meta.personaWeights).length > 0) {
     const pw = Object.keys(meta.personaWeights).sort().map((k) => `${k}=${meta.personaWeights[k]}`).join(", ");
     head.push(`# personaWeights: ${pw}`);
